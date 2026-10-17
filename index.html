@@ -345,13 +345,16 @@ tr:hover td{background:#171106 !important;}
    MODULE 01 : PROJECT CONFIGURATION
    ============================================================ */
 /* IMPORTANT: Replace every placeholder below with the Web App config from Firebase Console > Project settings > Your apps. */
+  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  apiKey: 'PASTE_YOUR_FIREBASE_API_KEY',
-  authDomain: 'PASTE_YOUR_PROJECT_ID.firebaseapp.com',
-  projectId: 'PASTE_YOUR_PROJECT_ID',
-  storageBucket: 'PASTE_YOUR_PROJECT_ID.appspot.com',
-  messagingSenderId: 'PASTE_YOUR_MESSAGING_SENDER_ID',
-  appId: 'PASTE_YOUR_FIREBASE_APP_ID'
+  apiKey: "AIzaSyBOf-_cJ46geFxYwSUs6NCYqvqJHxJHvv0",
+  authDomain: "electricity-bill-managem-c0b23.firebaseapp.com",
+  databaseURL: "https://electricity-bill-managem-c0b23-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "electricity-bill-managem-c0b23",
+  storageBucket: "electricity-bill-managem-c0b23.firebasestorage.app",
+  messagingSenderId: "769883865692",
+  appId: "1:769883865692:web:870633d0608063f2e81c99",
+  measurementId: "G-5MHL0G9YPC"
 };
 let firebaseReady=false, auth=null, firestore=null, cloudUser=null, authFlowInProgress=false, activePortalUid='';
 try {
