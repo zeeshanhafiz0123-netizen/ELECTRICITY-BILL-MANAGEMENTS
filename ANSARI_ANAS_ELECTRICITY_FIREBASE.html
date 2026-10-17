@@ -236,7 +236,6 @@ tr:hover td{background:#171106 !important;}
     </div>
     <button class="btn primary" style="width:100%;margin-top:8px" id="loginBtn">LOGIN</button>
     <div class="login-switch"><span id="loginSwitchText">Don't have an account?</span> <button type="button" id="accountModeLink" class="forgot-link">Create New Account</button></div>
-<div class="login-footer" aria-label="Developer credit">DEVELOPED BY <span>ANSARI ANAS &amp; S.A </span></div>
     <div class="login-error" id="loginError" aria-live="polite"></div>
   </div>
 </section>
