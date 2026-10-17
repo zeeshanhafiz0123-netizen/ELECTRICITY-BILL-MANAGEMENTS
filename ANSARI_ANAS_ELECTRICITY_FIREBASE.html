@@ -1,0 +1,722 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ANSARI ANAS ELECTRICITY BILL MANAGEMENT SYSTEM</title>
+<style>
+:root{
+  --bg:#090704;--panel:#100c06;--panel2:#171006;--line:#e3c35c;--gold:#d4a51f;--gold2:#f1cf67;--gold3:#ffe8a3;
+  --text:#3b2a00;--muted:#7a6529;--danger:#9d2417;--ok:#24733f;--shadow:0 12px 34px rgba(130,90,0,.13)
+}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;font-family:Inter,Segoe UI,Arial,sans-serif;background:radial-gradient(circle at 10% 0%,#241a06 0,#0b0906 38%,#020202 100%);color:var(--text)}
+button,input,select,textarea{font:inherit}button{cursor:pointer}.hidden{display:none!important}
+.center{min-height:100vh;display:grid;place-items:center;padding:24px;background:radial-gradient(circle at top,#211805 0,#6b4e0b 35%,#b88618 100%)}
+.login-card{width:min(480px,96vw);background:linear-gradient(145deg,#171106,#0a0805);border:2px solid var(--gold);border-radius:24px;padding:28px;box-shadow:0 22px 70px rgba(70,45,0,.28)}
+.logo{width:74px;height:74px;border-radius:50%;margin:0 auto 10px;display:grid;place-items:center;background:linear-gradient(145deg,#ffeaa6,#c89512);border:2px solid #7d5e17;color:#5c4100;font-weight:400;letter-spacing:.05em;box-shadow:inset 0 0 0 6px rgba(255,255,255,.18)}
+.login-title{text-align:center;font-weight:400;font-size:20px}.login-sub{text-align:center;color:var(--muted);font-size:12px;margin:6px 0 22px}.field{display:flex;flex-direction:column;gap:6px;margin:10px 0}.field label{font-size:12px;font-weight:400;color:#6b541b}.field input,.field select,.field textarea{width:100%;border:1px solid var(--line);background:#080705;color:var(--text);border-radius:11px;padding:11px 12px;outline:none}.field input:focus,.field select:focus,.field textarea:focus{border-color:#b88400;box-shadow:0 0 0 3px #f7d96a55}
+.btn{border:1px solid var(--line);background:#211805;color:#4a3500;border-radius:10px;padding:10px 13px;font-weight:400}.btn:hover{background:#3a2a0b;border-color:#b58400}.btn.primary{background:linear-gradient(135deg,#f2cf61,#c89413);color:#3c2700;border-color:#b98911}.btn.danger{background:#28130f;color:#7e180f;border-color:#c85c4f}.btn.ok{background:#102319;color:#1e6235;border-color:#71b687}.btn.mini{padding:7px 9px;font-size:11px}.login-error{min-height:20px;text-align:center;color:#9d2417;font-weight:400;font-size:12px}
+.app{min-height:100vh}.side{position:fixed;inset:0 auto 0 0;width:268px;background:linear-gradient(180deg,#d6a51b,#b98008);color:#2e1d00;padding:16px 12px;overflow:auto;transition:.2s;z-index:20;border-right:2px solid #efcf6c}.side.collapsed{width:80px}.side.collapsed .brand,.side.collapsed .nav span,.side.collapsed .role,.side.collapsed .sidebar-note{display:none}.brand{padding:8px 10px 13px}.brand b{display:block;font-size:18px;line-height:1.1}.brand small{opacity:.8;font-weight:400}.role{margin:2px 10px 10px;font-size:10px;font-weight:400}.nav{display:grid;gap:7px}.nav button{width:100%;text-align:left;background:rgba(255,245,190,.18);color:#2f2000;border:1px solid rgba(92,58,0,.24);padding:11px 12px;border-radius:10px;font-weight:400}.nav button:hover,.nav button.active{background:#ffe69a}.nav button[hidden]{display:none}.sidebar-note{font-size:10px;color:#5a430f;margin:10px}.logout{margin-top:13px;width:100%}.main{margin-left:268px;min-height:100vh;padding:20px;transition:.2s}.main.sidebar-collapsed{margin-left:80px}.topbar{display:flex;justify-content:space-between;gap:12px;align-items:center;background:linear-gradient(145deg,#171106,#0a0805);border:1px solid var(--line);border-radius:16px;padding:15px 18px;box-shadow:var(--shadow);position:sticky;top:12px;z-index:10}.topbar h1{font-size:20px;margin:0}.top-actions{display:flex;gap:7px;flex-wrap:wrap}.page{padding-top:18px}.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:13px}.card{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:15px;box-shadow:var(--shadow)}.stat .n{font-size:28px;font-weight:400;color:#8e6500}.muted{color:var(--muted);font-size:12px}.section-title{display:flex;justify-content:space-between;gap:10px;align-items:center;margin:0 0 12px}.section-title h2,.section-title h3{margin:0;font-size:16px}.summary{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}.summary .card{background:linear-gradient(145deg,#1a1408,#0e0b06)}
+.form-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.full{grid-column:1/-1}.toolbar{display:flex;flex-wrap:wrap;gap:8px;align-items:end;margin-bottom:12px}.toolbar .field{min-width:160px;margin:0}.tablewrap{overflow:auto;border:1px solid var(--line);border-radius:14px;background:#080705}table{width:100%;border-collapse:collapse;min-width:1160px}th,td{padding:10px 9px;border-bottom:1px solid #ebd58a;text-align:left;vertical-align:top;font-size:12px}th{background:#3a2a0b;color:#573d00;position:sticky;top:0;z-index:1}tr:hover td{background:#171106}.status{display:inline-block;padding:5px 8px;border-radius:999px;font-size:10px;font-weight:400}.paid{background:#102319;color:#1e6235}.unpaid{background:#ffe2d9;color:#8a1d12}.today{background:#352807;color:#7c5900}.old{background:#1e1a0e;color:#5f4f23}.actionbar{display:flex;gap:5px;flex-wrap:wrap}.empty{padding:30px;text-align:center;color:var(--muted);font-weight:400}.detail{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.detail>div{border:1px solid #e7ce76;background:#111; background:#100c06;border-radius:11px;padding:10px}.detail small{display:block;color:var(--muted);margin-bottom:4px}.detail b{word-break:break-word}.toast{position:fixed;right:18px;bottom:18px;background:#3d2a00;color:#f3dd91;padding:11px 15px;border:1px solid #ebc956;border-radius:10px;opacity:0;pointer-events:none;transition:.2s;z-index:100}.toast.show{opacity:1}.modal-bg{position:fixed;inset:0;background:#2c2100aa;display:grid;place-items:center;padding:20px;z-index:90}.modal{width:min(1000px,96vw);max-height:92vh;overflow:auto}.pdf-frame{width:100%;height:72vh;border:0;border-radius:12px;background:#f6dc86}
+.quick-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.quick-grid button{min-height:74px}.goldband{background:linear-gradient(135deg,#f1cd5c,#f6dc860ab 48%,#e7b629);border:1px solid #c79615;color:#4a3500;border-radius:14px;padding:14px;font-weight:400}.report-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.report-card{border:1px solid #e3c65d;border-radius:12px;padding:12px;background:#111; background:#100c06}.code-note{font-size:11px;line-height:1.5;color:#6d5923}
+@media(max-width:1100px){.grid{grid-template-columns:repeat(2,1fr)}.summary,.report-grid{grid-template-columns:repeat(2,1fr)}.form-grid{grid-template-columns:repeat(2,1fr)}.quick-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:760px){.side{width:80px}.side .brand,.side .nav span,.side .role,.side .sidebar-note{display:none}.main{margin-left:80px;padding:12px}.grid,.summary,.report-grid,.form-grid,.detail{grid-template-columns:1fr}.topbar{position:static}.topbar h1{font-size:16px}}
+
+/* ===== PREMIUM DARK GOLD THEME ===== */
+:root{
+ --bg:#070605; --panel:#100d08; --panel2:#171108; --line:#6e5311;
+ --gold:#b88a18; --gold2:#e6c55a; --gold3:#f3df91;
+ --text:#f7e7ad; --muted:#b9a56a; --danger:#dc7566; --ok:#74c797;
+ --shadow:0 18px 60px rgba(0,0,0,.48);
+}
+html,body{background:radial-gradient(circle at 10% 0%,#211804 0,#0b0906 38%,#030303 100%);color:var(--text)}
+.center{background:radial-gradient(circle at 50% 8%,rgba(225,184,68,.18),transparent 32%),linear-gradient(145deg,#030303,#0b0906 48%,#1b1305)}
+.login-card{background:linear-gradient(145deg,rgba(18,14,8,.98),rgba(8,7,5,.99));border:1px solid #a67b19;border-radius:26px;box-shadow:0 30px 100px rgba(0,0,0,.72),inset 0 1px 0 rgba(246,221,135,.12);position:relative;overflow:hidden}
+.login-card:before{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(135deg,rgba(255,221,111,.08),transparent 35%,transparent 70%,rgba(199,151,35,.05))}
+.logo{background:linear-gradient(145deg,#f2d978,#8d620d 58%,#4b3106);border-color:#dec15b;color:#211706;box-shadow:inset 0 0 0 5px rgba(255,240,170,.12),0 0 35px rgba(220,176,53,.15)}
+.login-title{color:#f9e8ad;letter-spacing:.04em}.login-sub{color:#aa975e}
+.field label{color:#dbc36f}.field input,.field select,.field textarea{background:#080705;color:#f7e7ad;border:1px solid #655014;box-shadow:inset 0 2px 8px rgba(0,0,0,.35)}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:#d2ad42;box-shadow:0 0 0 3px rgba(210,173,66,.13),0 0 20px rgba(210,173,66,.08)}
+.btn{background:linear-gradient(180deg,#211805,#120f08);color:#ead37d;border-color:#705412;box-shadow:inset 0 1px 0 rgba(255,232,154,.06),0 5px 16px rgba(0,0,0,.25)}
+.btn:hover{background:linear-gradient(180deg,#322409,#171108);border-color:#b48b25;color:#ffe9a0}
+.btn.primary{background:linear-gradient(135deg,#e7c45a 0%,#b88618 48%,#77520a 100%);color:#1a1102;border-color:#e1c260;box-shadow:0 10px 26px rgba(182,137,22,.18),inset 0 1px 0 rgba(255,249,201,.32)}
+.btn.danger{background:#26110e;color:#ed9d91;border-color:#76342b}.btn.ok{background:#0f2118;color:#8fe2ae;border-color:#2b6944}
+.app{background:transparent}.side{background:linear-gradient(180deg,#0e0b07,#070605 46%,#120c03);color:#ead37d;border-right:1px solid #755713;box-shadow:12px 0 45px rgba(0,0,0,.32)}
+.brand b{color:#f4dd8a}.brand small,.role{color:#9d8952}.nav button{background:linear-gradient(180deg,rgba(214,174,64,.08),rgba(51,37,11,.10));color:#d9c06a;border-color:rgba(180,140,36,.20)}
+.nav button:hover,.nav button.active{background:linear-gradient(135deg,#3a2a0c,#201603);color:#ffecaa;border-color:#aa8120;box-shadow:inset 3px 0 #d6b44f,0 8px 22px rgba(0,0,0,.22)}
+.sidebar-note{color:#857348}.main{background:radial-gradient(circle at 80% 0%,rgba(155,113,18,.06),transparent 28%)}
+.topbar,.card{background:linear-gradient(145deg,rgba(19,15,9,.96),rgba(9,8,6,.98));border-color:#5f4910;box-shadow:var(--shadow),inset 0 1px 0 rgba(255,220,104,.045)}
+.topbar h1,.section-title h2,.section-title h3{color:#f0d783}.muted{color:#a89768}.stat .n{color:#e3bf4f;text-shadow:0 0 18px rgba(220,183,72,.12)}
+.summary .card{background:linear-gradient(145deg,#1a1408,#0e0b06)}
+.form-grid,.toolbar{color:#f3df91}.tablewrap{background:#080705;border-color:#60490f}.tablewrap table{color:#e5d48f}th{background:linear-gradient(180deg,#3a2a0b,#241a06);color:#f7df85;border-bottom-color:#6d5311}td{border-bottom-color:#2c220d}tr:hover td{background:#171208}
+.detail>div,.report-card{background:linear-gradient(145deg,#181208,#0d0a06);border-color:#5b450f}.detail small{color:#9f8b58}.detail b{color:#ead78f}
+.goldband{background:linear-gradient(135deg,#4c360b,#231a07 55%,#5d410a);border-color:#8a6919;color:#f5dc86;box-shadow:0 18px 36px rgba(0,0,0,.3)}
+.goldband .muted{color:#b9a36b!important}.toast{background:#171006;color:#f3dd91;border-color:#8d6b18;box-shadow:0 12px 35px rgba(0,0,0,.45)}
+.modal-bg{background:rgba(0,0,0,.78)}.modal{background:transparent}.pdf-frame{background:#0a0805;border:1px solid #725714}
+.status.paid{background:#102319;color:#87dfaa}.status.unpaid{background:#28130f;color:#ef9e90}.status.today{background:#352807;color:#e7c75d}.status.old{background:#1e1a0e;color:#bcae7d}
+.login-error{color:#e58d7c}
+select option{background:#0d0b08;color:#f4dda0}
+
+
+/* ===== TEXT WEIGHT: NORMAL ===== */
+*,*::before,*::after{font-weight:400 !important}
+.login-error{font-weight:400 !important}
+.login-title,.brand b,.detail b,.topbar h1,.section-title h2,.section-title h3,.goldband{font-weight:400 !important}
+
+/* ============================================================
+   FINAL UI POLISH : DARK GOLD VISIBILITY / NO WHITE AREAS
+   ============================================================ */
+html,body{background:radial-gradient(circle at 10% 0%,#241a06 0,#0b0906 38%,#020202 100%) !important;color:#f6dc86 !important;}
+.center{background:radial-gradient(circle at 50% 8%,rgba(225,184,68,.18),transparent 32%),linear-gradient(145deg,#020202,#0a0805 48%,#1b1305) !important;}
+.login-card,.topbar,.card{background:linear-gradient(145deg,#171106,#0a0805) !important;color:#f6dc86 !important;}
+.field input,.field select,.field textarea,.tablewrap,.tablewrap table,.detail>div,.report-card,.summary .card,.pdf-frame{background:#080705 !important;color:#f6dc86 !important;}
+.field input::placeholder,.field textarea::placeholder,.toolbar input::placeholder{color:#9b8650 !important;opacity:1 !important;}
+option{background:#0b0906 !important;color:#f6dc86 !important;}
+th{background:linear-gradient(180deg,#4a350c,#241905) !important;color:#ffe8a0 !important;font-weight:400 !important;}
+td{background:#0b0906 !important;color:#e8cf7b !important;font-weight:400 !important;}
+tr:hover td{background:#171106 !important;color:#ffe9a3 !important;}
+.section-title h2,.section-title h3,.topbar h1,.login-title,.brand b,label,.field label,.nav button,.btn,.muted,.code-note,.detail small,.detail b,.goldband,.report-card,.empty,.stat .n,.status,.role,.brand small,.sidebar-note{font-weight:400 !important;}
+.field input,.field select,.field textarea{font-weight:400 !important;border-color:#6f5512 !important;}
+.btn{font-weight:400 !important;}
+.login-error{color:#f0c96a !important;font-weight:400 !important;}
+.muted{color:#b9a66c !important;}
+.pdf-frame{border:1px solid #695012 !important;}
+/* Neutralize legacy light surfaces left by the original layout. */
+.page,.main{color:#f6dc86 !important;}
+.card *,.topbar *{border-color:#60490f;}
+
+
+/* FINAL REGULAR WEIGHT OVERRIDE */
+*,*::before,*::after{font-weight:400 !important;}
+strong,b,th,.btn,.nav button,.status,.stat .n,.login-title,.brand b,.detail b,.topbar h1,.section-title h2,.section-title h3,.goldband{font-weight:400 !important;}
+
+/* PREMIUM DARK GOLD CAPS / READABILITY */
+body,.side,.main,.card,.topbar,.nav button,.btn,.section-title,.goldband,.report-card,.detail,.tablewrap,.summary,.quick-grid,.toolbar,label,th,td,.muted,.empty,.role,.brand,.sidebar-note,.toast,.modal{text-transform:uppercase;}
+.field input,.field select,.field textarea{text-transform:none;}
+/* Replace bright remnants with dark-gold surfaces */
+.topbar,.card,.login-card,.tablewrap,.detail>div,.report-card,.summary .card,.pdf-frame{background-color:#0a0805 !important;}
+
+/* FINAL CAPITAL / DARK-GOLD CLEANUP */
+html,body{background:radial-gradient(circle at 10% 0%,#241a06 0,#0b0906 38%,#020202 100%) !important;color:#f6dc86 !important;}
+body{font-weight:400 !important;}
+*{font-weight:400 !important;}
+strong,b,th,.btn,.nav button,.status,.stat .n,.login-title,.brand b,.detail b,.topbar h1,.section-title h2,.section-title h3,.goldband,.empty,.field label,.role,.brand small,.sidebar-note{font-weight:400 !important;}
+.login-card,.topbar,.card,.tablewrap,.detail>div,.report-card,.summary .card,.modal,.pdf-frame{background-color:#0a0805 !important;color:#f6dc86 !important;}
+.field input,.field select,.field textarea{background:#080705 !important;color:#f6dc86 !important;}
+th{background:linear-gradient(180deg,#3a2a0b,#241a06) !important;color:#f7df85 !important;font-weight:400 !important;}
+td{background:#0b0906 !important;color:#e8cf7b !important;font-weight:400 !important;}
+
+/* ===== MASTER PDF EXPERIENCE : PREMIUM DARK GOLD ===== */
+#pdfstore.card-host{}
+#pdfstore .card{position:relative;overflow:hidden;background:linear-gradient(145deg,#171106,#080705)!important;border:1px solid #745615!important;box-shadow:0 24px 70px rgba(0,0,0,.52),inset 0 1px 0 rgba(255,224,120,.06)!important}
+#pdfstore .section-title{padding-bottom:10px;border-bottom:1px solid #34270e;margin-bottom:14px}
+#pdfstore .section-title h2{font-size:18px;letter-spacing:.05em;color:#f2d77f!important;font-weight:400!important}
+#pdfstore .section-title .muted{color:#a9935e!important;letter-spacing:.06em}
+#pdfstore .detail{gap:9px;margin-top:10px}
+#pdfstore .detail>div{background:linear-gradient(145deg,#171106,#0c0905)!important;border:1px solid #4d3a10!important;box-shadow:inset 0 1px 0 rgba(255,222,118,.03)}
+#pdfstore .detail small{color:#907b48!important;letter-spacing:.08em}
+#pdfstore .detail b{color:#e6c85f!important;font-weight:400!important}
+#pdfstore .pdf-frame{height:clamp(430px,68vh,760px)!important;background:#030302!important;border:1px solid #755716!important;box-shadow:0 18px 55px rgba(0,0,0,.42);margin-top:12px}
+#pdfstore .code-note{background:linear-gradient(145deg,#110d06,#080705);border:1px solid #3f310f;border-radius:11px;padding:10px 12px;color:#9d8951!important}
+#pdfstore .btn.primary{box-shadow:0 10px 30px rgba(190,147,34,.18),0 0 18px rgba(227,191,77,.08)!important}
+#pdfstore .btn{letter-spacing:.03em}
+/* Keep every visible interface label regular weight; no heavy/bold typography. */
+#pdfstore *, body *{font-weight:400!important}
+
+/* ============================================================
+   FINAL VISUAL POLISH : COMFORTABLE DARK GOLD MASTER EXPERIENCE
+   ============================================================ */
+html,body{background:radial-gradient(circle at 18% 0%,#2a2108 0%,#0d0b07 32%,#030302 100%) !important;color:#f2d98a !important;}
+*,*::before,*::after{font-weight:400 !important;text-transform:uppercase;}
+input,textarea{ text-transform:none; }
+.login-card,.topbar,.card,.tablewrap,.detail>div,.report-card,.summary .card,.modal{border-color:#745815 !important;background:linear-gradient(145deg,#171208 0%,#0a0805 100%) !important;box-shadow:0 18px 55px rgba(0,0,0,.52),inset 0 1px 0 rgba(244,208,102,.055) !important;}
+.side{background:linear-gradient(180deg,#231a08 0%,#100c06 52%,#080604 100%) !important;color:#f0d47a !important;border-right:1px solid #8d6b1a !important;box-shadow:10px 0 35px rgba(0,0,0,.35);}
+.brand b,.brand small,.role,.sidebar-note{color:#e9cc72 !important;}
+.nav button{background:linear-gradient(180deg,#1b1408,#0f0b06) !important;color:#e8c963 !important;border:1px solid #5f4812 !important;box-shadow:inset 0 1px 0 rgba(255,225,130,.045);}
+.nav button:hover,.nav button.active{background:linear-gradient(180deg,#3a2a0d,#211806) !important;color:#ffeaa5 !important;border-color:#b38a2a !important;box-shadow:0 0 18px rgba(218,178,69,.10);}
+.logout{background:linear-gradient(180deg,#241909,#120d06) !important;color:#e9c969 !important;border-color:#7c5c17 !important;}
+.topbar{position:sticky;top:12px;backdrop-filter:blur(8px);}
+.topbar h1,.section-title h2,.section-title h3,.login-title{color:#f1d57a !important;letter-spacing:.045em;}
+.muted,.code-note,.detail small{color:#b79f61 !important;}
+.field label{color:#d9be67 !important;}
+.field input,.field select,.field textarea{background:#070604 !important;color:#f0d27a !important;border-color:#654d15 !important;}
+.field input::placeholder,.field textarea::placeholder{color:#79683f !important;opacity:1;}
+.btn{background:linear-gradient(180deg,#211806,#100c06) !important;color:#e6c665 !important;border:1px solid #6b5014 !important;box-shadow:0 7px 18px rgba(0,0,0,.28),inset 0 1px 0 rgba(255,231,154,.05);}
+.btn:hover{background:linear-gradient(180deg,#3a2a0d,#1a1308) !important;border-color:#ae8424 !important;color:#ffe79a !important;}
+.btn.primary{background:linear-gradient(135deg,#d4ad45 0%,#9b7118 55%,#654708 100%) !important;color:#120d04 !important;border-color:#dfc56e !important;box-shadow:0 10px 28px rgba(175,130,27,.20),0 0 20px rgba(218,181,73,.08) !important;}
+.goldband{background:linear-gradient(135deg,#5c4310 0%,#2a2009 50%,#6b5014 100%) !important;color:#f4d985 !important;border-color:#98731f !important;box-shadow:inset 0 1px 0 rgba(255,230,145,.08),0 16px 35px rgba(0,0,0,.25);}
+.card .stat .n,.stat .n{color:#e0be59 !important;text-shadow:0 0 20px rgba(224,190,89,.12);}
+th{background:linear-gradient(180deg,#4d380c,#241b08) !important;color:#ffe7a0 !important;border-color:#725717 !important;}
+td{background:#0b0805 !important;color:#e6cd79 !important;border-color:#31260e !important;}
+tr:hover td{background:#171106 !important;}
+.status{border:1px solid #654d15;}
+.today{background:#2a1f08 !important;color:#e0bf61 !important;}.old{background:#151109 !important;color:#b6a05f !important;}
+.paid{background:#0d1b12 !important;color:#78bd93 !important;}.unpaid{background:#2a110d !important;color:#e58d79 !important;}
+.toast{background:#241906 !important;color:#f1d37a !important;border-color:#967122 !important;}
+.modal-bg{background:rgba(0,0,0,.84) !important;}
+.pdf-frame{background:#050403 !important;border:1px solid #806219 !important;box-shadow:inset 0 0 0 1px rgba(242,208,108,.04),0 18px 50px rgba(0,0,0,.45) !important;}
+/* MASTER PDF PAGE: comfortable, premium, readable */
+#pdfstore{padding-bottom:26px;}
+#pdfstore>.card{padding:20px !important;border-radius:20px !important;background:radial-gradient(circle at 100% 0%,rgba(203,163,54,.10),transparent 28%),linear-gradient(145deg,#181309,#080604) !important;}
+#pdfstore .section-title{padding:4px 0 15px;border-bottom:1px solid #3d2e10;margin-bottom:16px;}
+#pdfstore .section-title h2{font-size:20px !important;}
+#pdfstore .section-title .muted{font-size:11px;letter-spacing:.08em;color:#a8935d !important;}
+#pdfstore .detail{gap:11px;margin-bottom:16px !important;}
+#pdfstore .detail>div{min-height:72px;padding:12px 13px !important;background:linear-gradient(145deg,#181208,#0c0905) !important;border:1px solid #4a3810 !important;box-shadow:inset 0 1px 0 rgba(255,221,118,.035);}
+#pdfstore .detail small{font-size:10px !important;letter-spacing:.09em;color:#8e7b4a !important;}
+#pdfstore .detail span{display:block;margin-top:6px;color:#ebcf70 !important;font-size:15px;}
+#pdfstore .pdf-frame{height:clamp(480px,70vh,820px) !important;border-radius:16px !important;}
+#pdfstore .code-note{margin-top:14px !important;background:linear-gradient(145deg,#120e07,#080604) !important;color:#a8955e !important;border-color:#34270c !important;line-height:1.65 !important;}
+#pdfstore .btn{min-height:42px;padding:10px 15px !important;}
+#pdfstore .btn.primary{min-width:230px;}
+@media(max-width:900px){#pdfstore .section-title{align-items:stretch;flex-direction:column}#pdfstore .section-title>div:last-child{display:flex;flex-wrap:wrap;gap:8px}#pdfstore .section-title>div:last-child .btn{margin-left:0 !important;}}
+
+
+/* ===== MASTER PDF ARRANGED / DARK GOLD ===== */
+.pdf-download-nav{background:linear-gradient(135deg,#3a2a0c,#171108)!important;color:#f4d77c!important;border:1px solid #9c7620!important;box-shadow:0 8px 24px rgba(0,0,0,.28),inset 0 1px 0 rgba(255,226,132,.08)}
+.pdf-download-nav:hover{background:linear-gradient(135deg,#4a360f,#211708)!important;color:#ffe9a1!important}
+#pdfstore .section-title{align-items:center!important}
+#pdfstore .section-title>div:last-child{display:flex;align-items:center;gap:10px}
+#pdfstore .detail{grid-template-columns:repeat(6,minmax(130px,1fr));overflow:auto;padding-bottom:2px}
+#pdfstore .detail>div{min-width:130px}
+#pdfstore .pdf-frame{background:#060503!important;border:1px solid #8b6819!important;box-shadow:0 22px 70px rgba(0,0,0,.48)!important}
+#pdfstore .master-pdf-note{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center;margin-top:12px;padding:12px 14px;border:1px solid #4d3a10;border-radius:14px;background:linear-gradient(145deg,#151006,#0b0804);color:#c3aa67}
+#pdfstore .master-pdf-note .status-pill{padding:7px 10px;border-radius:999px;border:1px solid #7d5e17;color:#efd579;background:#171107;white-space:nowrap}
+@media(max-width:900px){#pdfstore .detail{grid-template-columns:repeat(2,minmax(140px,1fr))}.master-pdf-note{grid-template-columns:1fr!important}}
+
+</style>
+<style>
+.desktop-master-card{margin-bottom:14px;border:1px solid #a17b20!important;background:linear-gradient(145deg,#1a1308,#0a0805)!important}.desktop-master-card .section-title{align-items:center}.desktop-master-card .section-title>div:last-child{display:flex}.desktop-master-actions{display:flex;gap:10px;flex-wrap:wrap;margin:12px 0}.desktop-help{line-height:1.7}.desktop-status-main{margin-top:10px;color:#f0ca68;letter-spacing:.04em}.desktop-master-card *{font-weight:400!important}body{text-transform:uppercase}input,textarea{text-transform:none}strong,b,th,.btn,.nav button,.status,.stat .n,.login-title,.brand b,.detail b,.topbar h1,.section-title h2,.section-title h3,.goldband,.empty,.field label,.role,.brand small,.sidebar-note{font-weight:400!important}
+
+.forgot-row{display:flex;justify-content:flex-end;margin:-4px 0 8px}
+.forgot-link{border:0;background:transparent;color:#e5c766;font:inherit;font-size:11px;text-transform:none;text-decoration:none;padding:2px 0;cursor:pointer;opacity:.9}
+.forgot-link:hover{color:#fff0ad;text-decoration:underline;text-underline-offset:3px}
+.login-sub{line-height:1.35;margin:5px 0 14px!important;letter-spacing:.02em;font-size:10px!important}
+.login-card{padding:22px 26px!important;width:min(430px,95vw)!important;border-radius:22px!important}
+.login-card .logo{width:54px;height:54px;margin-bottom:8px;font-size:12px!important;letter-spacing:.02em}
+.login-card .login-title{font-size:17px!important;line-height:1.35}
+.login-card .field{margin:8px 0;gap:5px}
+.login-card .field label{font-size:10px!important;letter-spacing:.05em}
+.login-card .field input{padding:10px 12px!important;border-radius:10px!important;font-size:13px!important}
+.login-input-wrap{position:relative;display:flex;align-items:center}
+.login-input-wrap .input-icon{position:absolute;left:12px;width:16px;height:16px;color:#b99a45;pointer-events:none;display:grid;place-items:center}
+.login-input-wrap input{padding-left:12px!important}
+.password-wrap input{padding-right:42px!important}
+.password-eye{position:absolute;right:8px;top:50%;transform:translateY(-50%);width:30px;height:30px;display:grid;place-items:center;border:0;background:transparent!important;color:#b99a45;cursor:pointer;padding:4px;box-shadow:none!important}
+.password-eye svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.password-eye:hover{color:#ffe7a0}
+.login-switch{display:flex;align-items:center;justify-content:center;gap:5px;margin-top:12px;color:#a9955f;font-size:11px;text-transform:none}
+.login-switch .forgot-link{font-size:11px}
+.login-reset-note{font-size:11px;line-height:1.55;color:#b9a56a;margin:4px 0 12px;text-transform:none}
+.reset-card{width:min(390px,94vw)!important;padding:22px!important}
+.reset-card .field input{text-transform:none}
+
+.login-footer{width:min(430px,95vw);margin-top:-8px;text-align:center;color:#a9955f;font-size:10px;letter-spacing:.08em;text-transform:none;line-height:1.5;padding:8px 12px 2px;opacity:.95}
+.login-footer span{color:#e6c55a;font-weight:500;letter-spacing:.035em}
+@media(max-height:650px){.center{padding:16px 12px;align-content:center;gap:6px}.login-card{padding:18px 22px!important}.login-footer{margin-top:0}}
+</style>
+</head>
+<body>
+<section id="loginScreen" class="center">
+  <div class="login-card">
+    <div class="logo">LOGIN</div>
+    <div class="login-title">ELECTRICITY BILL MANAGEMENT SYSTEM</div>
+    <div class="login-sub">REGISTERED EMAIL ID AND PASSWORD</div>
+    <div id="loginFields">
+      <div class="field"><label>REGISTERED EMAIL</label><input id="loginEmail" type="email" autocomplete="username" placeholder="Enter your email address"></div>
+      <div class="field"><label>PASSWORD</label><div class="login-input-wrap password-wrap"><input id="loginPass" type="password" autocomplete="current-password" placeholder="Enter your password"><button type="button" id="toggleLoginPassword" class="password-eye" aria-label="Show password" title="Show password"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12Z"></path><circle cx="12" cy="12" r="3"></circle></svg></button></div></div>
+      <div class="forgot-row"><button type="button" id="forgotBtn" class="forgot-link">Forgot password?</button></div>
+    </div>
+    <div id="registerFields" class="hidden">
+      <div class="field"><label>FIRST NAME</label><input id="firstName" autocomplete="given-name" placeholder="Enter your first name"></div>
+      <div class="field"><label>LAST NAME</label><input id="lastName" autocomplete="family-name" placeholder="Enter your last name"></div>
+      <div class="field"><label>PHONE NUMBER</label><input id="phoneNumber" inputmode="tel" autocomplete="tel" placeholder="Enter your phone number"></div>
+      <div class="field"><label>EMAIL ADDRESS</label><input id="emailId" type="email" autocomplete="email" placeholder="Enter your email address"></div>
+      <div class="field"><label>PASSWORD</label><div class="login-input-wrap password-wrap"><input id="registerPassword" type="password" autocomplete="new-password" placeholder="Create a password"><button type="button" id="toggleRegisterPassword" class="password-eye" aria-label="Show password" title="Show password"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12Z"></path><circle cx="12" cy="12" r="3"></circle></svg></button></div></div>
+    </div>
+    <button class="btn primary" style="width:100%;margin-top:8px" id="loginBtn">LOGIN</button>
+    <div class="login-switch"><span id="loginSwitchText">Don't have an account?</span> <button type="button" id="accountModeLink" class="forgot-link">Create New Account</button></div>
+<div class="login-footer" aria-label="Developer credit">DEVELOPED BY <span>ANSARI ANAS &amp; S.A </span></div>
+    <div class="login-error" id="loginError" aria-live="polite"></div>
+  </div>
+</section>
+
+<section id="app" class="app hidden">
+  <aside class="side" id="sidebar">
+    <div class="brand"><b>ELECTRICITY BILL</b><small>MANAGEMENT SYSTEM</small></div>
+    <div class="role" id="roleLabel">LOGIN</div>
+    <div class="nav">
+      <button data-page="dashboard" class="active">◆ <span>Dashboard</span></button>
+      <button data-page="add">＋ <span>Add Consumer</span></button>
+      <button data-page="consumers">▦ <span>Consumers • Today / Old / All</span></button>
+      <button data-page="search">⌕ <span>Search Consumer</span></button>
+      <button data-page="update">✎ <span>Update Consumer</span></button>
+      <button data-page="bills">▤ <span>Bill Records</span></button>
+      <button data-page="generate">₹ <span>Generate Bill</span></button>
+      <button data-page="pay">✓ <span>Pay Bill</span></button>
+      <button data-page="unpaid">! <span>Unpaid Bills</span></button>
+      <button data-page="collection">▥ <span>Collection Report</span></button>
+      <button data-page="receipt">▣ <span>Generate Receipt</span></button>
+      <button data-page="count"># <span>Count</span></button>
+      <button data-page="delete" data-admin hidden>✕ <span>Admin Delete</span></button>
+      <button data-page="trash" data-admin hidden>↩ <span>Recently Deleted</span></button>
+      <button data-page="reports">◈ <span>Reports</span></button>
+      <button data-page="pdfstore">▱ <span>PDF All Record Store</span></button>
+      <button class="pdf-download-nav" id="downloadPdfNav">⇩ <span>DOWNLOAD PDF</span></button>
+    </div>
+    <div class="sidebar-note">Today records automatically become Old when the calendar date changes.</div>
+    <button class="btn" id="sidebarToggle" style="width:100%">&lt;</button>
+    <button class="btn logout" id="logout">LOGOUT</button>
+  </aside>
+  <main class="main" id="main">
+    <div class="topbar"><div><h1 id="pageTitle">Dashboard</h1><div class="muted" id="dateText"></div><div class="muted" id="welcomeUser" style="margin-top:5px">WELCOME USER</div></div></div>
+
+    <section class="page" id="dashboard">
+      <div class="card desktop-master-card"><div class="section-title"><h2>MASTER PDF</h2><span class="muted">AUTO UPDATE</span></div><div class="desktop-status-main" id="desktopStatusMain">MASTER PDF: NOT CONNECTED</div></div>
+      <div class="goldband"><div style="font-size:18px">ELECTRICITY BILL MANAGEMENT SYSTEM</div><div class="muted" style="color:#5a430f">Consumer records, bills, payments and receipts — one professional master system.</div></div>
+      <div class="grid" style="margin-top:14px">
+        <div class="card stat"><div class="muted">Total Consumers</div><div class="n" id="dConsumers">0</div></div>
+        <div class="card stat"><div class="muted">Today's Consumers</div><div class="n" id="dTodayConsumers">0</div></div>
+        <div class="card stat"><div class="muted">Old Consumers</div><div class="n" id="dOldConsumers">0</div></div>
+        <div class="card stat"><div class="muted">Total Bills</div><div class="n" id="dBills">0</div></div>
+        <div class="card stat"><div class="muted">Paid Bills</div><div class="n" id="dPaid">0</div></div>
+        <div class="card stat"><div class="muted">Unpaid Bills</div><div class="n" id="dUnpaid">0</div></div>
+        <div class="card stat"><div class="muted">Collection</div><div class="n" id="dCollection">0.00</div></div>
+        <div class="card stat"><div class="muted">Pending Amount</div><div class="n" id="dPending">0.00</div></div>
+      </div>
+      <div class="card" style="margin-top:14px"><div class="section-title"><h2>Quick Project Menu</h2><span class="muted"></span></div><div class="quick-grid">
+        <button class="btn" data-jump="add">ADD CONSUMER<br><span class="muted">Create today's record</span></button>
+        <button class="btn" data-jump="generate">GENERATE BILL<br><span class="muted">Create electricity bill</span></button>
+        <button class="btn" data-jump="pay">PAY BILL<br><span class="muted">Mark payment successful</span></button>
+        <button class="btn" data-jump="unpaid">UNPAID BILLS<br><span class="muted">Pending payments</span></button>
+        <button class="btn" data-jump="collection">COLLECTION REPORT<br><span class="muted">Today / Old / All</span></button>
+        <button class="btn" data-jump="receipt">GENERATE RECEIPT<br><span class="muted">Paid bill receipt</span></button>
+        <button class="btn" data-jump="count">COUNT<br><span class="muted">All system counts</span></button>
+        <button class="btn" data-jump="pdfstore">MASTER PDF<br><span class="muted">In-app updated record</span></button>
+      </div></div>
+    </section>
+
+    <section class="page hidden" id="add"><div class="card"><div class="section-title"><h2>ADD CONSUMER</h2><span class="muted">New consumer is stored as TODAY</span></div><form id="consumerForm"><div class="form-grid">
+      <div class="field"><label>Consumer ID</label><input id="cId" readonly></div><div class="field"><label>Consumer Name</label><input id="cName" required></div><div class="field"><label>Mobile Number</label><input id="cMobile" inputmode="numeric" required></div>
+      <div class="field"><label>Meter Number</label><input id="cMeter" required></div><div class="field full"><label>Address</label><textarea id="cAddress" rows="2" required></textarea></div>
+    </div><button class="btn primary" type="submit">ADD CONSUMER</button><button class="btn" type="reset" style="margin-left:6px" id="resetConsumer">RESET</button></form></div></section>
+
+    <section class="page hidden" id="consumers"><div class="card"><div class="section-title"><h2>DISPLAY CONSUMER</h2><span class="muted">Today • Old • All</span></div><div class="toolbar"><div class="field"><label>View</label><select id="consumerBucket"><option value="today">Today</option><option value="old">Old</option><option value="all" selected>All</option></select></div><div class="field" style="flex:1;min-width:240px"><label>Search</label><input id="consumerQ" placeholder="Consumer ID, name, mobile, meter, address"></div><button class="btn" id="refreshConsumers">REFRESH</button></div><div id="consumerTable" class="tablewrap"></div></div></section>
+
+    <section class="page hidden" id="search"><div class="card"><div class="section-title"><h2>SEARCH CONSUMER</h2><span class="muted">ID • Name • Mobile • Meter</span></div><div class="toolbar"><div class="field" style="flex:1;min-width:280px"><label>Search</label><input id="searchQ" placeholder="Type consumer ID, name, mobile or meter"></div><button class="btn" id="searchClear">CLEAR</button></div><div id="searchTable" class="tablewrap"></div></div></section>
+
+    <section class="page hidden" id="update"><div class="card"><div class="section-title"><h2>UPDATE CONSUMER</h2><span class="muted">Select a consumer and edit details</span></div><div class="toolbar"><div class="field" style="flex:1"><label>Search Consumer</label><input id="updateQ" placeholder="Consumer ID / name / mobile / meter"></div><button class="btn" id="updateFind">FIND</button></div><div id="updateResult"></div></div></section>
+
+    <section class="page hidden" id="bills"><div class="card"><div class="section-title"><h2>VIEW BILL</h2><span class="muted">Today • Old • All</span></div><div class="toolbar"><div class="field"><label>View</label><select id="billBucket"><option value="today">Today</option><option value="old">Old</option><option value="all" selected>All</option></select></div><div class="field"><label>Status</label><select id="billStatus"><option value="all">All</option><option value="paid">Paid</option><option value="unpaid">Unpaid</option></select></div><div class="field" style="flex:1;min-width:240px"><label>Search</label><input id="billQ" placeholder="Bill ID, consumer ID, name, meter"></div><button class="btn" id="refreshBills">REFRESH</button></div><div id="billTable" class="tablewrap"></div></div></section>
+
+    <section class="page hidden" id="generate"><div class="card"><div class="section-title"><h2>GENERATE BILL</h2><span class="muted">Bill calculation: energy charge + fixed charge</span></div><form id="billForm"><div class="form-grid">
+      <div class="field"><label>Bill ID</label><input id="bId" readonly></div><div class="field"><label>Consumer</label><select id="bConsumer" required></select></div><div class="field"><label>Previous Reading</label><input id="prevReading" type="number" min="0" value="0" required></div>
+      <div class="field"><label>Current Reading</label><input id="currReading" type="number" min="0" value="0" required></div><div class="field"><label>Rate / Unit</label><input id="ratePerUnit" type="number" min="0" step="0.01" value="7.50" required></div><div class="field"><label>Fixed Charge</label><input id="fixedCharge" type="number" min="0" step="0.01" value="100" required></div>
+      <div class="field"><label>Units</label><input id="units" readonly></div><div class="field"><label>Energy Charge</label><input id="energyCharge" readonly></div><div class="field"><label>Total Amount</label><input id="totalAmount" readonly></div>
+    </div><button class="btn primary" type="submit">GENERATE BILL</button><button class="btn" type="button" id="calcBill" style="margin-left:6px">CALCULATE</button></form></div></section>
+
+    <section class="page hidden" id="pay"><div class="card"><div class="section-title"><h2>PAY BILL</h2><span class="muted">Payment status is recorded in the same master bill store</span></div><div class="toolbar"><div class="field"><label>View</label><select id="payBucket"><option value="today">Today</option><option value="old">Old</option><option value="all" selected>All</option></select></div><div class="field" style="flex:1"><label>Bill ID</label><input id="payBillId" inputmode="numeric" placeholder="Enter Bill ID"></div><button class="btn primary" id="payBtn">PAY BILL</button></div><div id="payPreview"></div></div></section>
+
+    <section class="page hidden" id="unpaid"><div class="card"><div class="section-title"><h2>UNPAID BILLS</h2><span class="muted">Only pending bills</span></div><div class="toolbar"><div class="field"><label>View</label><select id="unpaidBucket"><option value="today">Today</option><option value="old">Old</option><option value="all" selected>All</option></select></div><div class="field" style="flex:1"><label>Search</label><input id="unpaidQ" placeholder="Bill ID, consumer, meter"></div><button class="btn" id="refreshUnpaid">REFRESH</button></div><div id="unpaidTable" class="tablewrap"></div></div></section>
+
+    <section class="page hidden" id="collection"><div class="card"><div class="section-title"><h2>COLLECTION REPORT</h2><span class="muted">Total bills • Paid • Unpaid • Collection • Pending</span></div><div class="toolbar"><div class="field"><label>View</label><select id="collectionBucket"><option value="today">Today</option><option value="old">Old</option><option value="all" selected>All</option></select></div><button class="btn" id="refreshCollection">GENERATE REPORT</button></div><div id="collectionBox" class="summary"></div></div></section>
+
+    <section class="page hidden" id="receipt"><div class="card"><div class="section-title"><h2>GENERATE RECEIPT</h2><span class="muted">Receipt is available only for paid bills</span></div><div class="toolbar"><div class="field"><label>View</label><select id="receiptBucket"><option value="today">Today</option><option value="old">Old</option><option value="all" selected>All</option></select></div><div class="field"><label>Bill ID</label><input id="receiptBillId" inputmode="numeric"></div><button class="btn primary" id="receiptBtn">GENERATE RECEIPT</button></div><div id="receiptBox"></div></div></section>
+
+    <section class="page hidden" id="count"><div class="card"><div class="section-title"><h2>COUNT MENU</h2><span class="muted">System totals</span></div><div id="countBox" class="summary"></div></div></section>
+
+    <section class="page hidden" id="delete"><div class="card"><div class="section-title"><h2>ADMIN DELETE</h2><span class="muted">Move selected consumers and bills to Recently Deleted</span></div><div class="toolbar"><div class="field" style="flex:1"><label>Search Consumer / Bill</label><input id="deleteQ" placeholder="ID, name, meter, bill ID"></div><button class="btn danger" id="deleteSelected">DELETE SELECTED</button></div><div id="deleteTable" class="tablewrap"></div></div></section>
+
+    <section class="page hidden" id="trash"><div class="card"><div class="section-title"><h2>RECENTLY DELETED</h2><span class="muted">Restore or permanently delete</span></div><div class="toolbar"><div class="field" style="flex:1"><label>Search</label><input id="trashQ" placeholder="Deleted consumer / bill"></div><button class="btn" id="refreshTrash">REFRESH</button><button class="btn ok" id="restoreSelected">RESTORE SELECTED</button><button class="btn danger" id="purgeSelected">DELETE FOREVER</button></div><div id="trashTable" class="tablewrap"></div></div></section>
+
+    <section class="page hidden" id="reports"><div class="card"><div class="section-title"><h2>REPORTS</h2><span class="muted">Professional management summary</span></div><div id="reportBox" class="report-grid"></div></div></section>
+
+    <section class="page hidden" id="pdfstore"><div class="card"><div class="section-title"><div><h2>PDF ALL RECORD STORE</h2><div class="muted">ONE MASTER PDF • CONSUMERS + BILLS + PAYMENTS + COLLECTION</div></div></div><div class="detail" style="margin-bottom:12px"><div><small>TODAY CONSUMERS</small><span id="pdfTodayConsumers">0</span></div><div><small>OLD CONSUMERS</small><span id="pdfOldConsumers">0</span></div><div><small>TOTAL BILLS</small><span id="pdfBills">0</span></div><div><small>PAID BILLS</small><span id="pdfPaid">0</span></div><div><small>UNPAID BILLS</small><span id="pdfUnpaid">0</span></div><div><small>PDF STORE</small><span id="pdfStatus">READY</span></div></div><div class="master-pdf-note"><div class="status-pill" id="desktopPdfStatus">NOT CONNECTED</div></div><iframe id="pdfPreview" class="pdf-frame" title="MASTER PDF PREVIEW"></iframe></div></section>
+  </main>
+</section>
+<div class="toast" id="toast"></div>
+<!-- Firebase SDK (compat) for GitHub Pages / static HTML hosting -->
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
+<script>
+(function(){
+'use strict';
+/* ============================================================
+   MODULE 01 : PROJECT CONFIGURATION
+   ============================================================ */
+/* IMPORTANT: Replace every placeholder below with the Web App config from Firebase Console > Project settings > Your apps. */
+const firebaseConfig = {
+  apiKey: 'PASTE_YOUR_FIREBASE_API_KEY',
+  authDomain: 'PASTE_YOUR_PROJECT_ID.firebaseapp.com',
+  projectId: 'PASTE_YOUR_PROJECT_ID',
+  storageBucket: 'PASTE_YOUR_PROJECT_ID.appspot.com',
+  messagingSenderId: 'PASTE_YOUR_MESSAGING_SENDER_ID',
+  appId: 'PASTE_YOUR_FIREBASE_APP_ID'
+};
+let firebaseReady=false, auth=null, firestore=null, cloudUser=null, authFlowInProgress=false, activePortalUid='';
+try {
+  if (firebaseConfig.apiKey && !firebaseConfig.apiKey.startsWith('PASTE_') && firebaseConfig.projectId && !firebaseConfig.projectId.startsWith('PASTE_')) {
+    firebase.initializeApp(firebaseConfig);
+    auth=firebase.auth(); firestore=firebase.firestore(); firebaseReady=true;
+  }
+} catch (e) { console.error('Firebase initialization failed:', e); }
+let DB_NAME='ANSARI_ELECTRICITY_BILL_SYSTEM_PROJECT';
+const DB_VER=3;
+const STORE_CONSUMERS='CONSUMERS';
+const STORE_BILLS='BILLS';
+const STORE_TRASH='TRASH';
+const STORE_META='META';
+const USERS={admin:{label:'ACCOUNT OWNER'}};
+let db=null, role='', pdfUrl='', pdfBuildTimer=null, desktopPdfHandle=null;
+const $=id=>document.getElementById(id);
+const esc=v=>String(v==null?'':v).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+const norm=v=>String(v||'').replace(/\s/g,'').toUpperCase();
+const todayKey=()=>{const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')};
+const nowIso=()=>new Date().toISOString();
+function toast(msg){$('toast').textContent=msg;$('toast').classList.add('show');clearTimeout(toast.t);toast.t=setTimeout(()=>$('toast').classList.remove('show'),2200)}
+function money(n){return Number(n||0).toLocaleString('en-IN',{minimumFractionDigits:2,maximumFractionDigits:2})}
+function storageBucket(r){return r.dateKey===todayKey()?'today':'old'}
+function escPdf(v){return String(v==null?'':v).normalize('NFKD').replace(/[^\x20-\x7E]/g,'?').replace(/\\/g,'\\\\').replace(/\(/g,'\\(').replace(/\)/g,'\\)')}
+
+/* ============================================================
+   MODULE 02 : INDEXEDDB DATA LAYER
+   ============================================================ */
+function openDB(){return new Promise((resolve,reject)=>{const req=indexedDB.open(DB_NAME,DB_VER);req.onupgradeneeded=()=>{const d=req.result;[STORE_CONSUMERS,STORE_BILLS,STORE_TRASH,STORE_META].forEach(s=>{if(!d.objectStoreNames.contains(s))d.createObjectStore(s,{keyPath:'id'})})};req.onsuccess=()=>{db=req.result;resolve()};req.onerror=()=>reject(req.error)})}
+function localTxAll(store){return new Promise((resolve,reject)=>{const tx=db.transaction(store,'readonly'),r=tx.objectStore(store).getAll();r.onsuccess=()=>resolve(r.result||[]);r.onerror=()=>reject(r.error)})}
+function localTxGet(store,id){return new Promise((resolve,reject)=>{const tx=db.transaction(store,'readonly'),r=tx.objectStore(store).get(id);r.onsuccess=()=>resolve(r.result||null);r.onerror=()=>reject(r.error)})}
+function localTxPut(store,obj){return new Promise((resolve,reject)=>{const tx=db.transaction(store,'readwrite'),r=tx.objectStore(store).put(obj);r.onsuccess=()=>resolve();r.onerror=()=>reject(r.error)})}
+function localTxDel(store,id){return new Promise((resolve,reject)=>{const tx=db.transaction(store,'readwrite'),r=tx.objectStore(store).delete(id);r.onsuccess=()=>resolve();r.onerror=()=>reject(r.error)})}
+function cloudCollection(store){if(!cloudUser||!firestore)throw new Error('Please log in to your private cloud account.');return firestore.collection('users').doc(cloudUser.uid).collection(store.toLowerCase())}
+async function txAll(store){if(store===STORE_META)return localTxAll(store);const snap=await cloudCollection(store).get();return snap.docs.map(d=>d.data())}
+async function txGet(store,id){if(store===STORE_META)return localTxGet(store,id);const snap=await cloudCollection(store).doc(String(id)).get();return snap.exists?snap.data():null}
+async function txPut(store,obj){if(store===STORE_META){await localTxPut(store,obj);return}if(!obj||obj.id===undefined||obj.id===null)throw new Error('Record ID is missing.');await cloudCollection(store).doc(String(obj.id)).set(obj);queuePdfSync()}
+async function txDel(store,id){if(store===STORE_META){await localTxDel(store,id);return}await cloudCollection(store).doc(String(id)).delete();queuePdfSync()}
+async function nextSeq(name,start){if(!cloudUser||!firestore)throw new Error('Cloud account is not ready.');const ref=firestore.collection('users').doc(cloudUser.uid).collection('meta').doc('counters');return firestore.runTransaction(async t=>{const snap=await t.get(ref);const data=snap.exists?snap.data():{};if(typeof data[name]!=='number'){data[name]=start;t.set(ref,data,{merge:true})}return data[name]})}
+async function nextId(name,start){if(!cloudUser||!firestore)throw new Error('Cloud account is not ready.');const ref=firestore.collection('users').doc(cloudUser.uid).collection('meta').doc('counters');return firestore.runTransaction(async t=>{const snap=await t.get(ref);const data=snap.exists?snap.data():{};const value=typeof data[name]==='number'?data[name]:start;data[name]=value+1;t.set(ref,data,{merge:true});return value})}
+async function allConsumers(){return txAll(STORE_CONSUMERS)}
+async function allBills(){return txAll(STORE_BILLS)}
+async function allTrash(){return txAll(STORE_TRASH)}
+async function rollover(){const t=todayKey();const cs=await allConsumers(),bs=await allBills();for(const r of cs){if(r.dateKey!==t&&r.bucket!=='old'){r.bucket='old';await txPut(STORE_CONSUMERS,r)}}for(const r of bs){if(r.dateKey!==t&&r.bucket!=='old'){r.bucket='old';await txPut(STORE_BILLS,r)}}}
+
+/* ============================================================
+   MODULE 03 : FILTER / SEARCH HELPERS
+   ============================================================ */
+function inBucket(r,b){return b==='all'||(b==='today'&&storageBucket(r)==='today')||(b==='old'&&storageBucket(r)==='old')}
+function matches(r,q){if(!q)return true;const x=[r.id,r.consumerId,r.billId,r.name,r.mobile,r.meter,r.address].join(' ').toLowerCase();return x.includes(String(q).toLowerCase())}
+function consumerById(id,cs){return cs.find(c=>String(c.id)===String(id))||null}
+function billById(id,bs){return bs.find(b=>String(b.id)===String(id)||String(b.billId)===String(id))||null}
+
+/* ============================================================
+   MODULE 04 : AUTHENTICATION / NAVIGATION
+   ============================================================ */
+function setRoleUi(){document.querySelectorAll('[data-admin]').forEach(x=>x.hidden=role!=='admin')}
+async function switchUserDatabase(uid){if(db){try{db.close()}catch(e){}}DB_NAME='ANSARI_ELECTRICITY_'+String(uid||'GUEST').replace(/[^A-Z0-9]/gi,'').slice(0,48);await openDB()}
+let loginMode='old';
+function friendlyAuthError(e){const c=(e&&e.code)||'';return ({'auth/email-already-in-use':'EMAIL ALREADY REGISTERED. PLEASE USE OLD USER LOGIN.','auth/invalid-email':'PLEASE ENTER A VALID EMAIL ADDRESS.','auth/weak-password':'PASSWORD MUST BE AT LEAST 6 CHARACTERS.','auth/invalid-credential':'INVALID EMAIL OR PASSWORD.','auth/user-not-found':'ACCOUNT NOT FOUND. PLEASE CHECK YOUR EMAIL.','auth/wrong-password':'INVALID EMAIL OR PASSWORD.','auth/too-many-requests':'TOO MANY ATTEMPTS. PLEASE TRY AGAIN LATER.','permission-denied':'FIRESTORE PERMISSION DENIED. PLEASE CHECK FIRESTORE RULES.','unavailable':'INTERNET/FIREBASE IS NOT AVAILABLE. PLEASE TRY AGAIN.'})[c] || (e&&e.message) || 'SOMETHING WENT WRONG. PLEASE TRY AGAIN.'}
+async function enterPortal(user,profile){
+  if(activePortalUid===user.uid && !$('app').classList.contains('hidden')) return;
+  activePortalUid=user.uid; cloudUser=user; const info=profile||{};
+  await switchUserDatabase(user.uid);role='admin';
+  $('loginScreen').classList.add('hidden');$('app').classList.remove('hidden');
+  const displayName=((info.firstName||'')+' '+(info.lastName||'')).trim()||user.email||'ACCOUNT OWNER';
+  $('roleLabel').textContent='PRIVATE ACCOUNT';$('welcomeUser').textContent='WELCOME '+displayName;
+  setRoleUi();
+  await rollover();
+  $('cId').value=await nextSeq('nextConsumerId',1001);
+  await refreshAll();showPage('dashboard');toast('LOGIN SUCCESSFUL - YOUR PRIVATE CLOUD DATA');
+}
+async function login(){
+  $('loginError').textContent='';
+  if(!firebaseReady){$('loginError').textContent='Unable to sign in right now. Please try again later.';return}
+  authFlowInProgress=true;
+  try {
+    if(loginMode==='new'){
+      const firstName=$('firstName').value.trim(),lastName=$('lastName').value.trim(),phone=$('phoneNumber').value.trim(),email=$('emailId').value.trim().toLowerCase(),password=$('registerPassword').value;
+      if(!firstName||!lastName||!phone||!email||!password){$('loginError').textContent='PLEASE ENTER ALL DETAILS INCLUDING PASSWORD.';return}
+      if(password.length<6){$('loginError').textContent='PASSWORD MUST BE AT LEAST 6 CHARACTERS.';return}
+      const cred=await auth.createUserWithEmailAndPassword(email,password);
+      const profile={uid:cred.user.uid,firstName,lastName,phone,email,createdAt:nowIso()};
+      await firestore.collection('users').doc(cred.user.uid).set(profile);
+      await enterPortal(cred.user,profile);
+      authFlowInProgress=false;
+    }else{
+      const email=$('loginEmail').value.trim().toLowerCase(),pass=$('loginPass').value;
+      if(!email||!pass){$('loginError').textContent='ENTER YOUR EMAIL AND PASSWORD.';return}
+      const cred=await auth.signInWithEmailAndPassword(email,pass);
+      const snap=await firestore.collection('users').doc(cred.user.uid).get();
+      const profile=snap.exists?snap.data():{email:cred.user.email,firstName:'ACCOUNT',lastName:'OWNER'};
+      await enterPortal(cred.user,profile);
+      authFlowInProgress=false;
+    }
+  } catch(e){authFlowInProgress=false;console.error(e);$('loginError').textContent=friendlyAuthError(e);}
+}
+function setLoginMode(mode){loginMode=mode;$('registerFields').classList.toggle('hidden',mode!=='new');$('loginFields').classList.toggle('hidden',mode!=='old');$('loginBtn').textContent=mode==='new'?'CREATE ACCOUNT':'LOGIN';$('loginSwitchText').textContent=mode==='new'?'Already have an account?':"Don't have an account?";$('accountModeLink').textContent=mode==='new'?'Sign in':'Create New Account';$('loginError').textContent=''}
+function closeResetDialog(){const d=$('passwordResetDialog');if(d)d.remove()}
+function showPasswordResetDialog(){
+  closeResetDialog();
+  const bg=document.createElement('div');bg.id='passwordResetDialog';bg.className='modal-bg';
+  bg.innerHTML=`<div class="card modal reset-card" role="dialog" aria-modal="true" aria-labelledby="resetTitle">
+    <div class="section-title"><h2 id="resetTitle">RESET PASSWORD</h2><button type="button" class="btn mini" id="closeResetBtn">CLOSE</button></div>
+    <p class="login-reset-note">Enter your registered email address. We will send a secure reset link so you can set a new password and then sign in to your bill portal.</p>
+    <form id="resetPasswordForm">
+      <div class="field"><label>REGISTERED EMAIL ADDRESS</label><input id="resetEmail" type="email" autocomplete="email" placeholder="Enter your registered email" required></div>
+      <div class="login-error" id="resetError" aria-live="polite"></div>
+      <button class="btn primary" type="submit" style="width:100%;margin-top:8px">SEND RESET LINK</button>
+    </form>
+  </div>`;
+  document.body.appendChild(bg);
+  const current=(loginMode==='new'?$('emailId').value:$('loginEmail').value).trim();$('resetEmail').value=current;
+  $('closeResetBtn').onclick=closeResetDialog;
+  bg.addEventListener('click',e=>{if(e.target===bg)closeResetDialog()});
+  $('resetPasswordForm').onsubmit=async e=>{
+    e.preventDefault();const email=$('resetEmail').value.trim().toLowerCase();$('resetError').textContent='';
+    if(!firebaseReady){$('resetError').textContent='Unable to send reset link right now. Please try again later.';return}
+    try{await auth.sendPasswordResetEmail(email);$('resetError').textContent='RESET LINK SENT. CHECK YOUR EMAIL INBOX AND SPAM FOLDER.';$('resetPasswordForm').querySelector('button[type="submit"]').textContent='EMAIL SENT';}
+    catch(err){console.error(err);$('resetError').textContent=friendlyAuthError(err)}
+  };
+  $('resetEmail').focus();
+}
+async function forgotPassword(){showPasswordResetDialog()}
+function showPage(id){document.querySelectorAll('.page').forEach(x=>x.classList.add('hidden'));$(id).classList.remove('hidden');document.querySelectorAll('.nav button').forEach(b=>b.classList.toggle('active',b.dataset.page===id));$('pageTitle').textContent=id==='consumers'?'Display Consumer':id.replace(/^./,x=>x.toUpperCase()).replace('pdfstore','MASTER PDF');if(id==='dashboard')refreshDashboard();if(id==='consumers')renderConsumers();if(id==='search')renderSearch();if(id==='update')renderUpdate();if(id==='bills')renderBills();if(id==='generate')prepareBillForm();if(id==='pay')renderPayPreview();if(id==='unpaid')renderUnpaid();if(id==='collection')renderCollection();if(id==='receipt')renderReceiptPreview();if(id==='count')renderCount();if(id==='delete')renderDelete();if(id==='trash')renderTrash();if(id==='reports')renderReports();if(id==='pdfstore')restorePdfStore()}
+
+/* ============================================================
+   MODULE 05 : CONSUMER MANAGEMENT
+   ============================================================ */
+async function addConsumer(e){e.preventDefault();const id=await nextId('nextConsumerId',1001);const rec={id:String(id),name:$('cName').value.trim(),address:$('cAddress').value.trim(),mobile:$('cMobile').value.trim(),meter:$('cMeter').value.trim(),dateKey:todayKey(),createdAt:nowIso(),bucket:'today'};if(!rec.name||!rec.address||!rec.mobile||!rec.meter){toast('Complete all consumer fields');return}await txPut(STORE_CONSUMERS,rec);$('consumerForm').reset();$('cId').value=await nextSeq('nextConsumerId',1001);toast('Consumer added successfully as TODAY');await refreshAll()}
+function consumerRow(c,selectMode=false){return `<tr>${selectMode?`<td><input type="checkbox" class="pickConsumer" data-id="${esc(c.id)}"></td>`:''}<td>${esc(c.id)}</td><td><b>${esc(c.name)}</b></td><td>${esc(c.address)}</td><td>${esc(c.mobile)}</td><td>${esc(c.meter)}</td><td><span class="status ${storageBucket(c)==='today'?'today':'old'}">${storageBucket(c).toUpperCase()}</span></td><td>${new Date(c.createdAt).toLocaleString('en-IN')}</td><td><div class="actionbar"><button class="btn mini" data-view-consumer="${esc(c.id)}">VIEW</button><button class="btn mini" data-edit-consumer="${esc(c.id)}">UPDATE</button></div></td></tr>`}
+async function renderConsumers(){const q=$('consumerQ').value.trim(),b=$('consumerBucket').value;let a=(await allConsumers()).filter(c=>inBucket(c,b)&&matches(c,q));a.sort((x,y)=>Number(y.id)-Number(x.id));$('consumerTable').innerHTML=a.length?`<table><thead><tr><th>ID</th><th>NAME</th><th>ADDRESS</th><th>MOBILE</th><th>METER</th><th>TYPE</th><th>CREATED</th><th>ACTION</th></tr></thead><tbody>${a.map(c=>consumerRow(c)).join('')}</tbody></table>`:'<div class="empty">NO CONSUMER RECORDS FOUND.</div>'}
+async function renderSearch(){const q=$('searchQ').value.trim();let a=(await allConsumers()).filter(c=>matches(c,q));a.sort((x,y)=>Number(y.id)-Number(x.id));$('searchTable').innerHTML=a.length?`<table><thead><tr><th>ID</th><th>NAME</th><th>ADDRESS</th><th>MOBILE</th><th>METER</th><th>TYPE</th><th>ACTION</th></tr></thead><tbody>${a.map(c=>consumerRow(c)).join('')}</tbody></table>`:'<div class="empty">NO MATCHING CONSUMER FOUND.</div>'}
+async function renderUpdate(){const q=$('updateQ').value.trim();if(!q){$('updateResult').innerHTML='<div class="empty">SEARCH A CONSUMER FIRST.</div>';return}const c=(await allConsumers()).find(x=>matches(x,q));if(!c){$('updateResult').innerHTML='<div class="empty">CONSUMER NOT FOUND.</div>';return}$('updateResult').innerHTML=`<form id="editConsumerForm" class="form-grid"><input type="hidden" id="editId" value="${esc(c.id)}"><div class="field"><label>Consumer ID</label><input value="${esc(c.id)}" readonly></div><div class="field"><label>Name</label><input id="editName" value="${esc(c.name)}" required></div><div class="field"><label>Mobile</label><input id="editMobile" value="${esc(c.mobile)}" required></div><div class="field"><label>Meter Number</label><input id="editMeter" value="${esc(c.meter)}" required></div><div class="field full"><label>Address</label><textarea id="editAddress" rows="2" required>${esc(c.address)}</textarea></div><div class="full"><button class="btn primary" type="submit">SAVE UPDATE</button></div></form>`;$('editConsumerForm').onsubmit=async e=>{e.preventDefault();c.name=$('editName').value.trim();c.mobile=$('editMobile').value.trim();c.meter=$('editMeter').value.trim();c.address=$('editAddress').value.trim();await txPut(STORE_CONSUMERS,c);toast('Consumer updated');await refreshAll();renderUpdate()}}
+async function viewConsumer(id){const c=await txGet(STORE_CONSUMERS,id);if(!c)return;openModal(`<div class="section-title"><div><h2>${esc(c.name)}</h2><div class="muted">Complete Consumer Record</div></div><button class="btn" id="closeModal">CLOSE</button></div><div class="detail">${[['Consumer ID',c.id],['Consumer Name',c.name],['Address',c.address],['Mobile Number',c.mobile],['Meter Number',c.meter],['Record Type',storageBucket(c).toUpperCase()],['Created',new Date(c.createdAt).toLocaleString('en-IN')]].map(x=>`<div><small>${esc(x[0])}</small><b>${esc(x[1]||'-')}</b></div>`).join('')}</div>`)}
+
+/* ============================================================
+   MODULE 06 : BILL CALCULATION / GENERATION
+   ============================================================ */
+async function prepareBillForm(){const bid=await nextSeq('nextBillId',5001);$('bId').value=bid;const cs=await allConsumers();$('bConsumer').innerHTML=cs.length?cs.map(c=>`<option value="${esc(c.id)}">${esc(c.id)} • ${esc(c.name)} • Meter ${esc(c.meter)}</option>`).join(''):'<option value="">NO CONSUMERS AVAILABLE</option>';calculateBill()}
+function calculateBill(){const prev=Number($('prevReading').value||0),curr=Number($('currReading').value||0),rate=Number($('ratePerUnit').value||0),fixed=Number($('fixedCharge').value||0);const units=Math.max(0,curr-prev),energy=units*rate,total=energy+fixed;$('units').value=units;$('energyCharge').value=energy.toFixed(2);$('totalAmount').value=total.toFixed(2);return {prev,curr,rate,fixed,units,energy,total}}
+async function addBill(e){e.preventDefault();const calc=calculateBill();if(calc.curr<calc.prev){toast('Current reading cannot be less than previous reading');return}const bid=await nextId('nextBillId',5001);const consumerId=$('bConsumer').value;if(!consumerId){toast('Select a consumer');return}const bill={id:String(bid),billId:String(bid),consumerId:String(consumerId),previousReading:calc.prev,currentReading:calc.curr,units:calc.units,ratePerUnit:calc.rate,energyCharge:calc.energy,fixedCharge:calc.fixed,totalAmount:calc.total,paid:0,dateKey:todayKey(),createdAt:nowIso(),bucket:'today'};await txPut(STORE_BILLS,bill);$('billForm').reset();toast('Bill generated successfully as TODAY');await refreshAll();prepareBillForm()}
+function billName(b,cs){const c=consumerById(b.consumerId,cs);return c?c.name:'Unknown Consumer'}
+function billRow(b,cs,selectMode=false){const c=consumerById(b.consumerId,cs);return `<tr>${selectMode?`<td><input type="checkbox" class="pickBill" data-id="${esc(b.id)}"></td>`:''}<td>${esc(b.billId)}</td><td>${esc(b.consumerId)}</td><td>${esc(c?.name||'-')}<div class="muted">Meter: ${esc(c?.meter||'-')}</div></td><td>${esc(b.previousReading)}</td><td>${esc(b.currentReading)}</td><td>${esc(b.units)}</td><td>${money(b.energyCharge)}</td><td>${money(b.fixedCharge)}</td><td>${money(b.totalAmount)}</td><td><span class="status ${b.paid?'paid':'unpaid'}">${b.paid?'PAID':'UNPAID'}</span></td><td><span class="status ${storageBucket(b)==='today'?'today':'old'}">${storageBucket(b).toUpperCase()}</span></td><td><div class="actionbar"><button class="btn mini" data-view-bill="${esc(b.id)}">VIEW</button></div></td></tr>`}
+async function renderBills(){const q=$('billQ').value.trim(),bucket=$('billBucket').value,status=$('billStatus').value;const cs=await allConsumers();let bs=(await allBills()).filter(b=>inBucket(b,bucket)&&matches({...b,name:billName(b,cs),meter:consumerById(b.consumerId,cs)?.meter||''},q)&&(status==='all'||(status==='paid'&&b.paid)||(status==='unpaid'&&!b.paid)));bs.sort((x,y)=>Number(y.billId)-Number(x.billId));$('billTable').innerHTML=bs.length?`<table><thead><tr><th>BILL ID</th><th>CONSUMER ID</th><th>CONSUMER</th><th>PREVIOUS</th><th>CURRENT</th><th>UNITS</th><th>ENERGY</th><th>FIXED</th><th>TOTAL</th><th>STATUS</th><th>TYPE</th><th>ACTION</th></tr></thead><tbody>${bs.map(b=>billRow(b,cs)).join('')}</tbody></table>`:'<div class="empty">NO BILL RECORDS FOUND.</div>'}
+async function viewBill(id){const b=await txGet(STORE_BILLS,id),cs=await allConsumers();if(!b)return;const c=consumerById(b.consumerId,cs);openModal(`<div class="section-title"><div><h2>Bill ${esc(b.billId)}</h2><div class="muted">${esc(c?.name||'-')}</div></div><button class="btn" id="closeModal">CLOSE</button></div><div class="detail">${[['Bill ID',b.billId],['Consumer ID',b.consumerId],['Consumer Name',c?.name||'-'],['Meter Number',c?.meter||'-'],['Previous Reading',b.previousReading],['Current Reading',b.currentReading],['Units',b.units],['Rate / Unit',money(b.ratePerUnit)],['Energy Charge',money(b.energyCharge)],['Fixed Charge',money(b.fixedCharge)],['Total Amount',money(b.totalAmount)],['Payment Status',b.paid?'PAID':'UNPAID'],['Record Type',storageBucket(b).toUpperCase()]].map(x=>`<div><small>${esc(x[0])}</small><b>${esc(x[1])}</b></div>`).join('')}</div>`)}
+
+/* ============================================================
+   MODULE 07 : PAYMENT / UNPAID / RECEIPT
+   ============================================================ */
+async function renderPayPreview(){const id=$('payBillId').value.trim();if(!id){$('payPreview').innerHTML='<div class="empty">ENTER A BILL ID TO VIEW PAYMENT DETAILS.</div>';return}const b=(await allBills()).find(x=>String(x.billId)===String(id));const cs=await allConsumers();if(!b){$('payPreview').innerHTML='<div class="empty">BILL NOT FOUND.</div>';return}const c=consumerById(b.consumerId,cs);$('payPreview').innerHTML=`<div class="card" style="margin-top:12px;background:#171106"><b>Bill ${esc(b.billId)}</b><div class="muted">${esc(c?.name||'-')} • Meter ${esc(c?.meter||'-')}</div><div style="margin-top:8px">Amount: ₹ ${money(b.totalAmount)} • Status: <span class="status ${b.paid?'paid':'unpaid'}">${b.paid?'PAID':'UNPAID'}</span></div></div>`}
+async function payBill(){const id=$('payBillId').value.trim();const bs=await allBills();const b=bs.find(x=>String(x.billId)===String(id));if(!b){toast('Bill not found');return}if(b.paid){toast('Bill already paid');return}b.paid=1;b.paidAt=nowIso();await txPut(STORE_BILLS,b);toast('Payment successful');await refreshAll();renderPayPreview()}
+async function renderUnpaid(){const q=$('unpaidQ').value.trim(),bucket=$('unpaidBucket').value,cs=await allConsumers();let bs=(await allBills()).filter(b=>!b.paid&&inBucket(b,bucket)&&matches({...b,name:billName(b,cs),meter:consumerById(b.consumerId,cs)?.meter||''},q));$('unpaidTable').innerHTML=bs.length?`<table><thead><tr><th>BILL ID</th><th>CONSUMER ID</th><th>NAME</th><th>METER</th><th>UNITS</th><th>AMOUNT</th><th>TYPE</th><th>ACTION</th></tr></thead><tbody>${bs.map(b=>{const c=consumerById(b.consumerId,cs);return `<tr><td>${esc(b.billId)}</td><td>${esc(b.consumerId)}</td><td>${esc(c?.name||'-')}</td><td>${esc(c?.meter||'-')}</td><td>${esc(b.units)}</td><td>₹ ${money(b.totalAmount)}</td><td><span class="status ${storageBucket(b)==='today'?'today':'old'}">${storageBucket(b).toUpperCase()}</span></td><td><button class="btn mini primary" data-pay-now="${esc(b.billId)}">PAY NOW</button></td></tr>`}).join('')}</tbody></table>`:'<div class="empty">NO UNPAID BILLS FOUND.</div>'}
+async function generateReceipt(){const id=$('receiptBillId').value.trim(),bucket=$('receiptBucket').value,bs=await allBills(),cs=await allConsumers();const b=bs.find(x=>String(x.billId)===String(id)&&inBucket(x,bucket));if(!b){$('receiptBox').innerHTML='<div class="empty">BILL NOT FOUND IN SELECTED VIEW.</div>';return}const c=consumerById(b.consumerId,cs);if(!b.paid){$('receiptBox').innerHTML='<div class="empty">PAYMENT IS STILL PENDING. RECEIPT CANNOT BE GENERATED.</div>';return}$('receiptBox').innerHTML=`<div class="card" style="margin-top:12px;background:linear-gradient(145deg,#241a06,#0c0904)"><div style="text-align:center;font-weight:400;font-size:18px">ELECTRICITY PAYMENT RECEIPT</div><div class="muted" style="text-align:center">ANSARI ANAS • ELECTRICITY BILL MANAGEMENT SYSTEM</div><div class="detail" style="margin-top:12px">${[['Bill ID',b.billId],['Consumer ID',b.consumerId],['Consumer Name',c?.name||'-'],['Meter Number',c?.meter||'-'],['Units',b.units],['Amount Paid','₹ '+money(b.totalAmount)],['Payment Status','PAID'],['Payment Date',new Date(b.paidAt||b.createdAt).toLocaleString('en-IN')],['Record Type',storageBucket(b).toUpperCase()]].map(x=>`<div><small>${esc(x[0])}</small><b>${esc(x[1])}</b></div>`).join('')}</div></div>`}
+function renderReceiptPreview(){generateReceipt()}
+
+/* ============================================================
+   MODULE 08 : REPORTS / COUNT / DELETE / TRASH
+   ============================================================ */
+async function renderCollection(){const bucket=$('collectionBucket').value,bs=(await allBills()).filter(b=>inBucket(b,bucket));const total=bs.length,paid=bs.filter(b=>b.paid),unpaid=bs.filter(b=>!b.paid),collection=paid.reduce((s,b)=>s+Number(b.totalAmount),0),pending=unpaid.reduce((s,b)=>s+Number(b.totalAmount),0);$('collectionBox').innerHTML=`<div class="card"><div class="muted">TOTAL BILLS</div><b style="font-size:24px">${total}</b></div><div class="card"><div class="muted">PAID BILLS</div><b style="font-size:24px">${paid.length}</b></div><div class="card"><div class="muted">UNPAID BILLS</div><b style="font-size:24px">${unpaid.length}</b></div><div class="card"><div class="muted">COLLECTION</div><b style="font-size:24px">₹ ${money(collection)}</b></div><div class="card"><div class="muted">PENDING AMOUNT</div><b style="font-size:24px">₹ ${money(pending)}</b></div>`}
+async function renderCount(){const cs=await allConsumers(),bs=await allBills();const tc=cs.filter(c=>storageBucket(c)==='today').length,oc=cs.length-tc,tb=bs.filter(b=>storageBucket(b)==='today').length,ob=bs.length-tb,pb=bs.filter(b=>b.paid).length,ub=bs.filter(b=>!b.paid).length;$('countBox').innerHTML=[['Total Today Consumer',tc],['Total Old Consumer',oc],['All Total Consumer',cs.length],['Total Today Bill',tb],['Total Old Bill',ob],['All Total Bill',bs.length],['Total Paid Bill',pb],['Total Unpaid Bill',ub]].map(x=>`<div class="card"><div class="muted">${x[0]}</div><b style="font-size:25px">${x[1]}</b></div>`).join('')}
+async function renderDelete(){const q=$('deleteQ').value.trim(),cs=await allConsumers(),bs=await allBills();let list=[];cs.filter(c=>matches(c,q)).forEach(c=>list.push({kind:'consumer',ref:c}));bs.filter(b=>matches({...b,name:billName(b,cs),meter:consumerById(b.consumerId,cs)?.meter||''},q)).forEach(b=>list.push({kind:'bill',ref:b}));$('deleteTable').innerHTML=list.length?`<table><thead><tr><th>SELECT</th><th>TYPE</th><th>ID</th><th>NAME / BILL</th><th>DETAIL</th><th>STATUS</th></tr></thead><tbody>${list.map(x=>x.kind==='consumer'?`<tr><td><input type="checkbox" class="deletePick" data-kind="consumer" data-id="${esc(x.ref.id)}"></td><td>CONSUMER</td><td>${esc(x.ref.id)}</td><td>${esc(x.ref.name)}</td><td>${esc(x.ref.meter)} • ${esc(x.ref.mobile)}</td><td>${storageBucket(x.ref).toUpperCase()}</td></tr>`:`<tr><td><input type="checkbox" class="deletePick" data-kind="bill" data-id="${esc(x.ref.id)}"></td><td>BILL</td><td>${esc(x.ref.billId)}</td><td>Consumer ${esc(x.ref.consumerId)}</td><td>₹ ${money(x.ref.totalAmount)} • ${x.ref.units} units</td><td>${x.ref.paid?'PAID':'UNPAID'}</td></tr>`).join('')}</tbody></table>`:'<div class="empty">NO RECORDS FOUND.</div>'}
+async function deleteSelected(){if(role!=='admin'){toast('ADMIN ONLY');return}const picks=[...document.querySelectorAll('.deletePick:checked')];if(!picks.length){toast('Select records first');return}for(const p of picks){const kind=p.dataset.kind,id=p.dataset.id,store=kind==='consumer'?STORE_CONSUMERS:STORE_BILLS,r=await txGet(store,id);if(r){const del={...r,trashId:kind+'_'+id+'_'+Date.now()+'_'+Math.random().toString(16).slice(2),kind,originalId:id,deletedAt:nowIso()};await txPut(STORE_TRASH,del);await txDel(store,id)}}toast('Selected records moved to Recently Deleted');await refreshAll();renderDelete()}
+async function renderTrash(){const q=$('trashQ').value.trim().toLowerCase();let a=(await allTrash()).filter(r=>!q||JSON.stringify(r).toLowerCase().includes(q));a.sort((x,y)=>String(y.deletedAt).localeCompare(String(x.deletedAt)));$('trashTable').innerHTML=a.length?`<table><thead><tr><th>SELECT</th><th>TYPE</th><th>ORIGINAL ID</th><th>DETAIL</th><th>DELETED AT</th><th>ACTION</th></tr></thead><tbody>${a.map(r=>`<tr><td><input type="checkbox" class="trashPick" data-id="${esc(r.id)}"></td><td>${esc(r.kind)}</td><td>${esc(r.originalId)}</td><td>${esc(r.kind==='consumer'?r.name:'Bill '+r.billId+' • ₹'+money(r.totalAmount))}</td><td>${new Date(r.deletedAt).toLocaleString('en-IN')}</td><td><div class="actionbar"><button class="btn mini ok" data-restore-one="${esc(r.id)}">RESTORE</button><button class="btn mini danger" data-purge-one="${esc(r.id)}">DELETE FOREVER</button></div></td></tr>`).join('')}</tbody></table>`:'<div class="empty">NO DELETED RECORDS FOUND.</div>'}
+async function restore(ids){for(const id of ids){const r=await txGet(STORE_TRASH,id);if(!r)continue;const clean={...r};delete clean.trashId;delete clean.originalId;delete clean.deletedAt;clean.id=r.originalId;await txPut(r.kind==='consumer'?STORE_CONSUMERS:STORE_BILLS,clean);await txDel(STORE_TRASH,id)}toast('Record restored');await refreshAll();renderTrash()}
+async function purge(ids){for(const id of ids)await txDel(STORE_TRASH,id);toast('Permanently deleted');await refreshAll();renderTrash()}
+async function renderReports(){const cs=await allConsumers(),bs=await allBills();const data=[['Consumers Today',cs.filter(c=>storageBucket(c)==='today').length],['Consumers Old',cs.filter(c=>storageBucket(c)==='old').length],['Bills Today',bs.filter(b=>storageBucket(b)==='today').length],['Bills Old',bs.filter(b=>storageBucket(b)==='old').length],['Paid Bills',bs.filter(b=>b.paid).length],['Unpaid Bills',bs.filter(b=>!b.paid).length],['Collection','₹ '+money(bs.filter(b=>b.paid).reduce((s,b)=>s+b.totalAmount,0))],['Pending','₹ '+money(bs.filter(b=>!b.paid).reduce((s,b)=>s+b.totalAmount,0))],['Deleted', (await allTrash()).length]];$('reportBox').innerHTML=data.map(x=>`<div class="report-card"><div class="muted">${x[0]}</div><b style="font-size:22px">${esc(x[1])}</b></div>`).join('')}
+
+/* ============================================================
+   MODULE 09 : PDF MASTER / IN-APP PDF STORE
+   ============================================================ */
+function pdfRect(c,x,y,w,h,fill,stroke){if(fill){c.push(fill+' rg');c.push(`${x} ${y} ${w} ${h} re f`)}if(stroke){c.push(stroke+' RG');c.push('0.7 w');c.push(`${x} ${y} ${w} ${h} re S`)}}
+function pdfText(c,x,y,t,size,color,font){c.push('BT');c.push('/'+(font||'F1')+' '+size+' Tf');c.push(color+' rg');c.push(x+' '+y+' Td');c.push('('+escPdf(t)+') Tj');c.push('ET')}
+function wrapText(t,n){const w=String(t==null?'':t).replace(/\s+/g,' ').trim()||'-',out=[];let cur='';for(const word of w.split(' ')){if((cur+' '+word).trim().length<=n)cur=(cur+' '+word).trim();else{if(cur)out.push(cur);cur=word}}if(cur)out.push(cur);return out.slice(0,3)}
+function pdfClean(v){return String(v==null?'':v).replace(/[^\x20-\x7E]/g,'').replace(/\\/g,'\\\\').replace(/\(/g,'\\(').replace(/\)/g,'\\)')||'-'}
+function pdfText(c,x,y,t,size,color){c.push('BT');c.push('/F1 '+size+' Tf');c.push(color+' rg');c.push(x+' '+y+' Td');c.push('('+pdfClean(t)+') Tj');c.push('ET')}
+function pdfRect(c,x,y,w,h,fill,stroke){if(fill){c.push(fill+' rg');c.push(x+' '+y+' '+w+' '+h+' re f')}if(stroke){c.push(stroke+' RG');c.push('0.7 w');c.push(x+' '+y+' '+w+' '+h+' re S')}}
+function pdfWrap(t,max){const a=String(t==null?'':t).replace(/\s+/g,' ').trim()||'-',out=[];let cur='';for(const w of a.split(' ')){const n=(cur+' '+w).trim();if(n.length<=max)cur=n;else{if(cur)out.push(cur);cur=w}}if(cur)out.push(cur);return out.slice(0,2)}
+function makePdf(consumers,bills,title){
+ const W=595,H=842,M=28;
+ const BG='0.025 0.021 0.014',PANEL='0.070 0.053 0.024',PANEL2='0.095 0.070 0.028',GOLD='0.58 0.42 0.10',GOLD2='0.82 0.64 0.22',LIGHT='0.95 0.91 0.79',WHITE='1 1 1',MUTED='0.63 0.56 0.39',GRID='0.22 0.16 0.07',ROW='0.045 0.034 0.018';
+ const pages=[];let c=[];
+ function newPage(section){
+   if(c.length){c.push('Q');pages.push(c)}
+   c=['q'];
+   pdfRect(c,0,0,W,H,BG);
+   pdfRect(c,0,H-72,W,72,PANEL,GOLD);
+   pdfText(c,M,H-28,'ANSARI ANAS',14,GOLD2);
+   pdfText(c,M,H-47,'ELECTRICITY BILL MANAGEMENT SYSTEM',8,WHITE);
+   pdfText(c,W-112,H-28,new Date().toLocaleDateString('en-IN'),6.8,LIGHT);
+   pdfText(c,M,H-98,String(section||'MASTER ELECTRICITY RECORD REPORT').toUpperCase(),10.5,GOLD2);
+   pdfRect(c,M,H-118,W-2*M,1,GOLD);
+ }
+ function footer(){
+   pdfText(c,M,18,'ANSARI ANAS ELECTRICITY BILL MANAGEMENT SYSTEM',5.8,MUTED);
+   pdfText(c,W-105,18,'MASTER PDF',5.8,MUTED);
+ }
+ function tableHeader(y,headers){let x=M;for(const h of headers){pdfRect(c,x,y-18,h.w,18,GOLD,PANEL);pdfText(c,x+4,y-12,String(h.t).toUpperCase(),5.4,WHITE);x+=h.w}}
+ function tableRow(y,headers,vals,hgt=18){let x=M;for(let i=0;i<headers.length;i++){const lines=pdfWrap(vals[i],headers[i].wrap||14);pdfRect(c,x,y-hgt,headers[i].w,hgt,ROW,GRID);lines.forEach((ln,j)=>pdfText(c,x+4,y-11-j*6,ln,5.1,LIGHT));x+=headers[i].w}}
+ function stat(x,y,w,h,label,value,fill=PANEL2){pdfRect(c,x,y,w,h,fill,GOLD);pdfText(c,x+6,y+h-13,String(label).toUpperCase(),5.4,WHITE);pdfText(c,x+6,y+10,String(value),7.2,GOLD2)}
+ function moneyValue(v){return 'INR '+money(Number(v||0))}
+ function fmtDate(v){const d=new Date(v);return isNaN(d)?'-':d.toLocaleDateString('en-IN')}
+ function personPage(person,pbills,sectionLabel){
+   newPage(sectionLabel);
+   let y=H-136;
+   pdfText(c,M,y,'COMPLETE CONSUMER RECORD',12,GOLD2);
+   pdfText(c,W-145,y,'CONSUMER ID: '+String(person.id),6.8,WHITE);y-=20;
+   pdfRect(c,M,y-92,W-2*M,92,PANEL,GOLD);
+   pdfText(c,M+10,y-17,'CONSUMER DETAILS',7.5,GOLD2);
+   const left=[['NAME',person.name],['ADDRESS',person.address],['MOBILE',person.mobile]];
+   const right=[['METER NUMBER',person.meter],['RECORD TYPE',sectionLabel],['CREATED',fmtDate(person.createdAt)]];
+   left.forEach((a,i)=>pdfText(c,M+10,y-35-i*18,String(a[0])+': '+String(a[1]||'-').toUpperCase(),5.8,LIGHT));
+   right.forEach((a,i)=>pdfText(c,M+292,y-35-i*18,String(a[0])+': '+String(a[1]||'-').toUpperCase(),5.8,LIGHT));
+   y-=111;
+   const paid=pbills.filter(b=>b.paid), unpaid=pbills.filter(b=>!b.paid);
+   const total=pbills.reduce((s,b)=>s+Number(b.totalAmount||0),0);
+   const collected=paid.reduce((s,b)=>s+Number(b.totalAmount||0),0);
+   const pending=unpaid.reduce((s,b)=>s+Number(b.totalAmount||0),0);
+   stat(M,y-46,118,46,'TOTAL BILLS',pbills.length);stat(M+124,y-46,118,46,'PAID',paid.length);stat(M+248,y-46,118,46,'UNPAID',unpaid.length);stat(M+372,y-46,167,46,'TOTAL BILL VALUE',moneyValue(total));
+   y-=64;
+   pdfText(c,M,y,'BILL HISTORY',7.8,GOLD2);y-=13;
+   if(!pbills.length){
+     pdfRect(c,M,y-28,W-2*M,28,ROW,GRID);pdfText(c,M+8,y-17,'NO BILL GENERATED FOR THIS CONSUMER',5.8,LIGHT);y-=40;
+   }else{
+     const h=[{t:'BILL ID',w:48},{t:'DATE',w:52},{t:'PREV',w:45},{t:'CURR',w:45},{t:'UNITS',w:40},{t:'ENERGY',w:54},{t:'FIXED',w:42},{t:'TOTAL',w:58},{t:'STATUS',w:52},{t:'PAYMENT',w:121}];
+     tableHeader(y,h);y-=18;
+     for(const b of pbills){
+       if(y<92) break;
+       tableRow(y,h,[b.billId,fmtDate(b.createdAt),b.previousReading,b.currentReading,b.units,moneyValue(b.energyCharge),moneyValue(b.fixedCharge),moneyValue(b.totalAmount),b.paid?'PAID':'UNPAID',b.paid?'PAYMENT RECEIVED':'PAYMENT PENDING'],17);y-=17;
+     }
+   }
+   y=Math.max(y,72)-8;
+   pdfText(c,M,y,'FINANCIAL SUMMARY',7.8,GOLD2);y-=13;
+   pdfRect(c,M,y-54,W-2*M,54,PANEL2,GOLD);
+   pdfText(c,M+10,y-17,'TOTAL BILL VALUE: '+moneyValue(total),5.8,LIGHT);
+   pdfText(c,M+210,y-17,'TOTAL COLLECTED: '+moneyValue(collected),5.8,GOLD2);
+   pdfText(c,M+10,y-36,'TOTAL PENDING: '+moneyValue(pending),5.8,WHITE);
+   pdfText(c,M+210,y-36,'CURRENT STATUS: '+(unpaid.length?'PAYMENT PENDING':'ALL BILLS PAID'),5.8,unpaid.length?WHITE:GOLD2);
+   footer();
+ }
+
+ const paid=bills.filter(b=>b.paid),unpaid=bills.filter(b=>!b.paid);
+ const collection=paid.reduce((s,b)=>s+Number(b.totalAmount||0),0),pending=unpaid.reduce((s,b)=>s+Number(b.totalAmount||0),0);
+ const totalAmount=bills.reduce((s,b)=>s+Number(b.totalAmount||0),0);
+ const todayConsumers=consumers.filter(r=>storageBucket(r)==='today').sort((a,b)=>Number(a.id)-Number(b.id));
+ const oldConsumers=consumers.filter(r=>storageBucket(r)==='old').sort((a,b)=>Number(a.id)-Number(b.id));
+
+ newPage('MASTER SUMMARY');
+ let y=H-140;
+ pdfText(c,M,y,'MASTER SUMMARY',12,GOLD2);y-=25;
+ const stats=[['TODAY CONSUMERS',todayConsumers.length],['OLD CONSUMERS',oldConsumers.length],['TOTAL CONSUMERS',consumers.length],['TOTAL BILLS',bills.length],['PAID BILLS',paid.length],['UNPAID BILLS',unpaid.length],['TOTAL BILL VALUE',moneyValue(totalAmount)],['COLLECTION',moneyValue(collection)],['PENDING',moneyValue(pending)]];
+ let sx=M,sy=y;
+ for(const st of stats){stat(sx,sy-44,118,44,st[0],st[1]);sx+=124;if(sx>W-145){sx=M;sy-=54}}
+ sy-=72;pdfText(c,M,sy,'RECORD STORAGE',8,GOLD2);sy-=16;
+ pdfRect(c,M,sy-64,W-2*M,64,PANEL,GOLD);
+ pdfText(c,M+12,sy-20,'TODAY RECORDS',6,WHITE);pdfText(c,M+130,sy-20,String(todayConsumers.length),8,GOLD2);
+ pdfText(c,M+210,sy-20,'OLD RECORDS',6,WHITE);pdfText(c,M+310,sy-20,String(oldConsumers.length),8,GOLD2);
+ pdfText(c,M+12,sy-42,'SINGLE MASTER PDF FILE',6,LIGHT);pdfText(c,M+130,sy-42,'SEPARATE TODAY / OLD SECTIONS',6,LIGHT);
+ footer();
+
+ function addSection(people,label){
+   for(const person of people){
+     const pb=bills.filter(b=>String(b.consumerId)===String(person.id)).sort((a,b)=>Number(a.billId)-Number(b.billId));
+     personPage(person,pb,label);
+   }
+ }
+ addSection(todayConsumers,'TODAY RECORDS');
+ addSection(oldConsumers,'OLD RECORDS');
+ if(!todayConsumers.length && !oldConsumers.length){newPage('RECORDS');pdfText(c,M,H-150,'NO CONSUMER RECORDS AVAILABLE',11,GOLD2);pdfText(c,M,H-172,'ADD A CONSUMER TO CREATE THE MASTER RECORD.',6.5,LIGHT);footer();}
+
+ newPage('OVERALL PAYMENT & COLLECTION SUMMARY');
+ y=H-140;pdfText(c,M,y,'OVERALL PAYMENT SUMMARY',10.5,GOLD2);y-=18;
+ const hh=[{t:'BILL ID',w:48},{t:'CONSUMER',w:58},{t:'AMOUNT',w:62},{t:'STATUS',w:58},{t:'UNITS',w:42},{t:'READING',w:82},{t:'DATE',w:80},{t:'TYPE',w:109}];tableHeader(y,hh);y-=18;
+ const allBills=bills.slice().sort((a,b)=>Number(a.billId)-Number(b.billId));
+ for(const b of allBills){
+   if(y<72){footer();newPage('OVERALL PAYMENT SUMMARY • CONTINUED');y=H-140;tableHeader(y,hh);y-=18}
+   const person=consumers.find(cn=>String(cn.id)===String(b.consumerId));
+   tableRow(y,hh,[b.billId,person?person.name:b.consumerId,moneyValue(b.totalAmount),b.paid?'PAID':'UNPAID',b.units,String(b.previousReading)+' -> '+String(b.currentReading),fmtDate(b.createdAt),storageBucket(person||{})==='today'?'TODAY':'OLD'],17);y-=17;
+ }
+ pdfRect(c,M,38,W-2*M,28,PANEL2,GOLD);
+ pdfText(c,M+8,49,'TOTAL BILL VALUE: '+moneyValue(totalAmount),5.8,LIGHT);
+ pdfText(c,M+175,49,'COLLECTION: '+moneyValue(collection),5.8,GOLD2);
+ pdfText(c,M+340,49,'PENDING: '+moneyValue(pending),5.8,WHITE);
+ footer();
+ c.push('Q');pages.push(c);
+
+ const enc=new TextEncoder(),objs=[],pageObjNums=[];let nextObj=3;
+ for(const page of pages){const content=page.join('\n');const contentObj=nextObj++,pageObj=nextObj++;objs.push([contentObj,`<< /Length ${enc.encode(content).length} >>\nstream\n${content}\nendstream`]);pageObjNums.push({pageObj,contentObj})}
+ const fontObj=nextObj++;
+ objs.push([fontObj,'<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>']);
+ objs.push([1,'<< /Type /Catalog /Pages 2 0 R >>']);
+ objs.push([2,`<< /Type /Pages /Kids [${pageObjNums.map(x=>x.pageObj+' 0 R').join(' ')}] /Count ${pageObjNums.length} >>`]);
+ for(const p of pageObjNums) objs.push([p.pageObj,`<< /Type /Page /Parent 2 0 R /MediaBox [0 0 ${W} ${H}] /Resources << /Font << /F1 ${fontObj} 0 R >> >> /Contents ${p.contentObj} 0 R >>`]);
+ objs.sort((a,b)=>a[0]-b[0]);
+ let body='%PDF-1.4\n';const offsets={};
+ for(const [num,data] of objs){offsets[num]=enc.encode(body).length;body+=`${num} 0 obj\n${data}\nendobj\n`}
+ const maxObj=Math.max(...objs.map(o=>o[0]));const xref=enc.encode(body).length;body+='xref\n0 '+(maxObj+1)+'\n0000000000 65535 f \n';
+ for(let i=1;i<=maxObj;i++) body+=(String(offsets[i]||0).padStart(10,'0'))+' 00000 n \n';
+ body+=`trailer\n<< /Size ${maxObj+1} /Root 1 0 R >>\nstartxref\n${xref}\n%%EOF`;
+ return new Blob([body],{type:'application/pdf'});
+}
+
+async function getSavedDesktopPdfHandle(){try{const rec=await txGet(STORE_META,'masterPdfHandle');return rec&&rec.handle?rec.handle:null}catch(e){return null}}
+async function setDesktopPdfHandle(handle){desktopPdfHandle=handle;await new Promise((resolve,reject)=>{const tx=db.transaction(STORE_META,'readwrite'),r=tx.objectStore(STORE_META).put({id:'masterPdfHandle',handle});r.onsuccess=()=>resolve();r.onerror=()=>reject(r.error)});updateDesktopPdfStatus('CONNECTED')}
+async function ensureDesktopPdfPermission(handle,ask=true){if(!handle||!handle.queryPermission)return true;let p=await handle.queryPermission({mode:'readwrite'});if(p!=='granted' && ask && handle.requestPermission){try{p=await handle.requestPermission({mode:'readwrite'})}catch(e){}}return p==='granted'}
+function updateDesktopPdfStatus(text){if($('desktopPdfStatus'))$('desktopPdfStatus').textContent=text;if($('desktopStatusMain'))$('desktopStatusMain').textContent='DESKTOP MASTER: '+String(text).toUpperCase()}
+async function syncPdfToDesktop(blob,interactive=false){if(!desktopPdfHandle)return false;try{let ok=await ensureDesktopPdfPermission(desktopPdfHandle,interactive);if(!ok){updateDesktopPdfStatus('PERMISSION NEEDED');return false}const writable=await desktopPdfHandle.createWritable();await writable.write(blob);await writable.close();updateDesktopPdfStatus('AUTO UPDATED');return true}catch(e){console.warn('Desktop PDF sync failed',e);updateDesktopPdfStatus('RECONNECT NEEDED');return false}}
+async function connectDesktopPdf(){if(!window.showSaveFilePicker){toast('USE CHROME OR EDGE TO SAVE THE MASTER PDF TO DESKTOP');return}try{const handle=await window.showSaveFilePicker({suggestedName:'ANSARI ANAS ELECTRICITY MASTER RECORD.pdf',types:[{description:'PDF FILE',accept:{'application/pdf':['.pdf']}}],excludeAcceptAllOption:false});await setDesktopPdfHandle(handle);const blob=await buildMasterPdf(false);const ok=await syncPdfToDesktop(blob,true);toast(ok?'MASTER PDF SAVED AND CONNECTED':'MASTER PDF SAVED • PERMISSION NEEDED')}catch(e){if(e&&e.name==='AbortError')return;console.error(e);toast('MASTER PDF SAVE FAILED')}}
+async function buildMasterPdf(interactive=false){const cs=await allConsumers(),bs=await allBills();const blob=makePdf(cs,bs,'MASTER ELECTRICITY RECORD REPORT');if(pdfUrl)URL.revokeObjectURL(pdfUrl);pdfUrl=URL.createObjectURL(blob);if($('pdfPreview'))$('pdfPreview').src=pdfUrl;if($('pdfStatus'))$('pdfStatus').textContent='UPDATED '+new Date().toLocaleTimeString('en-IN');if($('pdfTodayConsumers'))$('pdfTodayConsumers').textContent=cs.filter(c=>storageBucket(c)==='today').length;if($('pdfOldConsumers'))$('pdfOldConsumers').textContent=cs.filter(c=>storageBucket(c)==='old').length;if($('pdfBills'))$('pdfBills').textContent=bs.length;if($('pdfPaid'))$('pdfPaid').textContent=bs.filter(b=>b.paid).length;if($('pdfUnpaid'))$('pdfUnpaid').textContent=bs.filter(b=>!b.paid).length;await syncPdfToDesktop(blob,interactive);return blob}
+function queuePdfSync(){clearTimeout(pdfBuildTimer);pdfBuildTimer=setTimeout(()=>buildMasterPdf(false).catch(console.error),350)}
+async function downloadPdf(){const blob=await buildMasterPdf(true);if(!desktopPdfHandle){if(window.showSaveFilePicker){await connectDesktopPdf();return}const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='ANSARI_ANAS_ELECTRICITY_MASTER_RECORD.pdf';document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},1000);toast('MASTER PDF DOWNLOADED');return}const ok=await syncPdfToDesktop(blob,true);if(ok)toast('MASTER PDF UPDATED IN THE SAME DESKTOP FILE');else toast('MASTER PDF NEEDS DESKTOP PERMISSION')}
+async function restorePdfStore(){desktopPdfHandle=await getSavedDesktopPdfHandle();if(desktopPdfHandle){const granted=await ensureDesktopPdfPermission(desktopPdfHandle,false);updateDesktopPdfStatus(granted?'CONNECTED':'PERMISSION NEEDED')}else updateDesktopPdfStatus('NOT CONNECTED');await buildMasterPdf(false)}
+
+/* ============================================================
+   MODULE 10 : UI EVENT WIRING / REFRESH
+   ============================================================ */
+function openModal(inner){const bg=document.createElement('div');bg.className='modal-bg';bg.innerHTML='<div class="card modal">'+inner+'</div>';document.body.appendChild(bg);const close=bg.querySelector('#closeModal');if(close)close.onclick=()=>bg.remove()}
+async function refreshDashboard(){const cs=await allConsumers(),bs=await allBills();const paid=bs.filter(b=>b.paid),unpaid=bs.filter(b=>!b.paid);$('dConsumers').textContent=cs.length;$('dTodayConsumers').textContent=cs.filter(c=>storageBucket(c)==='today').length;$('dOldConsumers').textContent=cs.filter(c=>storageBucket(c)==='old').length;$('dBills').textContent=bs.length;$('dPaid').textContent=paid.length;$('dUnpaid').textContent=unpaid.length;$('dCollection').textContent=money(paid.reduce((s,b)=>s+b.totalAmount,0));$('dPending').textContent=money(unpaid.reduce((s,b)=>s+b.totalAmount,0));$('dateText').textContent='DATE: '+new Date().toLocaleDateString('en-IN')+' • PRIVATE ACCOUNT'}
+async function refreshAll(){await rollover();await refreshDashboard();if(!$('consumers').classList.contains('hidden'))await renderConsumers();if(!$('search').classList.contains('hidden'))await renderSearch();if(!$('bills').classList.contains('hidden'))await renderBills();queuePdfSync()}
+function wire(){
+$('loginBtn').onclick=login;$('forgotBtn').onclick=forgotPassword;$('accountModeLink').onclick=()=>setLoginMode(loginMode==='old'?'new':'old');setLoginMode('old');
+ const wireEye=(buttonId,inputId)=>{const b=$(buttonId),i=$(inputId);if(!b||!i)return;b.onclick=()=>{const show=i.type==='password';i.type=show?'text':'password';b.setAttribute('aria-label',show?'Hide password':'Show password');b.title=show?'Hide password':'Show password';b.innerHTML=show?'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3l18 18M10.6 5.2A10.8 10.8 0 0 1 12 5c6.4 0 10 7 10 7a15.8 15.8 0 0 1-4 4.8M6.2 6.2C3.5 8 2 12 2 12s3.6 7 10 7c1.2 0 2.3-.2 3.3-.6"></path></svg>':'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12Z"></path><circle cx="12" cy="12" r="3"></circle></svg>'}};wireEye('toggleLoginPassword','loginPass');wireEye('toggleRegisterPassword','registerPassword');
+ const loginOrder=['loginEmail','loginPass','firstName','lastName','phoneNumber','emailId','registerPassword'];
+ loginOrder.forEach((id)=>{const el=$(id);if(el)el.addEventListener('keydown',e=>{
+   if(e.key==='Enter'){
+     e.preventDefault();
+     const activeInputs=(loginMode==='old'?['loginEmail','loginPass']:['firstName','lastName','phoneNumber','emailId','registerPassword']).map(x=>$(x)).filter(x=>x && !x.disabled && x.offsetParent!==null);
+     const index=activeInputs.indexOf(el);
+     if(index>=0 && index<activeInputs.length-1){activeInputs[index+1].focus();}
+     else if(index===activeInputs.length-1){
+       if(typeof loginMode!=='undefined' && loginMode==='old') login();
+       else if(typeof createAccount==='function') createAccount();
+       else login();
+     }
+   }
+ });});
+ $('logout').onclick=async()=>{try{if(auth)await auth.signOut()}catch(e){console.error(e)}cloudUser=null;activePortalUid='';role='';location.reload()};$('sidebarToggle').onclick=()=>{const c=$('sidebar').classList.toggle('collapsed');$('main').classList.toggle('sidebar-collapsed');$('sidebarToggle').textContent=c?'>':'<'};
+ document.querySelectorAll('.nav button').forEach(b=>b.onclick=()=>showPage(b.dataset.page));$('downloadPdfNav').onclick=downloadPdf;document.querySelectorAll('[data-jump]').forEach(b=>b.onclick=()=>showPage(b.dataset.jump));
+ $('consumerForm').onsubmit=addConsumer;$('refreshConsumers').onclick=renderConsumers;$('consumerBucket').onchange=renderConsumers;$('consumerQ').oninput=()=>renderConsumers();$('searchQ').oninput=()=>renderSearch();$('searchClear').onclick=()=>{$('searchQ').value='';renderSearch()};$('updateFind').onclick=renderUpdate;$('updateQ').addEventListener('keydown',e=>{if(e.key==='Enter')renderUpdate()});
+ $('billForm').onsubmit=addBill;['prevReading','currReading','ratePerUnit','fixedCharge'].forEach(id=>$(id).addEventListener('input',calculateBill));$('calcBill').onclick=calculateBill;
+ ['billBucket','billStatus'].forEach(id=>$(id).onchange=renderBills);$('billQ').oninput=renderBills;$('refreshBills').onclick=renderBills;
+ $('payBillId').oninput=renderPayPreview;$('payBtn').onclick=payBill;$('payBucket').onchange=renderPayPreview;$('unpaidBucket').onchange=renderUnpaid;$('unpaidQ').oninput=renderUnpaid;$('refreshUnpaid').onclick=renderUnpaid;$('refreshCollection').onclick=renderCollection;$('collectionBucket').onchange=renderCollection;$('receiptBtn').onclick=generateReceipt;$('receiptBucket').onchange=generateReceipt;$('receiptBillId').oninput=generateReceipt;
+ $('deleteQ').oninput=renderDelete;$('deleteSelected').onclick=deleteSelected;$('refreshTrash').onclick=renderTrash;$('restoreSelected').onclick=()=>restore([...document.querySelectorAll('.trashPick:checked')].map(x=>x.dataset.id));$('purgeSelected').onclick=()=>purge([...document.querySelectorAll('.trashPick:checked')].map(x=>x.dataset.id));
+ 
+ document.addEventListener('click',async e=>{const v=e.target.closest('[data-view-consumer]'),ec=e.target.closest('[data-edit-consumer]'),vb=e.target.closest('[data-view-bill]'),p=e.target.closest('[data-pay-now]'),ro=e.target.closest('[data-restore-one]'),po=e.target.closest('[data-purge-one]');if(v)return viewConsumer(v.dataset.viewConsumer);if(ec){$('updateQ').value=ec.dataset.editConsumer;showPage('update');return}if(vb)return viewBill(vb.dataset.viewBill);if(p){showPage('pay');$('payBillId').value=p.dataset.payNow;return renderPayPreview()}if(ro)return restore([ro.dataset.restoreOne]);if(po)return purge([po.dataset.purgeOne])});
+}
+(async function init(){
+  try{
+    await openDB();
+    if(navigator.storage&&navigator.storage.persist){try{await navigator.storage.persist()}catch(e){}}
+    wire();
+    if(!firebaseReady){$('loginError').textContent='';return}
+    auth.onAuthStateChanged(async user=>{
+      if(authFlowInProgress) return;
+      if(!user){cloudUser=null;activePortalUid='';role='';$('loginScreen').classList.remove('hidden');$('app').classList.add('hidden');return}
+      try{
+        const snap=await firestore.collection('users').doc(user.uid).get();
+        const profile=snap.exists?snap.data():{email:user.email,firstName:'ACCOUNT',lastName:'OWNER'};
+        await enterPortal(user,profile);
+      }catch(e){console.error(e);$('loginError').textContent=friendlyAuthError(e);try{await auth.signOut()}catch(_){}}
+    });
+  }catch(e){console.error(e);alert('Unable to initialize the app. Check Firebase setup and internet connection.');}
+})();;
+})();
+</script>
+</body></html>
