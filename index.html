@@ -762,7 +762,6 @@ function makePdf(consumers,bills,title){
    c=['q'];
    pdfRect(c,0,0,W,H,BG);
    pdfRect(c,0,H-72,W,72,PANEL,GOLD);
-   pdfText(c,M,H-28,'ANSARI ANAS',14,GOLD2);
    pdfText(c,M,H-47,'ELECTRICITY BILL MANAGEMENT SYSTEM',8,WHITE);
    pdfText(c,W-112,H-28,new Date().toLocaleDateString('en-IN'),6.8,LIGHT);
    pdfText(c,M,H-98,String(section||'MASTER ELECTRICITY RECORD REPORT').toUpperCase(),10.5,GOLD2);
