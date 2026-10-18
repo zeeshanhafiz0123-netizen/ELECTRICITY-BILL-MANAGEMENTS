@@ -286,6 +286,67 @@ input, select, textarea, button { max-width: 100%; }
 .login-footer span{color:#e6c55a;font-weight:500;letter-spacing:.035em}
 @media(max-height:650px){.center{padding:16px 12px;align-content:center;gap:6px}.login-card{padding:18px 22px!important}.login-footer{margin-top:0}}
 </style>
+
+<style id="final-dark-gold-scroll-fix">
+/* FINAL: DARK-GOLD THEME + RELIABLE PAGE / TOUCH SCROLLING */
+:root{
+  color-scheme:dark;
+  --bg:#070605;--panel:#100d08;--panel2:#171108;
+  --line:#745815;--gold:#c49a2e;--gold2:#e6c55a;--gold3:#f3df91;
+  --text:#f2d98a;--muted:#b79f61;
+}
+html{min-height:100%;overflow-x:hidden;overflow-y:auto;scroll-behavior:smooth;
+  scrollbar-color:#8a681b #090704;scrollbar-width:thin}
+body{min-height:100vh;min-height:100dvh;height:auto!important;overflow-x:hidden!important;overflow-y:auto!important;
+  overscroll-behavior-y:contain;background:radial-gradient(ellipse at 15% 0%,#211804 0%,#0b0906 38%,#030303 100%)!important;color:#f2d98a!important}
+#app{min-height:100vh;min-height:100dvh;height:auto!important;overflow:visible!important}
+.main{min-width:0;min-height:100vh;height:auto!important;overflow:visible!important}
+.page{min-width:0;overflow:visible}
+.side{overscroll-behavior:contain;scrollbar-color:#8a681b #090704;scrollbar-width:thin}
+.tablewrap{max-width:100%;overflow-x:auto!important;overflow-y:visible!important;
+  -webkit-overflow-scrolling:touch;touch-action:pan-x pan-y;overscroll-behavior-x:contain}
+.tablewrap table{width:max-content;min-width:100%;border-collapse:separate;border-spacing:0}
+.pdf-frame{max-width:100%;overflow:auto}
+.modal-bg{overflow-y:auto!important;-webkit-overflow-scrolling:touch}
+.modal{overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
+input,select,textarea{scroll-margin-top:20px}
+button,a,[role="button"]{touch-action:manipulation}
+:focus-visible{outline:2px solid #e6c55a!important;outline-offset:2px}
+::-webkit-scrollbar{width:10px;height:10px}
+::-webkit-scrollbar-track{background:#090704}
+::-webkit-scrollbar-thumb{background:linear-gradient(180deg,#a47b1c,#5d430d);border:2px solid #090704;border-radius:20px}
+::-webkit-scrollbar-thumb:hover{background:#d4ad45}
+/* Restore the requested premium black / glowing dark-gold look over older overrides. */
+.side{background:linear-gradient(180deg,#231a08 0%,#100c06 52%,#080604 100%)!important;color:#f0d47a!important;border-color:#8d6b1a!important}
+.brand b,.brand small,.role{color:#e9cc72!important}
+.nav button{background:linear-gradient(180deg,#1b1408,#0f0b06)!important;color:#e8c963!important;border-color:#5f4812!important}
+.nav button:hover,.nav button.active{background:linear-gradient(180deg,#3a2a0d,#211806)!important;color:#ffeaa5!important;border-color:#b38a2a!important;box-shadow:0 0 18px rgba(218,178,69,.12)!important}
+.main{background:radial-gradient(circle at 80% 0%,rgba(155,113,18,.08),transparent 30%)!important}
+.topbar,.card,.login-card,.tablewrap,.detail>div,.report-card,.summary .card,.modal{
+  border-color:#745815!important;color:#f2d98a!important}
+.topbar,.card,.login-card,.report-card,.summary .card,.modal{
+  background:linear-gradient(145deg,#171208 0%,#0a0805 100%)!important}
+.goldband{background:radial-gradient(ellipse at 100% 0%,rgba(230,197,90,.13),transparent 38%),linear-gradient(120deg,#3a2a0c,#171108 60%,#302208)!important;color:#f4d985!important;border-color:#98731f!important}
+.topbar h1,.section-title h2,.section-title h3,.login-title{color:#f1d57a!important}
+.field label{color:#d9be67!important}
+.field input,.field select,.field textarea{background:#070604!important;color:#f0d27a!important;border-color:#654d15!important}
+.btn{background:linear-gradient(180deg,#211806,#100c06)!important;color:#e6c665!important;border-color:#6b5014!important}
+.btn.primary{background:linear-gradient(135deg,#d4ad45 0%,#9b7118 55%,#654708 100%)!important;color:#120d04!important;border-color:#dfc56e!important}
+th{background:linear-gradient(180deg,#4d380c,#241b08)!important;color:#ffe7a0!important}
+td{background:#0b0805!important;color:#e6cd79!important}
+@media(max-width:760px){
+  html,body{overflow-x:hidden!important;overflow-y:auto!important}
+  #app{overflow:visible!important}
+  .main,.main.sidebar-collapsed{overflow:visible!important;min-height:0!important}
+  .side{overscroll-behavior-y:contain}
+  .tablewrap{max-width:calc(100vw - 28px)!important;overflow-x:auto!important;touch-action:pan-x pan-y}
+  .tablewrap table{min-width:760px!important;width:max-content!important}
+  .page,.card,.form-grid,.toolbar{min-width:0}
+  .topbar{z-index:20!important}
+}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style>
+
 </head>
 <body>
 <section id="loginScreen" class="center">
@@ -340,8 +401,8 @@ input, select, textarea, button { max-width: 100%; }
     <button class="btn desktop-sidebar-toggle" id="sidebarToggle" style="width:100%">&lt;</button>
   </aside>
   <main class="main" id="main">
-    <div class="topbar"><div class="topbar-heading"><button type="button" class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Open navigation menu" aria-expanded="false">☰ <span>MENU</span></button><div class="app-heading-text"><div class="app-name">ELECTRICITY BILL MANAGEMENT SYSTEM</div><h1 id="pageTitle">Dashboard</h1><div class="muted" id="dateText"></div><div class="muted" id="welcomeUser" style="margin-top:5px">WELCOME USER</div>
-      <div class="muted user-id-label" id="userIdLabel" style="margin-top:5px">USER ID: NOT SIGNED IN</div></div></div></div>
+    <div class="topbar"><div class="topbar-heading"><button type="button" class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Open navigation menu" aria-expanded="false">☰ <span>MENU</span></button><div class="app-heading-text"><h1 id="pageTitle">Dashboard</h1><div class="app-name">ELECTRICITY BILL MANAGEMENT SYSTEM</div><div class="muted" id="dateText"></div><div class="muted" id="welcomeUser" style="margin-top:5px">WELCOME USER</div>
+      </div></div></div>
 
     <section class="page" id="dashboard">
       <div class="goldband"><div style="font-size:18px">ELECTRICITY BILL MANAGEMENT SYSTEM</div><div class="muted" style="color:#5a430f">Consumer records, bills, payments and receipts — one professional master system.</div></div>
@@ -503,7 +564,7 @@ async function enterPortal(user,profile){
   await switchUserDatabase(user.uid);role='admin';
   $('loginScreen').classList.add('hidden');$('app').classList.remove('hidden');
   const displayName=((info.firstName||'')+' '+(info.lastName||'')).trim()||user.email||'ACCOUNT OWNER';
-  $('roleLabel').textContent='PRIVATE ACCOUNT';$('welcomeUser').textContent='WELCOME '+displayName;if($('userIdLabel'))$('userIdLabel').textContent='USER ID: '+user.uid;
+  $('roleLabel').textContent='ACCOUNT';$('welcomeUser').textContent='WELCOME '+displayName;
   setRoleUi();
   await rollover();
   $('cId').value=await nextSeq('nextConsumerId',1001);
@@ -555,7 +616,7 @@ function showPasswordResetDialog(){
   $('resetPasswordForm').onsubmit=async e=>{
     e.preventDefault();const email=$('resetEmail').value.trim().toLowerCase();$('resetError').textContent='';
     if(!firebaseReady){$('resetError').textContent='Unable to send reset link right now. Please try again later.';return}
-    try{await auth.sendPasswordResetEmail(email);$('resetError').textContent='RESET LINK SENT. CHECK YOUR EMAIL INBOX AND SPAM FOLDER.';$('resetPasswordForm').querySelector('button[type="submit"]').textContent='EMAIL SENT';}
+    try{await auth.sendPasswordResetEmail(email);$('resetError').textContent='RESET EMAIL REQUEST SENT. CHECK YOUR GMAIL INBOX. DELIVERY MAY TAKE A FEW MINUTES.';$('resetPasswordForm').querySelector('button[type="submit"]').textContent='EMAIL SENT';}
     catch(err){console.error(err);$('resetError').textContent=friendlyAuthError(err)}
   };
   $('resetEmail').focus();
@@ -910,7 +971,7 @@ async function restorePdfStore(){desktopPdfHandle=await getSavedDesktopPdfHandle
    MODULE 10 : UI EVENT WIRING / REFRESH
    ============================================================ */
 function openModal(inner){const bg=document.createElement('div');bg.className='modal-bg';bg.innerHTML='<div class="card modal">'+inner+'</div>';document.body.appendChild(bg);const close=bg.querySelector('#closeModal');if(close)close.onclick=()=>bg.remove()}
-async function refreshDashboard(){const cs=await allConsumers(),bs=await allBills();const paid=bs.filter(b=>b.paid),unpaid=bs.filter(b=>!b.paid);$('dConsumers').textContent=cs.length;$('dTodayConsumers').textContent=cs.filter(c=>storageBucket(c)==='today').length;$('dOldConsumers').textContent=cs.filter(c=>storageBucket(c)==='old').length;$('dBills').textContent=bs.length;$('dPaid').textContent=paid.length;$('dUnpaid').textContent=unpaid.length;$('dCollection').textContent=money(paid.reduce((s,b)=>s+b.totalAmount,0));$('dPending').textContent=money(unpaid.reduce((s,b)=>s+b.totalAmount,0));$('dateText').textContent='DATE: '+new Date().toLocaleDateString('en-IN')+' • PRIVATE ACCOUNT'}
+async function refreshDashboard(){const cs=await allConsumers(),bs=await allBills();const paid=bs.filter(b=>b.paid),unpaid=bs.filter(b=>!b.paid);$('dConsumers').textContent=cs.length;$('dTodayConsumers').textContent=cs.filter(c=>storageBucket(c)==='today').length;$('dOldConsumers').textContent=cs.filter(c=>storageBucket(c)==='old').length;$('dBills').textContent=bs.length;$('dPaid').textContent=paid.length;$('dUnpaid').textContent=unpaid.length;$('dCollection').textContent=money(paid.reduce((s,b)=>s+b.totalAmount,0));$('dPending').textContent=money(unpaid.reduce((s,b)=>s+b.totalAmount,0));$('dateText').textContent='DATE: '+new Date().toLocaleDateString('en-IN')+' • ACCOUNT'}
 async function refreshAll(){await rollover();await refreshDashboard();if(!$('consumers').classList.contains('hidden'))await renderConsumers();if(!$('search').classList.contains('hidden'))await renderSearch();if(!$('bills').classList.contains('hidden'))await renderBills();queuePdfSync()}
 function wire(){
 $('loginBtn').onclick=login;$('forgotBtn').onclick=forgotPassword;$('accountModeLink').onclick=()=>setLoginMode(loginMode==='old'?'new':'old');setLoginMode('old');
@@ -933,20 +994,14 @@ $('loginBtn').onclick=login;$('forgotBtn').onclick=forgotPassword;$('accountMode
  $('logout').onclick=async()=>{try{if(auth)await auth.signOut()}catch(e){console.error(e)}cloudUser=null;activePortalUid='';role='';location.reload()};$('sidebarToggle').onclick=()=>{const c=$('sidebar').classList.toggle('collapsed');$('main').classList.toggle('sidebar-collapsed');$('sidebarToggle').textContent=c?'>':'<'};
  const mobileMenuBtn=$('mobileMenuBtn');
  if(mobileMenuBtn){
+   // On phones, navigation is a visible horizontal swipe bar.
+   mobileMenuBtn.setAttribute('aria-expanded','true');
    mobileMenuBtn.onclick=()=>{
-     const opened=$('sidebar').classList.toggle('mobile-open');
+     const collapsed=$('sidebar').classList.toggle('nav-collapsed');
+     const opened=!collapsed;
      mobileMenuBtn.setAttribute('aria-expanded',opened?'true':'false');
-     mobileMenuBtn.innerHTML=opened?'✕ <span>CLOSE</span>':'☰ <span>MENU</span>';
-     document.body.classList.toggle('mobile-menu-open',opened);
+     mobileMenuBtn.innerHTML=opened?'☰ <span>HIDE MENU</span>':'☰ <span>MENU</span>';
    };
-   document.querySelectorAll('.nav button').forEach(b=>b.addEventListener('click',()=>{
-     if(window.matchMedia('(max-width:760px)').matches){
-       $('sidebar').classList.remove('mobile-open');
-       document.body.classList.remove('mobile-menu-open');
-       mobileMenuBtn.setAttribute('aria-expanded','false');
-       mobileMenuBtn.innerHTML='☰ <span>MENU</span>';
-     }
-   }));
  }
  document.querySelectorAll('.nav button').forEach(b=>b.onclick=()=>showPage(b.dataset.page));document.querySelectorAll('[data-jump]').forEach(b=>b.onclick=()=>showPage(b.dataset.jump));
  $('consumerForm').onsubmit=addConsumer;$('refreshConsumers').onclick=renderConsumers;$('consumerBucket').onchange=renderConsumers;$('consumerQ').oninput=()=>renderConsumers();$('searchQ').oninput=()=>renderSearch();$('searchClear').onclick=()=>{$('searchQ').value='';renderSearch()};$('updateFind').onclick=renderUpdate;$('updateQ').addEventListener('keydown',e=>{if(e.key==='Enter')renderUpdate()});
@@ -1301,5 +1356,105 @@ tr:hover td{background:rgba(71,103,145,.12)!important}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{transition:none!important;scroll-behavior:auto!important}}
 
 </style>
+
+<style id="final-requested-phone-header-menu">
+/* Requested header: Dashboard first, system name underneath, then date and welcome. */
+.topbar-heading{align-items:flex-start!important}
+.app-heading-text{min-width:0!important}
+#pageTitle{order:0!important;margin:0 0 4px!important}
+.app-name{order:1!important;margin:0 0 5px!important;letter-spacing:.08em!important}
+#dateText{order:2!important}
+#welcomeUser{order:3!important}
+.user-id-label,#userIdLabel{display:none!important}
+#roleLabel{letter-spacing:.08em!important}
+#roleLabel::first-letter{text-transform:uppercase}
+
+/* Keep the existing dark / glowing gold look readable on all screens. */
+html,body{min-height:100%;height:auto!important;overflow-x:hidden!important;overflow-y:auto!important;
+  background:radial-gradient(ellipse at 15% 0%,#211804 0%,#0b0906 38%,#030303 100%)!important;
+  color:#f2d98a!important}
+body,#app,.app,.main,.page{height:auto!important;min-height:0;overflow-y:visible!important}
+.topbar,.card,.login-card,.tablewrap,.detail>div,.report-card,.summary .card{
+  color:#f2d98a!important;border-color:#745815!important}
+.topbar,.card,.login-card,.report-card,.summary .card{
+  background:linear-gradient(145deg,#171208 0%,#0a0805 100%)!important}
+.topbar h1,.section-title h2,.section-title h3,.login-title{color:#f1d57a!important}
+#dateText{color:#b79f61!important}
+#welcomeUser{color:#e6c55a!important}
+.mobile-menu-btn{display:none!important}
+
+@media(max-width:760px){
+  html,body{width:100%!important;max-width:100%!important;overflow-x:hidden!important;overflow-y:auto!important}
+  .side,.side.collapsed,.side.mobile-open{
+    display:block!important;position:relative!important;inset:auto!important;
+    transform:none!important;width:100%!important;height:auto!important;max-height:none!important;
+    overflow:visible!important;padding:10px 10px 8px!important;margin:0!important;
+    border-right:0!important;border-bottom:1px solid #745815!important;
+    background:linear-gradient(180deg,#171208,#0a0805)!important;box-shadow:none!important;
+    z-index:25!important
+  }
+  .side .brand,.side.collapsed .brand{display:none!important}
+  .side .role,.side.collapsed .role{display:none!important}
+  .side .sidebar-note,.side.collapsed .sidebar-note{display:none!important}
+  .side .nav,.side.collapsed .nav{
+    display:flex!important;flex-flow:row nowrap!important;align-items:stretch!important;
+    gap:7px!important;width:100%!important;overflow-x:auto!important;overflow-y:hidden!important;
+    padding:2px 2px 9px!important;margin:0!important;
+    -webkit-overflow-scrolling:touch!important;touch-action:pan-x!important;
+    overscroll-behavior-x:contain!important;scrollbar-width:thin!important;
+    scrollbar-color:#8a681b #090704!important
+  }
+  .side.nav-collapsed .nav,.side.collapsed.nav-collapsed .nav{display:none!important}
+  .side .nav button,.side.collapsed .nav button{
+    display:flex!important;flex:0 0 auto!important;align-items:center!important;
+    width:max-content!important;min-width:max-content!important;max-width:none!important;
+    min-height:42px!important;padding:10px 13px!important;white-space:nowrap!important;
+    border:1px solid #5f4812!important;border-radius:10px!important;
+    background:linear-gradient(180deg,#1b1408,#0f0b06)!important;
+    color:#e8c963!important;font-size:11px!important;line-height:1.2!important
+  }
+  .side .nav button.active,.side .nav button:hover{
+    background:linear-gradient(180deg,#3a2a0d,#211806)!important;color:#ffeaa5!important;
+    border-color:#b38a2a!important;box-shadow:0 0 16px rgba(218,178,69,.12)!important
+  }
+  .side .nav button span{display:inline!important}
+  .side .sidebar-bottom{display:flex!important;align-items:center!important;gap:8px!important;
+    margin-top:0!important;padding:0!important;border:0!important}
+  .side .sidebar-bottom-label{display:none!important}
+  .side .logout{width:auto!important;min-height:36px!important;margin:0!important;padding:8px 12px!important}
+  .desktop-sidebar-toggle{display:none!important}
+  .mobile-menu-btn{
+    display:inline-flex!important;align-items:center!important;gap:6px!important;
+    flex:0 0 auto!important;min-height:38px!important;padding:8px 10px!important;
+    background:linear-gradient(180deg,#211806,#100c06)!important;color:#e6c665!important;
+    border:1px solid #6b5014!important;border-radius:10px!important;font-size:10px!important
+  }
+  body.mobile-menu-open:after{display:none!important}
+  .main,.main.sidebar-collapsed{width:100%!important;max-width:none!important;margin:0!important;
+    padding:10px 11px 24px!important;overflow:visible!important}
+  .topbar{position:relative!important;top:auto!important;display:block!important;width:100%!important;
+    min-height:0!important;margin:0 auto 10px!important;padding:12px!important;border-radius:14px!important}
+  .topbar-heading{display:flex!important;align-items:flex-start!important;gap:9px!important}
+  .app-heading-text{flex:1 1 auto!important;min-width:0!important}
+  #pageTitle{font-size:19px!important;line-height:1.25!important;margin:0 0 5px!important}
+  .app-name{font-size:9px!important;line-height:1.5!important;letter-spacing:.08em!important;margin:0 0 5px!important}
+  #dateText{font-size:10px!important;line-height:1.5!important}
+  #welcomeUser{font-size:11px!important;overflow-wrap:anywhere!important}
+  .grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+  .summary,.report-grid,.detail,.quick-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+  .form-grid{grid-template-columns:minmax(0,1fr)!important}
+  .tablewrap{width:100%!important;max-width:calc(100vw - 22px)!important;overflow-x:auto!important;
+    overflow-y:visible!important;-webkit-overflow-scrolling:touch!important;touch-action:pan-x pan-y!important}
+  .tablewrap table{width:max-content!important;min-width:760px!important}
+  .modal-bg{overflow-y:auto!important;-webkit-overflow-scrolling:touch!important}
+}
+@media(max-width:380px){
+  .side .nav button,.side.collapsed .nav button{padding:9px 11px!important;font-size:10px!important}
+  .topbar-heading{gap:7px!important}
+  #pageTitle{font-size:17px!important}
+  .app-name{font-size:8px!important}
+}
+</style>
+
 </body>
 </html>
