@@ -768,7 +768,7 @@ function makePdf(consumers,bills,title){
    pdfRect(c,M,H-118,W-2*M,1,GOLD);
  }
  function footer(){
-   pdfText(c,M,18,'ANSARI ANAS ELECTRICITY BILL MANAGEMENT SYSTEM',5.8,MUTED);
+   pdfText(c,M,18,' ELECTRICITY BILL MANAGEMENT SYSTEM',5.8,MUTED);
    pdfText(c,W-105,18,'MASTER PDF',5.8,MUTED);
  }
  function tableHeader(y,headers){let x=M;for(const h of headers){pdfRect(c,x,y-18,h.w,18,GOLD,PANEL);pdfText(c,x+4,y-12,String(h.t).toUpperCase(),5.4,WHITE);x+=h.w}}
