@@ -878,51 +878,69 @@ function makePdf(consumers,bills,title){
 }
 
 async function downloadCustomerPdf(consumerId){
+ let savePromise=null,previewWindow=null;
  try{
-  const cs=await allConsumers();
-  const bs=await allBills();
-  const person=cs.find(c=>String(c.id)===String(consumerId));
-  if(!person){toast('CUSTOMER RECORD NOT FOUND');alert('Customer record नहीं मिला। पहले Consumer Records में रिकॉर्ड सेव है या नहीं जाँचें।');return}
-  const own=bs.filter(b=>String(b.consumerId)===String(person.id)).sort((a,b)=>Number(a.billId)-Number(b.billId));
-  const blob=makeSingleCustomerPdf(person,own);
-  const fileName='CUSTOMER_'+String(person.id).replace(/[^a-z0-9_-]/gi,'_')+'_COMPLETE_REPORT.pdf';
-
-  // Chrome/Edge: open a Save As dialog so the user can choose Desktop or another folder.
+  // IMPORTANT: open the Save As dialog directly from the click gesture,
+  // before any awaited database work, otherwise Chrome can reject it.
   if(window.isSecureContext && typeof window.showSaveFilePicker==='function'){
    try{
-    const handle=await window.showSaveFilePicker({
-     suggestedName:fileName,
+    savePromise=window.showSaveFilePicker({
+     suggestedName:'CUSTOMER_'+String(consumerId||'REPORT').replace(/[^a-z0-9_-]/gi,'_')+'_COMPLETE_REPORT.pdf',
      types:[{description:'PDF Document',accept:{'application/pdf':['.pdf']}}],
      excludeAcceptAllOption:true
     });
+   }catch(pickerStartError){ console.warn('Save dialog unavailable:',pickerStartError); savePromise=null; }
+  }
+  const cs=await allConsumers();
+  const bs=await allBills();
+  const person=cs.find(c=>String(c.id)===String(consumerId));
+  if(!person){
+   if(savePromise){try{const h=await savePromise; if(h&&h.abort)await h.abort()}catch(e){}}
+   toast('CUSTOMER RECORD NOT FOUND');
+   alert('Customer record नहीं मिला। कृपया Consumer Records में ग्राहक का रिकॉर्ड जाँचें।');
+   return;
+  }
+  const own=bs.filter(b=>String(b.consumerId)===String(person.id)).sort((a,b)=>String(b.billId||'').localeCompare(String(a.billId||''),undefined,{numeric:true}));
+  const blob=makeSingleCustomerPdf(person,own);
+  const fileName='CUSTOMER_'+String(person.id).replace(/[^a-z0-9_-]/gi,'_')+'_COMPLETE_REPORT.pdf';
+
+  if(savePromise){
+   try{
+    const handle=await savePromise;
     const writable=await handle.createWritable();
     await writable.write(blob);
     await writable.close();
-    toast('PDF SAVED: '+handle.name);
-    alert('PDF सफलतापूर्वक सेव हो गई।\nफ़ाइल: '+handle.name);
+    toast('CUSTOMER PDF SAVED');
+    alert('PDF सेव हो गई है।\nफ़ाइल: '+handle.name);
     return;
    }catch(pickerErr){
-    if(pickerErr && pickerErr.name==='AbortError'){toast('PDF SAVE CANCELLED');return}
-    console.warn('Save As dialog unavailable; using browser download.',pickerErr);
+    if(pickerErr&&pickerErr.name==='AbortError'){toast('PDF SAVE CANCELLED');return;}
+    console.warn('Save As failed; trying normal download.',pickerErr);
    }
   }
 
-  // Fallback: browser downloads the file to its default Downloads folder.
+  // Standard download fallback. Open a PDF preview as a backup in case the
+  // browser suppresses the automatic download for a local HTML file.
   const url=URL.createObjectURL(blob);
   const a=document.createElement('a');
-  a.href=url;
-  a.download=fileName;
-  a.style.display='none';
+  a.href=url;a.download=fileName;a.target='_blank';a.rel='noopener';
+  a.style.position='fixed';a.style.left='-9999px';
   document.body.appendChild(a);
   a.click();
-  setTimeout(()=>{a.remove();URL.revokeObjectURL(url)},5000);
+  setTimeout(()=>{try{a.remove()}catch(e){}},1000);
+  // Keep the object URL alive long enough for Chrome's download manager.
+  setTimeout(()=>{try{URL.revokeObjectURL(url)}catch(e){}},60000);
   toast('PDF DOWNLOAD STARTED');
-  alert('PDF डाउनलोड शुरू हो गया है। अगर Save Location नहीं पूछा गया, तो Chrome के Downloads (डाउनलोड) फ़ोल्डर में देखें। Desktop चुनने के लिए Chrome Settings > Downloads > Ask where to save each file before downloading चालू करें।');
+  setTimeout(()=>alert('PDF डाउनलोड शुरू किया गया है। Chrome में Ctrl+J दबाकर Downloads देखें। अगर डाउनलोड शुरू न हो, तो Chrome Settings > Downloads में “Ask where to save each file before downloading” चालू करके दोबारा PDF दबाएँ।'),100);
  }catch(err){
   console.error('Customer PDF generation/download failed:',err);
-  const msg=err&&err.message?err.message:'Unknown error';
-  toast('PDF ERROR: '+msg);
-  alert('PDF नहीं बन पाई। Error: '+msg);
+  const raw=String(err&&err.message?err.message:err||'');
+  let msg='PDF नहीं बन पाई। कृपया लॉगिन और इंटरनेट कनेक्शन जाँचें।';
+  if(/permission|insufficient|denied/i.test(raw))msg='डेटा पढ़ने की अनुमति नहीं मिली। कृपया सही अकाउंट से लॉगिन करें और Firebase Firestore Rules जाँचें।';
+  else if(/network|offline|unavailable/i.test(raw))msg='डेटा नहीं मिल रहा है। इंटरनेट कनेक्शन जाँचकर फिर कोशिश करें।';
+  else if(/login|private cloud account/i.test(raw))msg='पहले अपने निजी अकाउंट में लॉगिन करें, फिर PDF डाउनलोड करें।';
+  toast('PDF DOWNLOAD FAILED');
+  alert(msg);
  }
 }
 function makeSingleCustomerPdf(person,bills){
