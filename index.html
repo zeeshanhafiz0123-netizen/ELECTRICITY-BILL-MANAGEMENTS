@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>ELECTRICITY BILL MANAGEMENT SYSTEM</title>
+<title>ANSARI ANAS ELECTRICITY BILL MANAGEMENT SYSTEM</title>
 <style>
 :root{
   --bg:#090704;--panel:#100c06;--panel2:#171006;--line:#e3c35c;--gold:#d4a51f;--gold2:#f1cf67;--gold3:#ffe8a3;
@@ -186,77 +186,6 @@ tr:hover td{background:#171106 !important;}
 
 </style>
 <style>
-
-/* ===== RESPONSIVE DESKTOP + MOBILE LAYOUT FIX ===== */
-html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
-body { min-width: 0; overflow-x: hidden; }
-img, iframe, video, canvas, svg { max-width: 100%; }
-input, select, textarea, button { max-width: 100%; }
-.field input, .field select, .field textarea { min-width: 0; font-size: 16px; }
-.form-grid > *, .grid > *, .summary > *, .report-grid > *, .detail > * { min-width: 0; }
-.tablewrap { max-width: 100%; -webkit-overflow-scrolling: touch; }
-.topbar { flex-wrap: wrap; }
-.top-actions { align-items: center; }
-.login-card { width: min(430px, calc(100vw - 28px)) !important; max-width: 100%; }
-.login-footer { width: min(430px, calc(100vw - 28px)); }
-@media (max-width: 760px) {
-  .side, .side.collapsed {
-    position: relative !important; inset: auto !important; width: 100% !important;
-    max-height: none !important; height: auto !important; overflow: visible !important;
-    padding: 10px !important; border-right: 0 !important; border-bottom: 1px solid #745815;
-  }
-  .side .brand, .side.collapsed .brand,
-  .side .nav span, .side.collapsed .nav span,
-  .side .role, .side.collapsed .role { display: block !important; }
-  .side .sidebar-note, .side.collapsed .sidebar-note { display: none !important; }
-  .side .brand { padding: 4px 6px 10px !important; }
-  .side .brand b { font-size: 16px !important; }
-  .side .nav {
-    display: flex !important; flex-direction: row !important; flex-wrap: nowrap !important;
-    gap: 7px !important; overflow-x: auto !important; padding: 2px 1px 8px;
-    scrollbar-width: thin;
-  }
-  .side .nav button {
-    flex: 0 0 auto !important; width: auto !important; min-width: max-content;
-    min-height: 42px; padding: 10px 12px !important; white-space: nowrap;
-  }
-  .side .logout { width: auto !important; margin-top: 6px !important; }
-  .main, .main.sidebar-collapsed {
-    margin-left: 0 !important; padding: 10px !important; width: 100% !important;
-  }
-  .topbar { position: static !important; padding: 12px !important; align-items: flex-start; }
-  .topbar h1 { font-size: 16px !important; line-height: 1.35; }
-  .top-actions { width: 100%; }
-  .top-actions .btn { flex: 1 1 auto; }
-  .page { padding-top: 12px !important; }
-  .card { padding: 12px !important; border-radius: 13px !important; }
-  .section-title { align-items: flex-start !important; flex-wrap: wrap !important; }
-  .section-title h2, .section-title h3 { font-size: 15px !important; }
-  .grid, .summary, .report-grid, .form-grid, .detail, .quick-grid {
-    grid-template-columns: minmax(0, 1fr) !important;
-  }
-  .toolbar { align-items: stretch !important; }
-  .toolbar .field { min-width: 0 !important; width: 100%; flex: 1 1 100%; }
-  .toolbar > .btn { flex: 1 1 auto; }
-  .detail > div { min-width: 0; overflow-wrap: anywhere; }
-  .tablewrap table { min-width: 850px; }
-  .modal-bg { padding: 10px !important; }
-  .modal { width: 100% !important; max-height: 92dvh !important; }
-  .pdf-frame { height: 65dvh !important; }
-}
-@media (max-width: 420px) {
-  .center { min-height: 100dvh; padding: 14px !important; }
-  .login-card { padding: 18px 16px !important; border-radius: 18px !important; }
-  .login-title { font-size: 16px !important; }
-  .login-sub { font-size: 11px !important; }
-  .login-card .field input { padding: 12px !important; font-size: 16px !important; }
-  .btn { padding: 11px 12px; }
-  .stat .n { font-size: 24px !important; }
-  .toast { left: 10px; right: 10px; bottom: 10px; text-align: center; }
-}
-
-</style>
-<style>
 .desktop-master-card{margin-bottom:14px;border:1px solid #a17b20!important;background:linear-gradient(145deg,#1a1308,#0a0805)!important}.desktop-master-card .section-title{align-items:center}.desktop-master-card .section-title>div:last-child{display:flex}.desktop-master-actions{display:flex;gap:10px;flex-wrap:wrap;margin:12px 0}.desktop-help{line-height:1.7}.desktop-status-main{margin-top:10px;color:#f0ca68;letter-spacing:.04em}.desktop-master-card *{font-weight:400!important}body{text-transform:uppercase}input,textarea{text-transform:none}strong,b,th,.btn,.nav button,.status,.stat .n,.login-title,.brand b,.detail b,.topbar h1,.section-title h2,.section-title h3,.goldband,.empty,.field label,.role,.brand small,.sidebar-note{font-weight:400!important}
 
 .forgot-row{display:flex;justify-content:flex-end;margin:-4px 0 8px}
@@ -294,8 +223,8 @@ input, select, textarea, button { max-width: 100%; }
     <div class="login-title">ELECTRICITY BILL MANAGEMENT SYSTEM</div>
     <div class="login-sub">REGISTERED EMAIL ID AND PASSWORD</div>
     <div id="loginFields">
-      <div class="field"><label>REGISTERED EMAIL</label><input id="loginEmail" type="email" autocomplete="username" enterkeyhint="next" placeholder="Enter your email address"></div>
-      <div class="field"><label>PASSWORD</label><div class="login-input-wrap password-wrap"><input id="loginPass" type="password" autocomplete="current-password" enterkeyhint="go" placeholder="Enter your password"><button type="button" id="toggleLoginPassword" class="password-eye" aria-label="Show password" title="Show password"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12Z"></path><circle cx="12" cy="12" r="3"></circle></svg></button></div></div>
+      <div class="field"><label>REGISTERED EMAIL</label><input id="loginEmail" type="email" autocomplete="username" placeholder="Enter your email address"></div>
+      <div class="field"><label>PASSWORD</label><div class="login-input-wrap password-wrap"><input id="loginPass" type="password" autocomplete="current-password" placeholder="Enter your password"><button type="button" id="toggleLoginPassword" class="password-eye" aria-label="Show password" title="Show password"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12Z"></path><circle cx="12" cy="12" r="3"></circle></svg></button></div></div>
       <div class="forgot-row"><button type="button" id="forgotBtn" class="forgot-link">Forgot password?</button></div>
     </div>
     <div id="registerFields" class="hidden">
@@ -307,6 +236,7 @@ input, select, textarea, button { max-width: 100%; }
     </div>
     <button class="btn primary" style="width:100%;margin-top:8px" id="loginBtn">LOGIN</button>
     <div class="login-switch"><span id="loginSwitchText">Don't have an account?</span> <button type="button" id="accountModeLink" class="forgot-link">Create New Account</button></div>
+<div class="login-footer" aria-label="Developer credit">DEVELOPED BY <span>ANSARI ANAS &amp; S.A </span></div>
     <div class="login-error" id="loginError" aria-live="polite"></div>
   </div>
 </section>
@@ -383,18 +313,7 @@ input, select, textarea, button { max-width: 100%; }
       <div class="field"><label>Bill ID</label><input id="bId" readonly></div><div class="field"><label>Consumer</label><select id="bConsumer" required></select></div><div class="field"><label>Previous Reading</label><input id="prevReading" type="number" min="0" value="0" required></div>
       <div class="field"><label>Current Reading</label><input id="currReading" type="number" min="0" value="0" required></div><div class="field"><label>Rate / Unit</label><input id="ratePerUnit" type="number" min="0" step="0.01" value="7.50" required></div><div class="field"><label>Fixed Charge</label><input id="fixedCharge" type="number" min="0" step="0.01" value="100" required></div>
       <div class="field"><label>Units</label><input id="units" readonly></div><div class="field"><label>Energy Charge</label><input id="energyCharge" readonly></div><div class="field"><label>Total Amount</label><input id="totalAmount" readonly></div>
-    </div><button class="btn primary" type="submit">GENERATE BILL</button><button class="btn" type="button" id="calcBill" style="margin-left:6px">CALCULATE</button>
-    <div class="card" id="billCalculationPreview" style="margin-top:14px">
-      <div class="section-title"><h3>BILL CALCULATION PREVIEW</h3><span class="muted">LIVE CALCULATION</span></div>
-      <div class="detail">
-        <div><small>UNITS CONSUMED</small><b id="previewUnits">0</b></div>
-        <div><small>RATE PER UNIT</small><b id="previewRate">₹ 7.50</b></div>
-        <div><small>ENERGY CHARGE</small><b id="previewEnergy">₹ 0.00</b></div>
-        <div><small>FIXED CHARGE</small><b id="previewFixed">₹ 100.00</b></div>
-        <div><small>TOTAL AMOUNT</small><b id="previewTotal">₹ 100.00</b></div>
-      </div>
-      <div class="muted" id="previewFormula" style="margin-top:10px">UNITS = CURRENT READING − PREVIOUS READING</div>
-    </div></form></div></section>
+    </div><button class="btn primary" type="submit">GENERATE BILL</button><button class="btn" type="button" id="calcBill" style="margin-left:6px">CALCULATE</button></form></div></section>
 
     <section class="page hidden" id="pay"><div class="card"><div class="section-title"><h2>PAY BILL</h2><span class="muted">Payment status is recorded in the same master bill store</span></div><div class="toolbar"><div class="field"><label>View</label><select id="payBucket"><option value="today">Today</option><option value="old">Old</option><option value="all" selected>All</option></select></div><div class="field" style="flex:1"><label>Bill ID</label><input id="payBillId" inputmode="numeric" placeholder="Enter Bill ID"></div><button class="btn primary" id="payBtn">PAY BILL</button></div><div id="payPreview"></div></div></section>
 
@@ -426,16 +345,14 @@ input, select, textarea, button { max-width: 100%; }
 /* ============================================================
    MODULE 01 : PROJECT CONFIGURATION
    ============================================================ */
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+/* IMPORTANT: Replace every placeholder below with the Web App config from Firebase Console > Project settings > Your apps. */
 const firebaseConfig = {
-  apiKey: "AIzaSyBOf-_cJ46geFxYwSUs6NCYqvqJHxJHvv0",
-  authDomain: "electricity-bill-managem-c0b23.firebaseapp.com",
-  databaseURL: "https://electricity-bill-managem-c0b23-default-rtdb.asia-southeast1.firebasedatabase.app",
-  projectId: "electricity-bill-managem-c0b23",
-  storageBucket: "electricity-bill-managem-c0b23.firebasestorage.app",
-  messagingSenderId: "769883865692",
-  appId: "1:769883865692:web:870633d0608063f2e81c99",
-  measurementId: "G-5MHL0G9YPC"
+  apiKey: 'PASTE_YOUR_FIREBASE_API_KEY',
+  authDomain: 'PASTE_YOUR_PROJECT_ID.firebaseapp.com',
+  projectId: 'PASTE_YOUR_PROJECT_ID',
+  storageBucket: 'PASTE_YOUR_PROJECT_ID.appspot.com',
+  messagingSenderId: 'PASTE_YOUR_MESSAGING_SENDER_ID',
+  appId: 'PASTE_YOUR_FIREBASE_APP_ID'
 };
 let firebaseReady=false, auth=null, firestore=null, cloudUser=null, authFlowInProgress=false, activePortalUid='';
 try {
@@ -576,89 +493,9 @@ async function viewConsumer(id){const c=await txGet(STORE_CONSUMERS,id);if(!c)re
 /* ============================================================
    MODULE 06 : BILL CALCULATION / GENERATION
    ============================================================ */
-async function prepareBillForm(){
-  const bid=await nextSeq('nextBillId',5001);
-  $('bId').value=bid;
-  const cs=await allConsumers();
-  $('bConsumer').innerHTML=cs.length
-    ? cs.map(c=>`<option value="${esc(c.id)}">${esc(c.id)} • ${esc(c.name)} • Meter ${esc(c.meter)}</option>`).join('')
-    : '<option value="">NO CONSUMERS AVAILABLE</option>';
-  calculateBill();
-  updateBillCalculationPreview();
-}
-function readBillNumber(id,label){
-  const el=$(id);
-  const raw=String(el.value??'').trim();
-  if(raw==='') return {ok:false,value:0,message:label+' is required.'};
-  const value=Number(raw);
-  if(!Number.isFinite(value)||value<0) return {ok:false,value:0,message:label+' must be a valid non-negative number.'};
-  return {ok:true,value};
-}
-function calculateBill(showMessage=false){
-  const prevR=readBillNumber('prevReading','Previous Reading');
-  const currR=readBillNumber('currReading','Current Reading');
-  const rateR=readBillNumber('ratePerUnit','Rate per Unit');
-  const fixedR=readBillNumber('fixedCharge','Fixed Charge');
-  const outputIds=['units','energyCharge','totalAmount'];
-  const invalid=[prevR,currR,rateR,fixedR].find(x=>!x.ok);
-  if(invalid){
-    outputIds.forEach(id=>$(id).value='');
-    if(showMessage) toast(invalid.message);
-    return {valid:false,message:invalid.message};
-  }
-  const {value:prev}=prevR,{value:curr}=currR,{value:rate}=rateR,{value:fixed}=fixedR;
-  if(curr<prev){
-    outputIds.forEach(id=>$(id).value='');
-    const message='Current Reading cannot be less than Previous Reading.';
-    if(showMessage) toast(message);
-    return {valid:false,message,prev,curr,rate,fixed};
-  }
-  const units=curr-prev;
-  const energy=Number((units*rate).toFixed(2));
-  const total=Number((energy+fixed).toFixed(2));
-  $('units').value=String(units);
-  $('energyCharge').value=energy.toFixed(2);
-  $('totalAmount').value=total.toFixed(2);
-  return {valid:true,prev,curr,rate,fixed,units,energy,total};
-}
-async function addBill(e){
-  e.preventDefault();
-  const calc=calculateBill(true);
-  if(!calc.valid) return;
-  const consumerId=$('bConsumer').value;
-  if(!consumerId){toast('Please select a consumer before generating the bill.');return;}
-  const consumer=await txGet(STORE_CONSUMERS,consumerId);
-  if(!consumer){toast('Selected consumer was not found. Refresh and select again.');return;}
-  try{
-    const bid=await nextId('nextBillId',5001);
-    const bill={id:String(bid),billId:String(bid),consumerId:String(consumerId),
-      previousReading:calc.prev,currentReading:calc.curr,units:calc.units,
-      ratePerUnit:calc.rate,energyCharge:calc.energy,fixedCharge:calc.fixed,
-      totalAmount:calc.total,paid:0,dateKey:todayKey(),createdAt:nowIso(),bucket:'today'};
-    await txPut(STORE_BILLS,bill);
-    toast('Bill '+bid+' generated successfully. Units: '+calc.units+' | Total: ₹ '+money(calc.total));
-    await refreshAll();
-    await prepareBillForm();
-  }catch(err){
-    console.error('Generate Bill failed:',err);
-    toast('Bill could not be saved: '+friendlyAuthError(err));
-  }
-}
-function updateBillCalculationPreview(){
-  const result=calculateBill(false);
-  const ids=['previewUnits','previewRate','previewEnergy','previewFixed','previewTotal','previewFormula'];
-  if(!result.valid){
-    ['previewUnits','previewRate','previewEnergy','previewFixed','previewTotal'].forEach(id=>$(id).textContent='—');
-    $('previewFormula').textContent=result.message||'PLEASE CHECK THE READING AND CHARGE VALUES.';
-    return;
-  }
-  $('previewUnits').textContent=String(result.units);
-  $('previewRate').textContent='₹ '+money(result.rate);
-  $('previewEnergy').textContent='₹ '+money(result.energy);
-  $('previewFixed').textContent='₹ '+money(result.fixed);
-  $('previewTotal').textContent='₹ '+money(result.total);
-  $('previewFormula').textContent=`${result.curr} − ${result.prev} = ${result.units} UNITS  |  ${result.units} × ₹ ${money(result.rate)} + ₹ ${money(result.fixed)} = ₹ ${money(result.total)}`;
-}
+async function prepareBillForm(){const bid=await nextSeq('nextBillId',5001);$('bId').value=bid;const cs=await allConsumers();$('bConsumer').innerHTML=cs.length?cs.map(c=>`<option value="${esc(c.id)}">${esc(c.id)} • ${esc(c.name)} • Meter ${esc(c.meter)}</option>`).join(''):'<option value="">NO CONSUMERS AVAILABLE</option>';calculateBill()}
+function calculateBill(){const prev=Number($('prevReading').value||0),curr=Number($('currReading').value||0),rate=Number($('ratePerUnit').value||0),fixed=Number($('fixedCharge').value||0);const units=Math.max(0,curr-prev),energy=units*rate,total=energy+fixed;$('units').value=units;$('energyCharge').value=energy.toFixed(2);$('totalAmount').value=total.toFixed(2);return {prev,curr,rate,fixed,units,energy,total}}
+async function addBill(e){e.preventDefault();const calc=calculateBill();if(calc.curr<calc.prev){toast('Current reading cannot be less than previous reading');return}const bid=await nextId('nextBillId',5001);const consumerId=$('bConsumer').value;if(!consumerId){toast('Select a consumer');return}const bill={id:String(bid),billId:String(bid),consumerId:String(consumerId),previousReading:calc.prev,currentReading:calc.curr,units:calc.units,ratePerUnit:calc.rate,energyCharge:calc.energy,fixedCharge:calc.fixed,totalAmount:calc.total,paid:0,dateKey:todayKey(),createdAt:nowIso(),bucket:'today'};await txPut(STORE_BILLS,bill);$('billForm').reset();toast('Bill generated successfully as TODAY');await refreshAll();prepareBillForm()}
 function billName(b,cs){const c=consumerById(b.consumerId,cs);return c?c.name:'Unknown Consumer'}
 function billRow(b,cs,selectMode=false){const c=consumerById(b.consumerId,cs);return `<tr>${selectMode?`<td><input type="checkbox" class="pickBill" data-id="${esc(b.id)}"></td>`:''}<td>${esc(b.billId)}</td><td>${esc(b.consumerId)}</td><td>${esc(c?.name||'-')}<div class="muted">Meter: ${esc(c?.meter||'-')}</div></td><td>${esc(b.previousReading)}</td><td>${esc(b.currentReading)}</td><td>${esc(b.units)}</td><td>${money(b.energyCharge)}</td><td>${money(b.fixedCharge)}</td><td>${money(b.totalAmount)}</td><td><span class="status ${b.paid?'paid':'unpaid'}">${b.paid?'PAID':'UNPAID'}</span></td><td><span class="status ${storageBucket(b)==='today'?'today':'old'}">${storageBucket(b).toUpperCase()}</span></td><td><div class="actionbar"><button class="btn mini" data-view-bill="${esc(b.id)}">VIEW</button></div></td></tr>`}
 async function renderBills(){const q=$('billQ').value.trim(),bucket=$('billBucket').value,status=$('billStatus').value;const cs=await allConsumers();let bs=(await allBills()).filter(b=>inBucket(b,bucket)&&matches({...b,name:billName(b,cs),meter:consumerById(b.consumerId,cs)?.meter||''},q)&&(status==='all'||(status==='paid'&&b.paid)||(status==='unpaid'&&!b.paid)));bs.sort((x,y)=>Number(y.billId)-Number(x.billId));$('billTable').innerHTML=bs.length?`<table><thead><tr><th>BILL ID</th><th>CONSUMER ID</th><th>CONSUMER</th><th>PREVIOUS</th><th>CURRENT</th><th>UNITS</th><th>ENERGY</th><th>FIXED</th><th>TOTAL</th><th>STATUS</th><th>TYPE</th><th>ACTION</th></tr></thead><tbody>${bs.map(b=>billRow(b,cs)).join('')}</tbody></table>`:'<div class="empty">NO BILL RECORDS FOUND.</div>'}
@@ -847,10 +684,9 @@ $('loginBtn').onclick=login;$('forgotBtn').onclick=forgotPassword;$('accountMode
      const index=activeInputs.indexOf(el);
      if(index>=0 && index<activeInputs.length-1){activeInputs[index+1].focus();}
      else if(index===activeInputs.length-1){
-       // Do not log in/create an account just because Enter was pressed.
-       // Move focus to the explicit action button; the user must click it.
-       const action=$('loginBtn');
-       if(action){action.focus();action.scrollIntoView({block:'nearest',behavior:'smooth'});}
+       if(typeof loginMode!=='undefined' && loginMode==='old') login();
+       else if(typeof createAccount==='function') createAccount();
+       else login();
      }
    }
  });});
