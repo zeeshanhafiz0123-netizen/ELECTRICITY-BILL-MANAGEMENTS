@@ -316,6 +316,32 @@ input, select, textarea, button { max-width: 100%; }
  .customer-pdf-btn{border-color:#a98422!important;color:#f1d477!important;white-space:nowrap}.customer-pdf-btn:hover{background:#352708!important}.individual-report-results{margin-top:12px}
 @media(max-width:760px){.actionbar{min-width:260px}.customer-pdf-btn{padding:7px!important}}
 </style>
+<style>
+
+/* SCREENSHOT DETERRENCE (browser-level best effort; OS capture cannot be fully blocked) */
+#developerCredit{
+  margin:24px 0 8px;padding:14px 12px;text-align:center;
+  color:#e6c665;border-top:1px solid #6b5014;
+  font-size:12px;letter-spacing:.12em;background:rgba(12,9,4,.72);
+  border-radius:10px;
+}
+body.app-protected{
+  -webkit-user-select:none;user-select:none;
+  -webkit-touch-callout:none;
+}
+input,textarea,select,[contenteditable="true"]{
+  -webkit-user-select:text!important;user-select:text!important;
+}
+@media print{
+  body *{visibility:hidden!important}
+  body::after{
+    content:"PRINTING DISABLED";visibility:visible!important;
+    display:block;position:fixed;inset:40% 0 auto;text-align:center;
+    color:#000;font-size:24px;
+  }
+}
+
+</style>
 </head>
 <body>
 <section id="loginScreen" class="center">
@@ -339,7 +365,6 @@ input, select, textarea, button { max-width: 100%; }
     <div class="login-switch"><span id="loginSwitchText">Don't have an account?</span> <button type="button" id="accountModeLink" class="forgot-link">Create New Account</button></div>
     <div class="login-error" id="loginError" aria-live="polite"></div>
   </div>
-  <footer> DEVELOPED BY ANSARI ANAS & S.A </footer>
 </section>
 
 <section id="app" class="app hidden">
@@ -374,7 +399,7 @@ input, select, textarea, button { max-width: 100%; }
     <div class="topbar"><button type="button" class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Open menu" aria-expanded="false"><span></span><span></span><span></span></button><div class="topbar-heading"><h1 id="pageTitle">Dashboard</h1><div class="muted" id="dateText"></div><div class="muted" id="welcomeUser" style="margin-top:5px">WELCOME USER</div></div></div>
 
     <section class="page" id="dashboard">
-      <div class="card desktop-master-card"><div class="section-title"><h2>MASTER PDF</h2><span class="muted">AUTO UPDATE</span></div><div class="desktop-status-main" id="desktopStatusMain"></div></div>
+      <div class="card desktop-master-card"><div class="section-title"><h2>MASTER PDF</h2><span class="muted">AUTO UPDATE</span></div><div class="desktop-status-main" id="desktopStatusMain">MASTER PDF</div></div>
       <div class="goldband"><div style="font-size:18px">ELECTRICITY BILL MANAGEMENT SYSTEM</div><div class="muted" style="color:#5a430f">Consumer records, bills, payments and receipts — one professional master system.</div></div>
       <div class="grid" style="margin-top:14px">
         <div class="card stat"><div class="muted">Total Consumers</div><div class="n" id="dConsumers">0</div></div>
@@ -445,6 +470,10 @@ input, select, textarea, button { max-width: 100%; }
     <section class="page hidden" id="reports"><div class="card"><div class="section-title"><h2>REPORTS</h2><span class="muted">Search one customer by name, Consumer ID, Bill ID, mobile, meter or Paytm reference</span></div><div class="toolbar"><div class="field" style="flex:1;min-width:240px"><label>Search Individual Customer Report</label><input id="reportSearchQ" placeholder="Enter customer name / Bill ID / Paytm reference / mobile"></div><button class="btn" id="reportSearchClear">CLEAR</button></div><div id="individualReportResults"></div><div class="section-title" style="margin-top:18px"><h3>OVERALL SUMMARY</h3></div><div id="reportBox" class="report-grid"></div></div></section>
 
     <section class="page hidden" id="pdfstore"><div class="card"><div class="section-title"><div><h2>PDF ALL RECORD STORE</h2><div class="muted">ONE MASTER PDF • CONSUMERS + BILLS + PAYMENTS + COLLECTION</div></div></div><div class="detail" style="margin-bottom:12px"><div><small>TODAY CONSUMERS</small><span id="pdfTodayConsumers">0</span></div><div><small>OLD CONSUMERS</small><span id="pdfOldConsumers">0</span></div><div><small>TOTAL BILLS</small><span id="pdfBills">0</span></div><div><small>PAID BILLS</small><span id="pdfPaid">0</span></div><div><small>UNPAID BILLS</small><span id="pdfUnpaid">0</span></div><div><small>PDF STORE</small><span id="pdfStatus">READY</span></div></div><div class="master-pdf-note"><div class="status-pill" id="desktopPdfStatus">NOT CONNECTED</div></div><iframe id="pdfPreview" class="pdf-frame" title="MASTER PDF PREVIEW"></iframe></div></section>
+
+    <footer id="developerCredit" aria-label="Developer credit">
+      DEVELOPED BY ANSARI ANAS &amp; S.A DIV
+    </footer>
   </main>
 </section>
 <div class="toast" id="toast"></div>
@@ -763,13 +792,14 @@ function makePdf(consumers,bills,title){
    c=['q'];
    pdfRect(c,0,0,W,H,BG);
    pdfRect(c,0,H-72,W,72,PANEL,GOLD);
+   pdfText(c,M,H-28,'ANSARI ANAS',14,GOLD2);
    pdfText(c,M,H-47,'ELECTRICITY BILL MANAGEMENT SYSTEM',8,WHITE);
    pdfText(c,W-112,H-28,new Date().toLocaleDateString('en-IN'),6.8,LIGHT);
    pdfText(c,M,H-98,String(section||'MASTER ELECTRICITY RECORD REPORT').toUpperCase(),10.5,GOLD2);
    pdfRect(c,M,H-118,W-2*M,1,GOLD);
  }
  function footer(){
-   pdfText(c,M,18,' ELECTRICITY BILL MANAGEMENT SYSTEM',5.8,MUTED);
+   pdfText(c,M,18,'ANSARI ANAS ELECTRICITY BILL MANAGEMENT SYSTEM',5.8,MUTED);
    pdfText(c,W-105,18,'MASTER PDF',5.8,MUTED);
  }
  function tableHeader(y,headers){let x=M;for(const h of headers){pdfRect(c,x,y-18,h.w,18,GOLD,PANEL);pdfText(c,x+4,y-12,String(h.t).toUpperCase(),5.4,WHITE);x+=h.w}}
@@ -946,7 +976,7 @@ async function downloadCustomerPdf(consumerId){
 function makeSingleCustomerPdf(person,bills){
  const W=595,H=842,M=28,BG='0.025 0.021 0.014',PANEL='0.070 0.053 0.024',PANEL2='0.095 0.070 0.028',GOLD='0.58 0.42 0.10',GOLD2='0.82 0.64 0.22',LIGHT='0.95 0.91 0.79',WHITE='1 1 1',MUTED='0.63 0.56 0.39',GRID='0.22 0.16 0.07',ROW='0.045 0.034 0.018';
  const c=['q'];pdfRect(c,0,0,W,H,BG);pdfRect(c,0,H-74,W,74,PANEL,GOLD);
- pdfText(c,M,H-29,14,GOLD2);pdfText(c,M,H-48,'ELECTRICITY BILL MANAGEMENT SYSTEM',8,WHITE);pdfText(c,W-120,H-29,new Date().toLocaleDateString('en-IN'),6.8,LIGHT);
+ pdfText(c,M,H-29,'ANSARI ANAS',14,GOLD2);pdfText(c,M,H-48,'ELECTRICITY BILL MANAGEMENT SYSTEM',8,WHITE);pdfText(c,W-120,H-29,new Date().toLocaleDateString('en-IN'),6.8,LIGHT);
  pdfText(c,M,H-99,'INDIVIDUAL CUSTOMER COMPLETE REPORT',11,GOLD2);pdfRect(c,M,H-118,W-2*M,1,GOLD);
  const safe=v=>String(v==null||v===''?'-':v).replace(/[^\x20-\x7E]/g,' ').slice(0,95);
  const fmt=v=>{const d=new Date(v);return v&&!isNaN(d)?d.toLocaleDateString('en-IN'):'-'};
@@ -975,7 +1005,7 @@ async function setDesktopPdfHandle(handle){desktopPdfHandle=handle;await new Pro
 async function ensureDesktopPdfPermission(handle,ask=true){if(!handle||!handle.queryPermission)return true;let p=await handle.queryPermission({mode:'readwrite'});if(p!=='granted' && ask && handle.requestPermission){try{p=await handle.requestPermission({mode:'readwrite'})}catch(e){}}return p==='granted'}
 function updateDesktopPdfStatus(text){if($('desktopPdfStatus'))$('desktopPdfStatus').textContent=text;if($('desktopStatusMain'))$('desktopStatusMain').textContent='DESKTOP MASTER: '+String(text).toUpperCase()}
 async function syncPdfToDesktop(blob,interactive=false){if(!desktopPdfHandle)return false;try{let ok=await ensureDesktopPdfPermission(desktopPdfHandle,interactive);if(!ok){updateDesktopPdfStatus('PERMISSION NEEDED');return false}const writable=await desktopPdfHandle.createWritable();await writable.write(blob);await writable.close();updateDesktopPdfStatus('AUTO UPDATED');return true}catch(e){console.warn('Desktop PDF sync failed',e);updateDesktopPdfStatus('RECONNECT NEEDED');return false}}
-async function connectDesktopPdf(){if(!window.showSaveFilePicker){toast('USE CHROME OR EDGE TO SAVE THE MASTER PDF TO DESKTOP');return}try{const handle=await window.showSaveFilePicker({suggestedName:'ELECTRICITY MASTER RECORD.pdf',types:[{description:'PDF FILE',accept:{'application/pdf':['.pdf']}}],excludeAcceptAllOption:false});await setDesktopPdfHandle(handle);const blob=await buildMasterPdf(false);const ok=await syncPdfToDesktop(blob,true);toast(ok?'MASTER PDF SAVED AND CONNECTED':'MASTER PDF SAVED • PERMISSION NEEDED')}catch(e){if(e&&e.name==='AbortError')return;console.error(e);toast('MASTER PDF SAVE FAILED')}}
+async function connectDesktopPdf(){if(!window.showSaveFilePicker){toast('USE CHROME OR EDGE TO SAVE THE MASTER PDF TO DESKTOP');return}try{const handle=await window.showSaveFilePicker({suggestedName:'ANSARI ANAS ELECTRICITY MASTER RECORD.pdf',types:[{description:'PDF FILE',accept:{'application/pdf':['.pdf']}}],excludeAcceptAllOption:false});await setDesktopPdfHandle(handle);const blob=await buildMasterPdf(false);const ok=await syncPdfToDesktop(blob,true);toast(ok?'MASTER PDF SAVED AND CONNECTED':'MASTER PDF SAVED • PERMISSION NEEDED')}catch(e){if(e&&e.name==='AbortError')return;console.error(e);toast('MASTER PDF SAVE FAILED')}}
 async function buildMasterPdf(interactive=false){const cs=await allConsumers(),bs=await allBills();const blob=makePdf(cs,bs,'MASTER ELECTRICITY RECORD REPORT');if(pdfUrl)URL.revokeObjectURL(pdfUrl);pdfUrl=URL.createObjectURL(blob);if($('pdfPreview'))$('pdfPreview').src=pdfUrl;if($('pdfStatus'))$('pdfStatus').textContent='UPDATED '+new Date().toLocaleTimeString('en-IN');if($('pdfTodayConsumers'))$('pdfTodayConsumers').textContent=cs.filter(c=>storageBucket(c)==='today').length;if($('pdfOldConsumers'))$('pdfOldConsumers').textContent=cs.filter(c=>storageBucket(c)==='old').length;if($('pdfBills'))$('pdfBills').textContent=bs.length;if($('pdfPaid'))$('pdfPaid').textContent=bs.filter(b=>b.paid).length;if($('pdfUnpaid'))$('pdfUnpaid').textContent=bs.filter(b=>!b.paid).length;await syncPdfToDesktop(blob,interactive);return blob}
 function queuePdfSync(){clearTimeout(pdfBuildTimer);pdfBuildTimer=setTimeout(()=>buildMasterPdf(false).catch(console.error),350)}
 async function downloadPdf(){const blob=await buildMasterPdf(true);if(!desktopPdfHandle){if(window.showSaveFilePicker){await connectDesktopPdf();return}const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='ANSARI_ANAS_ELECTRICITY_MASTER_RECORD.pdf';document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},1000);toast('MASTER PDF DOWNLOADED');return}const ok=await syncPdfToDesktop(blob,true);if(ok)toast('MASTER PDF UPDATED IN THE SAME DESKTOP FILE');else toast('MASTER PDF NEEDS DESKTOP PERMISSION')}
@@ -1047,5 +1077,40 @@ $('loginBtn').onclick=login;$('forgotBtn').onclick=forgotPassword;$('accountMode
   }catch(e){console.error(e);alert('Unable to initialize the app. Check Firebase setup and internet connection.');}
 })();;
 })();
+</script>
+<script>
+
+/* ScreenshotDeterrenceInit: deterrence only; browsers/OS may still capture screenshots. */
+(function ScreenshotDeterrenceInit(){
+  try { document.body.classList.add('app-protected'); } catch(e) {}
+  document.addEventListener('contextmenu', function(e){
+    if (!e.target.closest('input,textarea,select,[contenteditable="true"]')) e.preventDefault();
+  }, true);
+  document.addEventListener('dragstart', function(e){ e.preventDefault(); }, true);
+  document.addEventListener('keydown', function(e){
+    const key = String(e.key || '').toLowerCase();
+    const ctrl = e.ctrlKey || e.metaKey;
+    if (key === 'printscreen') {
+      e.preventDefault();
+      try { document.activeElement && document.activeElement.blur(); } catch(_) {}
+      return;
+    }
+    if ((ctrl && ['s','p','u'].includes(key)) ||
+        (ctrl && e.shiftKey && ['i','j','c'].includes(key)) ||
+        key === 'f12') {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+  }, true);
+  // Best effort to reduce visible content when the app is backgrounded.
+  document.addEventListener('visibilitychange', function(){
+    if (document.hidden) document.documentElement.classList.add('capture-hidden');
+    else document.documentElement.classList.remove('capture-hidden');
+  });
+  const style = document.createElement('style');
+  style.textContent = 'html.capture-hidden body{filter:blur(18px)!important}';
+  document.head.appendChild(style);
+})();
+
 </script>
 </body></html>
