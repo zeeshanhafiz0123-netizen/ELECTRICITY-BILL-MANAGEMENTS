@@ -331,16 +331,22 @@ input, select, textarea, button { max-width: 100%; }
       <button data-page="delete" data-admin hidden>✕ <span>Admin Delete</span></button>
       <button data-page="trash" data-admin hidden>↩ <span>Recently Deleted</span></button>
       <button data-page="reports">◈ <span>Reports</span></button>
+      <button data-page="pdfstore">▱ <span>PDF All Record Store</span></button>
+      <button class="pdf-download-nav" id="downloadPdfNav">⇩ <span>DOWNLOAD PDF</span></button>
     </div>
     <div class="sidebar-note">Today records automatically become Old when the calendar date changes.</div>
-    <button class="btn" id="sidebarToggle" style="width:100%">&lt;</button>
-    <button class="btn logout" id="logout">LOGOUT</button>
+    <div class="sidebar-bottom">
+      <div class="sidebar-bottom-label">ACCOUNT</div>
+      <button class="btn logout" id="logout">↪ LOG OUT</button>
+    </div>
+    <button class="btn desktop-sidebar-toggle" id="sidebarToggle" style="width:100%">&lt;</button>
   </aside>
   <main class="main" id="main">
-    <div class="topbar"><div><h1 id="pageTitle">Dashboard</h1><div class="muted" id="dateText"></div><div class="muted" id="welcomeUser" style="margin-top:5px">WELCOME USER</div>
-      <div class="muted user-id-label" id="userIdLabel" style="margin-top:5px">USER ID: NOT SIGNED IN</div></div></div>
+    <div class="topbar"><div class="topbar-heading"><button type="button" class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Open navigation menu" aria-expanded="false">☰ <span>MENU</span></button><div class="app-heading-text"><div class="app-name">ELECTRICITY BILL MANAGEMENT SYSTEM</div><h1 id="pageTitle">Dashboard</h1><div class="muted" id="dateText"></div><div class="muted" id="welcomeUser" style="margin-top:5px">WELCOME USER</div>
+      <div class="muted user-id-label" id="userIdLabel" style="margin-top:5px">USER ID: NOT SIGNED IN</div></div></div></div>
 
     <section class="page" id="dashboard">
+      <div class="card desktop-master-card"><div class="section-title"><h2>MASTER PDF</h2><span class="muted">AUTO UPDATE</span></div><div class="desktop-status-main" id="desktopStatusMain">MASTER PDF: NOT CONNECTED</div></div>
       <div class="goldband"><div style="font-size:18px">ELECTRICITY BILL MANAGEMENT SYSTEM</div><div class="muted" style="color:#5a430f">Consumer records, bills, payments and receipts — one professional master system.</div></div>
       <div class="grid" style="margin-top:14px">
         <div class="card stat"><div class="muted">Total Consumers</div><div class="n" id="dConsumers">0</div></div>
@@ -360,6 +366,7 @@ input, select, textarea, button { max-width: 100%; }
         <button class="btn" data-jump="collection">COLLECTION REPORT<br><span class="muted">Today / Old / All</span></button>
         <button class="btn" data-jump="receipt">GENERATE RECEIPT<br><span class="muted">Paid bill receipt</span></button>
         <button class="btn" data-jump="count">COUNT<br><span class="muted">All system counts</span></button>
+        <button class="btn" data-jump="pdfstore">MASTER PDF<br><span class="muted">In-app updated record</span></button>
       </div></div>
     </section>
 
@@ -564,7 +571,7 @@ function showPage(id){document.querySelectorAll('.page').forEach(x=>x.classList.
    MODULE 05 : CONSUMER MANAGEMENT
    ============================================================ */
 async function addConsumer(e){e.preventDefault();const id=await nextId('nextConsumerId',1001);const rec={id:String(id),name:$('cName').value.trim(),address:$('cAddress').value.trim(),mobile:$('cMobile').value.trim(),meter:$('cMeter').value.trim(),dateKey:todayKey(),createdAt:nowIso(),bucket:'today'};if(!rec.name||!rec.address||!rec.mobile||!rec.meter){toast('Complete all consumer fields');return}await txPut(STORE_CONSUMERS,rec);$('consumerForm').reset();$('cId').value=await nextSeq('nextConsumerId',1001);toast('Consumer added successfully as TODAY');await refreshAll()}
-function consumerRow(c,selectMode=false){return `<tr>${selectMode?`<td><input type="checkbox" class="pickConsumer" data-id="${esc(c.id)}"></td>`:''}<td>${esc(c.id)}</td><td><b>${esc(c.name)}</b></td><td>${esc(c.address)}</td><td>${esc(c.mobile)}</td><td>${esc(c.meter)}</td><td><span class="status ${storageBucket(c)==='today'?'today':'old'}">${storageBucket(c).toUpperCase()}</span></td><td>${new Date(c.createdAt).toLocaleString('en-IN')}</td><td><div class="actionbar"><button class="btn mini" data-view-consumer="${esc(c.id)}">VIEW</button><button class="btn mini" data-edit-consumer="${esc(c.id)}">UPDATE</button><button class="btn mini primary" data-consumer-pdf="${esc(c.id)}">ONE PAGE RECORD PDF</button></div></td></tr>`}
+function consumerRow(c,selectMode=false){return `<tr>${selectMode?`<td><input type="checkbox" class="pickConsumer" data-id="${esc(c.id)}"></td>`:''}<td>${esc(c.id)}</td><td><b>${esc(c.name)}</b></td><td>${esc(c.address)}</td><td>${esc(c.mobile)}</td><td>${esc(c.meter)}</td><td><span class="status ${storageBucket(c)==='today'?'today':'old'}">${storageBucket(c).toUpperCase()}</span></td><td>${new Date(c.createdAt).toLocaleString('en-IN')}</td><td><div class="actionbar"><button class="btn mini" data-view-consumer="${esc(c.id)}">VIEW</button><button class="btn mini" data-edit-consumer="${esc(c.id)}">UPDATE</button><button class="btn mini primary" data-consumer-pdf="${esc(c.id)}">FULL PDF</button></div></td></tr>`}
 async function renderConsumers(){const q=$('consumerQ').value.trim(),b=$('consumerBucket').value;let a=(await allConsumers()).filter(c=>inBucket(c,b)&&matches(c,q));a.sort((x,y)=>Number(y.id)-Number(x.id));$('consumerTable').innerHTML=a.length?`<table><thead><tr><th>ID</th><th>NAME</th><th>ADDRESS</th><th>MOBILE</th><th>METER</th><th>TYPE</th><th>CREATED</th><th>ACTION</th></tr></thead><tbody>${a.map(c=>consumerRow(c)).join('')}</tbody></table>`:'<div class="empty">NO CONSUMER RECORDS FOUND.</div>'}
 async function renderSearch(){const q=$('searchQ').value.trim();let a=(await allConsumers()).filter(c=>matches(c,q));a.sort((x,y)=>Number(y.id)-Number(x.id));$('searchTable').innerHTML=a.length?`<table><thead><tr><th>ID</th><th>NAME</th><th>ADDRESS</th><th>MOBILE</th><th>METER</th><th>TYPE</th><th>ACTION</th></tr></thead><tbody>${a.map(c=>consumerRow(c)).join('')}</tbody></table>`:'<div class="empty">NO MATCHING CONSUMER FOUND.</div>'}
 async function renderUpdate(){const q=$('updateQ').value.trim();if(!q){$('updateResult').innerHTML='<div class="empty">SEARCH A CONSUMER FIRST.</div>';return}const c=(await allConsumers()).find(x=>matches(x,q));if(!c){$('updateResult').innerHTML='<div class="empty">CONSUMER NOT FOUND.</div>';return}$('updateResult').innerHTML=`<form id="editConsumerForm" class="form-grid"><input type="hidden" id="editId" value="${esc(c.id)}"><div class="field"><label>Consumer ID</label><input value="${esc(c.id)}" readonly></div><div class="field"><label>Name</label><input id="editName" value="${esc(c.name)}" required></div><div class="field"><label>Mobile</label><input id="editMobile" value="${esc(c.mobile)}" required></div><div class="field"><label>Meter Number</label><input id="editMeter" value="${esc(c.meter)}" required></div><div class="field full"><label>Address</label><textarea id="editAddress" rows="2" required>${esc(c.address)}</textarea></div><div class="full"><button class="btn primary" type="submit">SAVE UPDATE</button></div></form>`;$('editConsumerForm').onsubmit=async e=>{e.preventDefault();c.name=$('editName').value.trim();c.mobile=$('editMobile').value.trim();c.meter=$('editMeter').value.trim();c.address=$('editAddress').value.trim();await txPut(STORE_CONSUMERS,c);toast('Consumer updated');await refreshAll();renderUpdate()}}
@@ -667,19 +674,7 @@ async function viewBill(id){const b=await txGet(STORE_BILLS,id),cs=await allCons
 async function renderPayPreview(){const id=$('payBillId').value.trim();if(!id){$('payPreview').innerHTML='<div class="empty">ENTER A BILL ID TO VIEW PAYMENT DETAILS.</div>';return}const b=(await allBills()).find(x=>String(x.billId)===String(id));const cs=await allConsumers();if(!b){$('payPreview').innerHTML='<div class="empty">BILL NOT FOUND.</div>';return}const c=consumerById(b.consumerId,cs);$('payPreview').innerHTML=`<div class="card" style="margin-top:12px;background:#171106"><b>Bill ${esc(b.billId)}</b><div class="muted">${esc(c?.name||'-')} • Meter ${esc(c?.meter||'-')}</div><div style="margin-top:8px">Amount: ₹ ${money(b.totalAmount)} • Status: <span class="status ${b.paid?'paid':'unpaid'}">${b.paid?'PAID':'UNPAID'}</span></div></div>`}
 async function payBill(){const id=$('payBillId').value.trim();const bs=await allBills();const b=bs.find(x=>String(x.billId)===String(id));if(!b){toast('Bill not found');return}if(b.paid){toast('Bill already paid');return}b.paid=1;b.paidAt=nowIso();await txPut(STORE_BILLS,b);toast('Payment successful');await refreshAll();renderPayPreview()}
 async function renderUnpaid(){const q=$('unpaidQ').value.trim(),bucket=$('unpaidBucket').value,cs=await allConsumers();let bs=(await allBills()).filter(b=>!b.paid&&inBucket(b,bucket)&&matches({...b,name:billName(b,cs),meter:consumerById(b.consumerId,cs)?.meter||''},q));$('unpaidTable').innerHTML=bs.length?`<table><thead><tr><th>BILL ID</th><th>CONSUMER ID</th><th>NAME</th><th>METER</th><th>UNITS</th><th>AMOUNT</th><th>TYPE</th><th>ACTION</th></tr></thead><tbody>${bs.map(b=>{const c=consumerById(b.consumerId,cs);return `<tr><td>${esc(b.billId)}</td><td>${esc(b.consumerId)}</td><td>${esc(c?.name||'-')}</td><td>${esc(c?.meter||'-')}</td><td>${esc(b.units)}</td><td>₹ ${money(b.totalAmount)}</td><td><span class="status ${storageBucket(b)==='today'?'today':'old'}">${storageBucket(b).toUpperCase()}</span></td><td><button class="btn mini primary" data-pay-now="${esc(b.billId)}">PAY NOW</button></td></tr>`}).join('')}</tbody></table>`:'<div class="empty">NO UNPAID BILLS FOUND.</div>'}
-async function generateReceipt(){
-  const id=$('receiptBillId').value.trim(),bucket=$('receiptBucket').value,bs=await allBills(),cs=await allConsumers();
-  const b=bs.find(x=>String(x.billId)===String(id)&&inBucket(x,bucket));
-  if(!b){$('receiptBox').innerHTML='<div class="empty">BILL NOT FOUND IN SELECTED VIEW.</div>';return}
-  const c=consumerById(b.consumerId,cs);
-  if(!b.paid){$('receiptBox').innerHTML='<div class="empty">PAYMENT IS STILL PENDING. RECEIPT CANNOT BE GENERATED.</div>';return}
-  $('receiptBox').innerHTML=`<div class="card receipt-preview-card" style="margin-top:12px">
-    <div class="section-title"><h3>ELECTRICITY PAYMENT RECEIPT</h3><span class="status paid">PAID</span></div>
-    <div class="muted" style="text-align:center;margin-bottom:12px">ANSARI ANAS • ELECTRICITY BILL MANAGEMENT SYSTEM</div>
-    <div class="detail">${[['Receipt / Bill ID',b.billId],['Consumer ID',b.consumerId],['Consumer Name',c?.name||'-'],['Mobile Number',c?.mobile||'-'],['Address',c?.address||'-'],['Meter Number',c?.meter||'-'],['Previous Reading',b.previousReading],['Current Reading',b.currentReading],['Units Consumed',b.units],['Rate / Unit','₹ '+money(b.ratePerUnit)],['Energy Charge','₹ '+money(b.energyCharge)],['Fixed Charge','₹ '+money(b.fixedCharge)],['Amount Paid','₹ '+money(b.totalAmount)],['Payment Status','PAID'],['Payment Date',new Date(b.paidAt||b.createdAt).toLocaleString('en-IN')]].map(x=>`<div><small>${esc(x[0])}</small><b>${esc(x[1])}</b></div>`).join('')}</div>
-    <div class="receipt-actions"><button type="button" class="btn primary" data-download-receipt="${esc(b.billId)}">DOWNLOAD ONE-PAGE RECEIPT</button><button type="button" class="btn" data-share-receipt="${esc(b.billId)}">SHARE RECEIPT</button></div>
-  </div>`;
-}
+async function generateReceipt(){const id=$('receiptBillId').value.trim(),bucket=$('receiptBucket').value,bs=await allBills(),cs=await allConsumers();const b=bs.find(x=>String(x.billId)===String(id)&&inBucket(x,bucket));if(!b){$('receiptBox').innerHTML='<div class="empty">BILL NOT FOUND IN SELECTED VIEW.</div>';return}const c=consumerById(b.consumerId,cs);if(!b.paid){$('receiptBox').innerHTML='<div class="empty">PAYMENT IS STILL PENDING. RECEIPT CANNOT BE GENERATED.</div>';return}$('receiptBox').innerHTML=`<div class="card" style="margin-top:12px;background:linear-gradient(145deg,#241a06,#0c0904)"><div style="text-align:center;font-weight:400;font-size:18px">ELECTRICITY PAYMENT RECEIPT</div><div class="muted" style="text-align:center">ANSARI ANAS • ELECTRICITY BILL MANAGEMENT SYSTEM</div><div class="detail" style="margin-top:12px">${[['Bill ID',b.billId],['Consumer ID',b.consumerId],['Consumer Name',c?.name||'-'],['Meter Number',c?.meter||'-'],['Units',b.units],['Amount Paid','₹ '+money(b.totalAmount)],['Payment Status','PAID'],['Payment Date',new Date(b.paidAt||b.createdAt).toLocaleString('en-IN')],['Record Type',storageBucket(b).toUpperCase()]].map(x=>`<div><small>${esc(x[0])}</small><b>${esc(x[1])}</b></div>`).join('')}</div></div>`}
 function renderReceiptPreview(){generateReceipt()}
 
 /* ============================================================
@@ -880,114 +875,28 @@ function makePdf(consumers,bills,title){
 }
 
 
-function pdfSafeText(value){
-  return String(value==null?'':value).replace(/[₹]/g,'INR ').replace(/[•]/g,'-').replace(/[→]/g,'>').replace(/[^\\x20-\\x7E]/g,' ').replace(/\\s+/g,' ').trim()||'-';
-}
-function createSinglePagePdf(consumer,bills,selectedBill=null){
-  const W=595,H=842,M=26,ops=[];
-  const bg='0.035 0.028 0.016',panel='0.09 0.067 0.025',gold='0.72 0.54 0.13',gold2='0.91 0.77 0.36',light='0.96 0.91 0.77',muted='0.70 0.62 0.42',grid='0.28 0.21 0.08';
-  const safe=(v)=>pdfSafeText(v).replace(/\\/g,'\\\\').replace(/\(/g,'\\(').replace(/\)/g,'\\)');
-  const rect=(x,y,w,h,fill,stroke)=>{if(fill)ops.push(`${fill} rg ${x} ${y} ${w} ${h} re f`);if(stroke)ops.push(`${stroke} RG 0.6 w ${x} ${y} ${w} ${h} re S`)};
-  const txt=(x,y,text,size=6,color=light)=>ops.push(`BT /F1 ${size} Tf ${color} rg 1 0 0 1 ${x} ${y} Tm (${safe(text)}) Tj ET`);
-  rect(0,0,W,H,bg,null);rect(0,H-70,W,70,panel,gold);
-  txt(M,H-29,'ANSARI ANAS',13,gold2);txt(M,H-47,'ELECTRICITY BILL MANAGEMENT SYSTEM',7,light);
-  txt(W-118,H-29,new Date().toLocaleDateString('en-IN'),6,light);
-  const isReceipt=!!selectedBill;
-  txt(M,H-94,isReceipt?'ELECTRICITY PAYMENT RECEIPT':'COMPLETE CONSUMER RECORD',10,gold2);
-  txt(W-130,H-94,'CONSUMER ID: '+consumer.id,6,light);
-  rect(M,H-194,W-2*M,82,panel,gold);
-  txt(M+10,H-128,'CONSUMER DETAILS',7,gold2);
-  txt(M+10,H-145,'NAME: '+consumer.name,6.2,light);
-  txt(M+10,H-160,'MOBILE: '+consumer.mobile,6.2,light);
-  txt(M+10,H-175,'ADDRESS: '+consumer.address,5.5,light);
-  txt(M+300,H-145,'METER: '+consumer.meter,6.2,light);
-  txt(M+300,H-160,'RECORD TYPE: '+storageBucket(consumer).toUpperCase(),6.2,light);
-  txt(M+300,H-175,'CREATED: '+(consumer.createdAt?new Date(consumer.createdAt).toLocaleDateString('en-IN'):'-'),6.2,light);
-  let y=H-213;
-  if(isReceipt){
-    const b=selectedBill;
-    rect(M,y-178,W-2*M,166,panel,gold);
-    txt(M+12,y-29,'RECEIPT / BILL ID: '+b.billId,8,gold2);
-    txt(M+12,y-50,'PREVIOUS READING: '+b.previousReading,7,light);
-    txt(M+290,y-50,'CURRENT READING: '+b.currentReading,7,light);
-    txt(M+12,y-72,'UNITS CONSUMED: '+b.units,7,light);
-    txt(M+290,y-72,'RATE PER UNIT: INR '+money(b.ratePerUnit),7,light);
-    txt(M+12,y-94,'ENERGY CHARGE: INR '+money(b.energyCharge),7,light);
-    txt(M+290,y-94,'FIXED CHARGE: INR '+money(b.fixedCharge),7,light);
-    txt(M+12,y-120,'PAYMENT STATUS: PAID',8,gold2);
-    txt(M+290,y-120,'AMOUNT PAID: INR '+money(b.totalAmount),9,gold2);
-    txt(M+12,y-145,'PAYMENT DATE: '+new Date(b.paidAt||b.createdAt).toLocaleString('en-IN'),6,light);
-    txt(M+12,y-162,'Thank you for your payment.',6.5,gold2);
-    y-=202;
-    txt(M,y,'PAYMENT RECEIVED AGAINST THE BILL SHOWN ABOVE.',6,muted);
-  } else {
-    const sorted=bills.slice().sort((a,b)=>Number(a.billId)-Number(b.billId));
-    const paid=sorted.filter(b=>b.paid),unpaid=sorted.filter(b=>!b.paid);
-    const total=sorted.reduce((sum,b)=>sum+Number(b.totalAmount||0),0);
-    const collected=paid.reduce((sum,b)=>sum+Number(b.totalAmount||0),0);
-    const pending=unpaid.reduce((sum,b)=>sum+Number(b.totalAmount||0),0);
-    const statY=y-43;
-    [['BILLS',sorted.length],['PAID',paid.length],['UNPAID',unpaid.length],['TOTAL VALUE','INR '+money(total)]].forEach((v,i)=>{const x=M+i*136;rect(x,statY,130,34,panel,gold);txt(x+7,statY+21,v[0],5.5,muted);txt(x+7,statY+8,v[1],7,gold2)});
-    y=statY-15;txt(M,y,'BILL & PAYMENT HISTORY',7,gold2);y-=14;
-    const cols=[{t:'BILL ID',w:42},{t:'DATE',w:50},{t:'PREV',w:38},{t:'CURR',w:38},{t:'UNITS',w:34},{t:'RATE',w:42},{t:'ENERGY',w:48},{t:'FIXED',w:42},{t:'TOTAL',w:49},{t:'STATUS',w:48},{t:'PAYMENT DATE',w:112}];
-    let x=M;cols.forEach(col=>{rect(x,y-16,col.w,16,gold,null);txt(x+3,y-11,col.t,4.7,'0.08 0.06 0.02');x+=col.w});y-=16;
-    const avail=Math.max(10,y-72);
-    const rowH=sorted.length?Math.min(14,avail/sorted.length):14;
-    const font=Math.max(3.2,Math.min(5.3,rowH*0.36));
-    sorted.forEach((b,i)=>{
-      const yy=y-rowH*(i+1);let xx=M;
-      const vals=[b.billId,b.createdAt?new Date(b.createdAt).toLocaleDateString('en-IN'):'-',b.previousReading,b.currentReading,b.units,money(b.ratePerUnit),money(b.energyCharge),money(b.fixedCharge),money(b.totalAmount),b.paid?'PAID':'DUE',b.paid?new Date(b.paidAt||b.createdAt).toLocaleDateString('en-IN'):'PENDING'];
-      cols.forEach((col,j)=>{rect(xx,yy,col.w,rowH,'0.045 0.035 0.02',grid);txt(xx+2,yy+Math.max(1,(rowH-font)/2),String(vals[j]),font,j===9?(b.paid?'0.45 0.80 0.56':'0.92 0.50 0.40'):light);xx+=col.w});
-    });
-    const summaryY=38;rect(M,summaryY,W-2*M,31,panel,gold);
-    txt(M+8,summaryY+18,'TOTAL BILL VALUE: INR '+money(total),6,light);
-    txt(M+190,summaryY+18,'COLLECTED: INR '+money(collected),6,gold2);
-    txt(M+355,summaryY+18,'PENDING: INR '+money(pending),6,light);
-    txt(M,20,'GENERATED: '+new Date().toLocaleString('en-IN')+'  |  ONE-PAGE CONSUMER RECORD',5,muted);
-  }
-  if(isReceipt){txt(M,20,'GENERATED: '+new Date().toLocaleString('en-IN')+'  |  OFFICIAL PAYMENT RECORD',5,muted)}
-  const content=ops.join('\n'),enc=new TextEncoder(),streamBytes=enc.encode(content);
-  const objs=[
-    [1,'<< /Type /Catalog /Pages 2 0 R >>'],
-    [2,'<< /Type /Pages /Kids [3 0 R] /Count 1 >>'],
-    [3,'<< /Type /Page /Parent 2 0 R /MediaBox [0 0 '+W+' '+H+'] /Resources << /Font << /F1 4 0 R >> >> /Contents 5 0 R >>'],
-    [4,'<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>'],
-    [5,`<< /Length ${streamBytes.length} >>\nstream\n${content}\nendstream`]
-  ];
-  let body='%PDF-1.4\n',offsets=[0];
-  for(const [num,obj] of objs){offsets[num]=enc.encode(body).length;body+=`${num} 0 obj\n${obj}\nendobj\n`}
-  const xref=enc.encode(body).length;body+='xref\n0 6\n0000000000 65535 f \n';
-  for(let i=1;i<=5;i++)body+=String(offsets[i]).padStart(10,'0')+' 00000 n \n';
-  body+=`trailer\n<< /Size 6 /Root 1 0 R >>\nstartxref\n${xref}\n%%EOF`;
-  return new Blob([body],{type:'application/pdf'});
-}
-async function saveOrSharePdf(blob,filename,tryShare=false){
-  const file=new File([blob],filename,{type:'application/pdf'});
-  if(tryShare&&navigator.share&&navigator.canShare&&navigator.canShare({files:[file]})){
-    try{await navigator.share({files:[file],title:filename,text:'Electricity Bill Management System record'});toast('PDF READY TO SHARE');return}catch(e){if(e&&e.name==='AbortError')return;console.warn('Share failed; downloading instead',e)}
-  }
-  const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=filename;a.style.display='none';document.body.appendChild(a);a.click();
-  setTimeout(()=>{URL.revokeObjectURL(url);a.remove()},30000);toast('PDF DOWNLOADED');
-}
 async function downloadConsumerPdf(consumerId){
   try{
-    const cs=await allConsumers(),all=await allBills();
+    const cs=await allConsumers(), all=await allBills();
     const consumer=cs.find(c=>String(c.id)===String(consumerId));
     if(!consumer){toast('CONSUMER NOT FOUND');return}
-    const bills=all.filter(b=>String(b.consumerId)===String(consumer.id));
-    const blob=createSinglePagePdf(consumer,bills);
+    const bills=all.filter(b=>String(b.consumerId)===String(consumer.id))
+      .sort((a,b)=>Number(a.billId)-Number(b.billId));
+    const blob=makePdf([consumer],bills,'CUSTOMER COMPLETE REPORT');
     const safeName=String(consumer.name||'CUSTOMER').replace(/[^a-z0-9_-]+/gi,'_').replace(/^_+|_+$/g,'')||'CUSTOMER';
-    await saveOrSharePdf(blob,'Consumer_'+String(consumer.id)+'_'+safeName+'_One_Page_Record.pdf',true);
-  }catch(err){console.error('Consumer PDF export failed:',err);toast('CUSTOMER PDF FAILED • CHECK CONSOLE')}
-}
-async function downloadReceiptPdf(billId,share=false){
-  try{
-    const bills=await allBills(),cs=await allConsumers(),b=bills.find(x=>String(x.billId)===String(billId)),c=b&&consumerById(b.consumerId,cs);
-    if(!b||!c){toast('RECEIPT RECORD NOT FOUND');return}
-    if(!b.paid){toast('PAYMENT IS PENDING; RECEIPT NOT AVAILABLE');return}
-    const blob=createSinglePagePdf(c,[b],b);
-    await saveOrSharePdf(blob,'Receipt_'+String(b.billId)+'_Consumer_'+String(c.id)+'.pdf',share);
-  }catch(err){console.error('Receipt PDF export failed:',err);toast('RECEIPT PDF FAILED')}
+    const url=URL.createObjectURL(blob);
+    const a=document.createElement('a');
+    a.href=url;
+    a.download='Consumer_'+String(consumer.id)+'_'+safeName+'_Complete_Report.pdf';
+    a.style.display='none';
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(()=>{URL.revokeObjectURL(url);a.remove()},30000);
+    toast('CUSTOMER PDF DOWNLOADED');
+  }catch(err){
+    console.error('Customer PDF export failed:',err);
+    toast('CUSTOMER PDF FAILED • CHECK CONSOLE');
+  }
 }
 
 async function getSavedDesktopPdfHandle(){try{const rec=await txGet(STORE_META,'masterPdfHandle');return rec&&rec.handle?rec.handle:null}catch(e){return null}}
@@ -1026,14 +935,31 @@ $('loginBtn').onclick=login;$('forgotBtn').onclick=forgotPassword;$('accountMode
    }
  });});
  $('logout').onclick=async()=>{try{if(auth)await auth.signOut()}catch(e){console.error(e)}cloudUser=null;activePortalUid='';role='';location.reload()};$('sidebarToggle').onclick=()=>{const c=$('sidebar').classList.toggle('collapsed');$('main').classList.toggle('sidebar-collapsed');$('sidebarToggle').textContent=c?'>':'<'};
- document.querySelectorAll('.nav button').forEach(b=>b.onclick=()=>showPage(b.dataset.page));if($('downloadPdfNav'))$('downloadPdfNav').onclick=downloadPdf;document.querySelectorAll('[data-jump]').forEach(b=>b.onclick=()=>showPage(b.dataset.jump));
+ const mobileMenuBtn=$('mobileMenuBtn');
+ if(mobileMenuBtn){
+   mobileMenuBtn.onclick=()=>{
+     const opened=$('sidebar').classList.toggle('mobile-open');
+     mobileMenuBtn.setAttribute('aria-expanded',opened?'true':'false');
+     mobileMenuBtn.innerHTML=opened?'✕ <span>CLOSE</span>':'☰ <span>MENU</span>';
+     document.body.classList.toggle('mobile-menu-open',opened);
+   };
+   document.querySelectorAll('.nav button').forEach(b=>b.addEventListener('click',()=>{
+     if(window.matchMedia('(max-width:760px)').matches){
+       $('sidebar').classList.remove('mobile-open');
+       document.body.classList.remove('mobile-menu-open');
+       mobileMenuBtn.setAttribute('aria-expanded','false');
+       mobileMenuBtn.innerHTML='☰ <span>MENU</span>';
+     }
+   }));
+ }
+ document.querySelectorAll('.nav button').forEach(b=>b.onclick=()=>showPage(b.dataset.page));$('downloadPdfNav').onclick=downloadPdf;document.querySelectorAll('[data-jump]').forEach(b=>b.onclick=()=>showPage(b.dataset.jump));
  $('consumerForm').onsubmit=addConsumer;$('refreshConsumers').onclick=renderConsumers;$('consumerBucket').onchange=renderConsumers;$('consumerQ').oninput=()=>renderConsumers();$('searchQ').oninput=()=>renderSearch();$('searchClear').onclick=()=>{$('searchQ').value='';renderSearch()};$('updateFind').onclick=renderUpdate;$('updateQ').addEventListener('keydown',e=>{if(e.key==='Enter')renderUpdate()});
  $('billForm').onsubmit=addBill;['prevReading','currReading','ratePerUnit','fixedCharge'].forEach(id=>$(id).addEventListener('input',calculateBill));$('calcBill').onclick=calculateBill;
  ['billBucket','billStatus'].forEach(id=>$(id).onchange=renderBills);$('billQ').oninput=renderBills;$('refreshBills').onclick=renderBills;
  $('payBillId').oninput=renderPayPreview;$('payBtn').onclick=payBill;$('payBucket').onchange=renderPayPreview;$('unpaidBucket').onchange=renderUnpaid;$('unpaidQ').oninput=renderUnpaid;$('refreshUnpaid').onclick=renderUnpaid;$('refreshCollection').onclick=renderCollection;$('collectionBucket').onchange=renderCollection;$('receiptBtn').onclick=generateReceipt;$('receiptBucket').onchange=generateReceipt;$('receiptBillId').oninput=generateReceipt;
  $('deleteQ').oninput=renderDelete;$('deleteSelected').onclick=deleteSelected;$('refreshTrash').onclick=renderTrash;$('restoreSelected').onclick=()=>restore([...document.querySelectorAll('.trashPick:checked')].map(x=>x.dataset.id));$('purgeSelected').onclick=()=>purge([...document.querySelectorAll('.trashPick:checked')].map(x=>x.dataset.id));
  
- document.addEventListener('click',async e=>{const v=e.target.closest('[data-view-consumer]'),ec=e.target.closest('[data-edit-consumer]'),cp=e.target.closest('[data-consumer-pdf]'),dr=e.target.closest('[data-download-receipt]'),sr=e.target.closest('[data-share-receipt]'),vb=e.target.closest('[data-view-bill]'),p=e.target.closest('[data-pay-now]'),ro=e.target.closest('[data-restore-one]'),po=e.target.closest('[data-purge-one]');if(v)return viewConsumer(v.dataset.viewConsumer);if(cp)return downloadConsumerPdf(cp.dataset.consumerPdf);if(dr)return downloadReceiptPdf(dr.dataset.downloadReceipt,false);if(sr)return downloadReceiptPdf(sr.dataset.shareReceipt,true);if(ec){$('updateQ').value=ec.dataset.editConsumer;showPage('update');return}if(vb)return viewBill(vb.dataset.viewBill);if(p){showPage('pay');$('payBillId').value=p.dataset.payNow;return renderPayPreview()}if(ro)return restore([ro.dataset.restoreOne]);if(po)return purge([po.dataset.purgeOne])});
+ document.addEventListener('click',async e=>{const v=e.target.closest('[data-view-consumer]'),ec=e.target.closest('[data-edit-consumer]'),cp=e.target.closest('[data-consumer-pdf]'),vb=e.target.closest('[data-view-bill]'),p=e.target.closest('[data-pay-now]'),ro=e.target.closest('[data-restore-one]'),po=e.target.closest('[data-purge-one]');if(v)return viewConsumer(v.dataset.viewConsumer);if(cp)return downloadConsumerPdf(cp.dataset.consumerPdf);if(ec){$('updateQ').value=ec.dataset.editConsumer;showPage('update');return}if(vb)return viewBill(vb.dataset.viewBill);if(p){showPage('pay');$('payBillId').value=p.dataset.payNow;return renderPayPreview()}if(ro)return restore([ro.dataset.restoreOne]);if(po)return purge([po.dataset.purgeOne])});
 }
 (async function init(){
   try{
@@ -1121,22 +1047,61 @@ $('loginBtn').onclick=login;$('forgotBtn').onclick=forgotPassword;$('accountMode
   .actionbar .btn { width:100%; }
 }
 
+</style>
+<style>
 
-/* Compact sidebar controls + one-page record/receipt actions */
-.sidebar-footer-actions{display:flex;align-items:center;gap:6px;margin-top:10px;padding-top:9px;border-top:1px solid rgba(190,148,42,.22)}
-.sidebar-footer-actions .sidebar-icon-btn{flex:0 0 34px;width:34px;min-width:34px;height:32px;min-height:32px;padding:0!important;display:grid;place-items:center;font-size:17px;line-height:1;border-radius:8px}
-.sidebar-footer-actions .logout{flex:1 1 auto;width:auto!important;min-width:0;margin:0!important;min-height:32px;height:32px;padding:5px 8px!important;display:flex;align-items:center;justify-content:center;gap:6px;font-size:10px!important;letter-spacing:.04em;border-radius:8px}
-.logout-symbol{font-size:15px;line-height:1}
-.logout-label{font-size:10px;white-space:nowrap}
-.receipt-preview-card .detail{grid-template-columns:repeat(3,minmax(0,1fr))}
-.receipt-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px;justify-content:flex-end}
-.receipt-actions .btn{min-height:36px;padding:8px 12px!important;font-size:11px}
+/* ===== FINAL NAVIGATION POLISH: MOBILE DRAWER + BOTTOM LOGOUT ===== */
+.topbar-heading{display:flex;align-items:flex-start;gap:12px;min-width:0;width:100%}
+.app-heading-text{min-width:0;flex:1}
+.app-name{font-size:11px;letter-spacing:.12em;color:#d8b64f;font-weight:700;margin-bottom:5px;line-height:1.35}
+.mobile-menu-btn{display:none;align-items:center;justify-content:center;gap:7px;flex:0 0 auto;min-height:42px;padding:10px 13px;border:1px solid #d4a51f;border-radius:10px;background:#211805;color:#f1cf67;font-size:14px;font-weight:700}
+.sidebar-bottom{margin-top:auto;padding-top:16px}
+.sidebar-bottom-label{font-size:10px;letter-spacing:.15em;color:#5a430f;padding:0 10px 6px}
+.sidebar-bottom .logout{width:100%;min-height:46px;margin:0;background:#2a0c08!important;border-color:#a34a32!important;color:#ffe3d5!important;font-weight:700}
+.desktop-sidebar-toggle{margin-top:10px}
+.side{display:flex;flex-direction:column}
+.side .nav{flex:0 0 auto}
 @media(max-width:760px){
- .sidebar-footer-actions{margin-top:7px;padding-top:7px;justify-content:flex-end}
- .sidebar-footer-actions .sidebar-icon-btn{flex-basis:32px;width:32px;min-width:32px;height:30px;min-height:30px}
- .sidebar-footer-actions .logout{flex:0 0 auto;width:auto!important;min-width:86px;height:30px;min-height:30px}
- .receipt-preview-card .detail{grid-template-columns:repeat(2,minmax(0,1fr))!important}
- .receipt-actions .btn{flex:1 1 100%}
+  .mobile-menu-btn{display:inline-flex}
+  .desktop-sidebar-toggle{display:none!important}
+  .topbar-heading{align-items:flex-start}
+  .app-name{font-size:10px;letter-spacing:.08em}
+  .topbar h1{font-size:17px!important}
+  .side,.side.collapsed{
+    display:flex!important;flex-direction:column!important;
+    position:fixed!important;top:0!important;left:0!important;bottom:0!important;
+    width:min(86vw,330px)!important;height:100dvh!important;max-height:100dvh!important;
+    overflow-y:auto!important;overflow-x:hidden!important;z-index:1001!important;
+    padding:15px 12px 14px!important;
+    border-right:1px solid #efcf6c!important;border-bottom:0!important;
+    box-shadow:16px 0 45px rgba(0,0,0,.45);
+    transform:translateX(-110%);transition:transform .24s ease!important;
+  }
+  .side.mobile-open,.side.collapsed.mobile-open{transform:translateX(0)!important;width:min(86vw,330px)!important}
+  .side .brand,.side.collapsed .brand,.side .nav span,.side.collapsed .nav span,
+  .side .role,.side.collapsed .role{display:block!important}
+  .side .brand b{font-size:18px!important}
+  .side .sidebar-note,.side.collapsed .sidebar-note{display:none!important}
+  .side .nav{
+    display:grid!important;grid-template-columns:minmax(0,1fr)!important;
+    gap:7px!important;overflow:visible!important;padding:5px 0 12px!important;
+  }
+  .side .nav button{
+    display:block!important;width:100%!important;min-width:0!important;min-height:46px!important;
+    padding:12px 13px!important;text-align:left!important;white-space:normal!important;
+    overflow-wrap:anywhere;border-radius:11px!important;
+  }
+  .side .sidebar-bottom{margin-top:auto!important;padding-top:20px!important}
+  .side .sidebar-bottom .logout{width:100%!important;min-height:48px!important}
+  body.mobile-menu-open:after{
+    content:"";position:fixed;inset:0;background:rgba(0,0,0,.58);
+    backdrop-filter:blur(2px);z-index:1000;
+  }
+  .main,.main.sidebar-collapsed{margin-left:0!important;padding:9px!important;width:100%!important}
+  .topbar{position:static!important;padding:12px!important}
+  .topbar-heading{gap:9px}
 }
+@media(prefers-reduced-motion:reduce){.side{transition:none!important}}
+
 </style>
 </body></html>
