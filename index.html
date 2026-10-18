@@ -184,6 +184,41 @@ tr:hover td{background:#171106 !important;}
 #pdfstore .master-pdf-note .status-pill{padding:7px 10px;border-radius:999px;border:1px solid #7d5e17;color:#efd579;background:#171107;white-space:nowrap}
 @media(max-width:900px){#pdfstore .detail{grid-template-columns:repeat(2,minmax(140px,1fr))}.master-pdf-note{grid-template-columns:1fr!important}}
 
+
+/* MOBILE / YOUTUBE-STYLE THREE-LINE MENU + COMPACT DASHBOARD */
+.mobile-menu-btn{display:none;align-items:center;justify-content:center;flex-direction:column;gap:5px;width:42px;height:42px;flex:0 0 42px;border:1px solid #806219;border-radius:11px;background:#171107;color:#f0d47a;cursor:pointer}
+.mobile-menu-btn span{display:block;width:18px;height:2px;background:currentColor;border-radius:2px}
+.sidebar-backdrop{display:none;position:fixed;inset:0;background:rgba(0,0,0,.72);z-index:19}
+.sidebar-backdrop.show{display:block}
+.topbar-left{display:flex;align-items:center;gap:12px;min-width:0}
+.topbar-left>div{min-width:0}
+.quick-grid{grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.quick-grid button{min-height:62px;padding:8px 9px!important;font-size:11px!important;line-height:1.45;border-radius:10px}
+.quick-grid button .muted{font-size:9px!important;line-height:1.3}
+.dashboard-export{display:flex;justify-content:flex-end;gap:8px;flex-wrap:wrap;margin:10px 0}
+.page-export-btn{font-size:10px!important;padding:7px 10px!important;min-height:30px!important}
+@media(max-width:760px){
+ .mobile-menu-btn{display:flex}
+ .side{width:268px!important;transform:translateX(-105%);transition:transform .22s ease;z-index:30}
+ .side.mobile-open{transform:translateX(0)}
+ .side.collapsed{width:268px!important}
+ .side.collapsed .brand,.side.collapsed .nav span,.side.collapsed .role,.side.collapsed .sidebar-note{display:initial}
+ .side.collapsed .brand,.side.collapsed .role,.side.collapsed .sidebar-note{display:block}
+ .side.collapsed .nav span{display:inline}
+ .main,.main.sidebar-collapsed{margin-left:0!important;padding:10px}
+ .topbar{top:0;padding:10px;border-radius:13px;gap:8px}
+ .topbar h1{font-size:14px!important;line-height:1.4}
+ .topbar .muted{font-size:9px!important}
+ .grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:8px}
+ .grid .card{padding:10px}
+ .stat .n{font-size:21px!important}
+ .quick-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+ .goldband{padding:11px!important;font-size:12px!important}
+ .goldband>div:first-child{font-size:14px!important}
+ .tablewrap{max-width:100%;overflow:auto}
+ .toolbar .field{min-width:130px!important}
+}
+@media(min-width:761px){.sidebar-backdrop{display:none!important}}
 </style>
 <style>
 .desktop-master-card{margin-bottom:14px;border:1px solid #a17b20!important;background:linear-gradient(145deg,#1a1308,#0a0805)!important}.desktop-master-card .section-title{align-items:center}.desktop-master-card .section-title>div:last-child{display:flex}.desktop-master-actions{display:flex;gap:10px;flex-wrap:wrap;margin:12px 0}.desktop-help{line-height:1.7}.desktop-status-main{margin-top:10px;color:#f0ca68;letter-spacing:.04em}.desktop-master-card *{font-weight:400!important}body{text-transform:uppercase}input,textarea{text-transform:none}strong,b,th,.btn,.nav button,.status,.stat .n,.login-title,.brand b,.detail b,.topbar h1,.section-title h2,.section-title h3,.goldband,.empty,.field label,.role,.brand small,.sidebar-note{font-weight:400!important}
@@ -242,6 +277,7 @@ tr:hover td{background:#171106 !important;}
 </section>
 
 <section id="app" class="app hidden">
+  <div class="sidebar-backdrop" id="sidebarBackdrop" aria-hidden="true"></div>
   <aside class="side" id="sidebar">
     <div class="brand"><b>ELECTRICITY BILL</b><small>MANAGEMENT SYSTEM</small></div>
     <div class="role" id="roleLabel">LOGIN</div>
@@ -269,7 +305,7 @@ tr:hover td{background:#171106 !important;}
     <button class="btn logout" id="logout">LOGOUT</button>
   </aside>
   <main class="main" id="main">
-    <div class="topbar"><div><h1 id="pageTitle">Dashboard</h1><div class="muted" id="dateText"></div><div class="muted" id="welcomeUser" style="margin-top:5px">WELCOME USER</div></div></div>
+    <div class="topbar"><div class="topbar-left"><button type="button" class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Open menu" aria-expanded="false"><span></span><span></span><span></span></button><div><h1 id="pageTitle">Dashboard</h1><div class="muted" id="dateText"></div><div class="muted" id="welcomeUser" style="margin-top:5px">WELCOME USER</div></div></div></div>
 
     <section class="page" id="dashboard">
       <div class="card desktop-master-card"><div class="section-title"><h2>MASTER PDF</h2><span class="muted">AUTO UPDATE</span></div><div class="desktop-status-main" id="desktopStatusMain">MASTER PDF: NOT CONNECTED</div></div>
@@ -478,7 +514,10 @@ function showPasswordResetDialog(){
   $('resetEmail').focus();
 }
 async function forgotPassword(){showPasswordResetDialog()}
-function showPage(id){document.querySelectorAll('.page').forEach(x=>x.classList.add('hidden'));$(id).classList.remove('hidden');document.querySelectorAll('.nav button').forEach(b=>b.classList.toggle('active',b.dataset.page===id));$('pageTitle').textContent=id==='consumers'?'Display Consumer':id.replace(/^./,x=>x.toUpperCase()).replace('pdfstore','MASTER PDF');if(id==='dashboard')refreshDashboard();if(id==='consumers')renderConsumers();if(id==='search')renderSearch();if(id==='update')renderUpdate();if(id==='bills')renderBills();if(id==='generate')prepareBillForm();if(id==='pay')renderPayPreview();if(id==='unpaid')renderUnpaid();if(id==='collection')renderCollection();if(id==='receipt')renderReceiptPreview();if(id==='count')renderCount();if(id==='delete')renderDelete();if(id==='trash')renderTrash();if(id==='reports')renderReports();if(id==='pdfstore')restorePdfStore()}
+function closeMobileSidebar(){const s=$('sidebar'),back=$('sidebarBackdrop'),btn=$('mobileMenuBtn');if(s)s.classList.remove('mobile-open');if(back)back.classList.remove('show');if(btn)btn.setAttribute('aria-expanded','false')}
+function toggleMobileSidebar(){const s=$('sidebar'),back=$('sidebarBackdrop'),btn=$('mobileMenuBtn');if(!s)return;const open=!s.classList.contains('mobile-open');s.classList.toggle('mobile-open',open);if(back)back.classList.toggle('show',open);if(btn)btn.setAttribute('aria-expanded',String(open))}
+function addPagePdfButtons(){document.querySelectorAll('.page').forEach(page=>{if(page.id==='dashboard'||page.querySelector('.dashboard-export'))return;const host=page.querySelector('.card');if(!host)return;const bar=document.createElement('div');bar.className='dashboard-export';bar.innerHTML='<button type="button" class="btn page-export-btn" data-master-pdf>DOWNLOAD ALL RECORDS PDF</button>';host.insertBefore(bar,host.firstChild);});}
+function showPage(id){document.querySelectorAll('.page').forEach(x=>x.classList.add('hidden'));$(id).classList.remove('hidden');closeMobileSidebar();document.querySelectorAll('.nav button').forEach(b=>b.classList.toggle('active',b.dataset.page===id));$('pageTitle').textContent=id==='consumers'?'Display Consumer':id.replace(/^./,x=>x.toUpperCase()).replace('pdfstore','MASTER PDF');if(id==='dashboard')refreshDashboard();if(id==='consumers')renderConsumers();if(id==='search')renderSearch();if(id==='update')renderUpdate();if(id==='bills')renderBills();if(id==='generate')prepareBillForm();if(id==='pay')renderPayPreview();if(id==='unpaid')renderUnpaid();if(id==='collection')renderCollection();if(id==='receipt')renderReceiptPreview();if(id==='count')renderCount();if(id==='delete')renderDelete();if(id==='trash')renderTrash();if(id==='reports')renderReports();if(id==='pdfstore')restorePdfStore()}
 
 /* ============================================================
    MODULE 05 : CONSUMER MANAGEMENT
@@ -664,7 +703,7 @@ async function syncPdfToDesktop(blob,interactive=false){if(!desktopPdfHandle)ret
 async function connectDesktopPdf(){if(!window.showSaveFilePicker){toast('USE CHROME OR EDGE TO SAVE THE MASTER PDF TO DESKTOP');return}try{const handle=await window.showSaveFilePicker({suggestedName:'ANSARI ANAS ELECTRICITY MASTER RECORD.pdf',types:[{description:'PDF FILE',accept:{'application/pdf':['.pdf']}}],excludeAcceptAllOption:false});await setDesktopPdfHandle(handle);const blob=await buildMasterPdf(false);const ok=await syncPdfToDesktop(blob,true);toast(ok?'MASTER PDF SAVED AND CONNECTED':'MASTER PDF SAVED • PERMISSION NEEDED')}catch(e){if(e&&e.name==='AbortError')return;console.error(e);toast('MASTER PDF SAVE FAILED')}}
 async function buildMasterPdf(interactive=false){const cs=await allConsumers(),bs=await allBills();const blob=makePdf(cs,bs,'MASTER ELECTRICITY RECORD REPORT');if(pdfUrl)URL.revokeObjectURL(pdfUrl);pdfUrl=URL.createObjectURL(blob);if($('pdfPreview'))$('pdfPreview').src=pdfUrl;if($('pdfStatus'))$('pdfStatus').textContent='UPDATED '+new Date().toLocaleTimeString('en-IN');if($('pdfTodayConsumers'))$('pdfTodayConsumers').textContent=cs.filter(c=>storageBucket(c)==='today').length;if($('pdfOldConsumers'))$('pdfOldConsumers').textContent=cs.filter(c=>storageBucket(c)==='old').length;if($('pdfBills'))$('pdfBills').textContent=bs.length;if($('pdfPaid'))$('pdfPaid').textContent=bs.filter(b=>b.paid).length;if($('pdfUnpaid'))$('pdfUnpaid').textContent=bs.filter(b=>!b.paid).length;await syncPdfToDesktop(blob,interactive);return blob}
 function queuePdfSync(){clearTimeout(pdfBuildTimer);pdfBuildTimer=setTimeout(()=>buildMasterPdf(false).catch(console.error),350)}
-async function downloadPdf(){const blob=await buildMasterPdf(true);if(!desktopPdfHandle){if(window.showSaveFilePicker){await connectDesktopPdf();return}const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='ANSARI_ANAS_ELECTRICITY_MASTER_RECORD.pdf';document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},1000);toast('MASTER PDF DOWNLOADED');return}const ok=await syncPdfToDesktop(blob,true);if(ok)toast('MASTER PDF UPDATED IN THE SAME DESKTOP FILE');else toast('MASTER PDF NEEDS DESKTOP PERMISSION')}
+async function downloadPdf(){const blob=await buildMasterPdf(true);if(!desktopPdfHandle){if(window.showSaveFilePicker){await connectDesktopPdf();return}const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='ANSARI_ANAS_ELECTRICITY_MASTER_RECORD.pdf';document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},1000);toast('MASTER PDF DOWNLOADED - ALL CONSUMERS AND BILLS');return}const ok=await syncPdfToDesktop(blob,true);if(ok)toast('MASTER PDF UPDATED IN THE SAME DESKTOP FILE');else toast('MASTER PDF NEEDS DESKTOP PERMISSION')}
 async function restorePdfStore(){desktopPdfHandle=await getSavedDesktopPdfHandle();if(desktopPdfHandle){const granted=await ensureDesktopPdfPermission(desktopPdfHandle,false);updateDesktopPdfStatus(granted?'CONNECTED':'PERMISSION NEEDED')}else updateDesktopPdfStatus('NOT CONNECTED');await buildMasterPdf(false)}
 
 /* ============================================================
@@ -691,7 +730,12 @@ $('loginBtn').onclick=login;$('forgotBtn').onclick=forgotPassword;$('accountMode
    }
  });});
  $('logout').onclick=async()=>{try{if(auth)await auth.signOut()}catch(e){console.error(e)}cloudUser=null;activePortalUid='';role='';location.reload()};$('sidebarToggle').onclick=()=>{const c=$('sidebar').classList.toggle('collapsed');$('main').classList.toggle('sidebar-collapsed');$('sidebarToggle').textContent=c?'>':'<'};
- document.querySelectorAll('.nav button').forEach(b=>b.onclick=()=>showPage(b.dataset.page));$('downloadPdfNav').onclick=downloadPdf;document.querySelectorAll('[data-jump]').forEach(b=>b.onclick=()=>showPage(b.dataset.jump));
+ document.querySelectorAll('.nav button').forEach(b=>b.onclick=()=>{if(b.dataset.page)showPage(b.dataset.page);else if(b.id==='downloadPdfNav')downloadPdf()});$('downloadPdfNav').onclick=downloadPdf;
+ if($('mobileMenuBtn'))$('mobileMenuBtn').onclick=toggleMobileSidebar;
+ if($('sidebarBackdrop'))$('sidebarBackdrop').onclick=closeMobileSidebar;
+ document.addEventListener('keydown',e=>{if(e.key==='Escape')closeMobileSidebar()});
+ document.addEventListener('click',e=>{if(e.target.closest('[data-master-pdf]'))downloadPdf()});
+ addPagePdfButtons();document.querySelectorAll('[data-jump]').forEach(b=>b.onclick=()=>showPage(b.dataset.jump));
  $('consumerForm').onsubmit=addConsumer;$('refreshConsumers').onclick=renderConsumers;$('consumerBucket').onchange=renderConsumers;$('consumerQ').oninput=()=>renderConsumers();$('searchQ').oninput=()=>renderSearch();$('searchClear').onclick=()=>{$('searchQ').value='';renderSearch()};$('updateFind').onclick=renderUpdate;$('updateQ').addEventListener('keydown',e=>{if(e.key==='Enter')renderUpdate()});
  $('billForm').onsubmit=addBill;['prevReading','currReading','ratePerUnit','fixedCharge'].forEach(id=>$(id).addEventListener('input',calculateBill));$('calcBill').onclick=calculateBill;
  ['billBucket','billStatus'].forEach(id=>$(id).onchange=renderBills);$('billQ').oninput=renderBills;$('refreshBills').onclick=renderBills;
